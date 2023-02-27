@@ -1,8 +1,8 @@
 {
 	"name": "miraheze/request-ssl",
 	"type": "mediawiki-extension",
-	"description": "A MediaWiki extension designed to automate user import requests.",
-	"homepage": "https://www.mediawiki.org/wiki/Extension:ImportDump",
+	"description": "A MediaWiki extension designed to automate requesting and generating SSL certificates",
+	"homepage": "https://www.mediawiki.org/wiki/Extension:RequestSSL",
 	"license": "GPL-3.0-or-later",
 	"authors": [
 		{
@@ -10,8 +10,8 @@
 		}
 	],
 	"support": {
-		"issues": "https://phabricator.miraheze.org/tag/importdump/",
-		"wiki": "https://www.mediawiki.org/wiki/Extension:ImportDump"
+		"issues": "https://phabricator.miraheze.org/tag/requestssl/",
+		"wiki": "https://www.mediawiki.org/wiki/Extension:RequestSSL
 	},
 	"require": {
 		"composer/installers": ">=1.0.1"
