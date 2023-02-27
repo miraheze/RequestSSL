@@ -209,11 +209,6 @@ class RequestSSLViewer {
 					$this->context->msg( 'requestssl-button-copy' )->text()
 				);
 				$info = Html::noticeBox( $fileInfo, '' );
-
-				$validRequest = false;
-				if ( $status === 'pending' || $status === 'inprogress' ) {
-					$status = 'declined';
-				}
 			}
 
 			$info .= Html::noticeBox(
