@@ -260,6 +260,7 @@ class RequestSSLManager {
 	 */
 	public function getCommand(): string {
 		$command = $this->options->get( 'RequestSSLScriptCommand' );
+		$customdomain = str_replace('https://', '', $this->getCustomDomain());
 
 		return str_replace( [
 			'{IP}',
@@ -268,7 +269,7 @@ class RequestSSLManager {
 		], [
 			MW_INSTALL_PATH,
 			$this->getTarget(),
-			$this->getCustomDomain(),
+			$customdomain,
 		], $command );
 	}
 
