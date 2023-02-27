@@ -1,0 +1,181 @@
+{
+	"name": "RequestSSL",
+	"author": "Universal Omega",
+	"url": "https://github.com/miraheze/RequestSSL",
+	"descriptionmsg": "requestssl-desc",
+	"namemsg": "requestssl-extensionname",
+	"license-name": "GPL-3.0-or-later",
+	"type": "specialpage",
+	"requires": {
+		"MediaWiki": ">= 1.39.0"
+	},
+	"MessagesDirs": {
+		"RequestSSL": [
+			"i18n"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"RequestSSLAliases": "RequestSSLAliases.php"
+	},
+	"AutoloadNamespaces": {
+		"Miraheze\\RequestSSL\\": "includes/"
+	},
+	"TestAutoloadNamespaces": {
+		"Miraheze\\RequestSSL\\Tests\\": "tests/phpunit/"
+	},
+	"GroupPermissions": {
+		"user": {
+			"request-request-ssl": true
+		}
+	},
+	"AvailableRights": [
+		"handle-request-ssl-requests",
+		"request-request-ssl"
+		"view-private-request-ssl-requests",
+	],
+	"LogActionsHandlers": {
+		"requestssl/*": "LogFormatter",
+		"requestsslprivate/*": "LogFormatter"
+	},
+	"LogHeaders": {
+		"requestssl": "requestssl-log-header",
+		"requestsslprivate": "requestsslprivate-log-header"
+	},
+	"LogNames": {
+		"requestssl": "requestssl-log-name",
+		"requestsslprivate": "requestsslprivate-log-name"
+	},
+	"LogTypes": [
+		"requestssl",
+		"requestsslprivate"
+	],
+	"LogRestrictions": {
+		"requestsslprivate": "view-private-request-ssl-requests"
+	},
+	"ActionFilteredLogs": {
+		"requestssl": {
+			"request": [
+				"request"
+			],
+			"statusupdate": [
+				"statusupdate"
+			]
+		},
+		"requestsslprivate": {
+			"request": [
+				"request"
+			],
+			"statusupdate": [
+				"statusupdate"
+			]
+		}
+	},
+	"SpecialPages": {
+		"RequestSSL": {
+			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestSSL",
+			"services": [
+				"DBLoadBalancerFactory",
+				"MimeAnalyzer",
+				"RepoGroup",
+				"UserFactory"
+			]
+		},
+		"RequestSSLQueue": {
+			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestSSLQueue",
+			"services": [
+				"DBLoadBalancerFactory",
+				"RequestSSLRequestManager",
+				"PermissionManager",
+				"UserFactory"
+			]
+		}
+	},
+	"Hooks": {
+		"BeforeCreateEchoEvent": {
+			"handler": "Main"
+		},
+		"GetAllBlockActions": {
+			"handler": "Main"
+		},
+		"LoadExtensionSchemaUpdates": {
+			"handler": "Installer"
+		},
+		"UserGetReservedNames": {
+			"handler": "Main"
+		}
+	},
+	"HookHandlers": {
+		"Installer": {
+			"class": "Miraheze\\RequestSSL\\Hooks\\Handlers\\Installer"
+		},
+		"Main": {
+			"class": "Miraheze\\RequestSSL\\Hooks\\Handlers\\Main",
+			"services": [
+				"ConfigFactory"
+			]
+		}
+	},
+	"ResourceModules": {
+		"ext.requestssl.oouiform": {
+			"targets": [ "desktop", "mobile" ],
+			"scripts": "ext.requestssl.oouiform.ooui.js",
+			"dependencies": [
+				"mediawiki.storage",
+				"oojs-ui-widgets"
+			]
+		},
+		"ext.requestssl.oouiform.styles": {
+			"targets": [ "desktop", "mobile" ],
+			"styles": "ext.requestssl.oouiform.ooui.less"
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "modules",
+		"remoteExtPath": "RequestSSL/modules"
+	},
+	"config": {
+		"RequestSSLCentralWiki": {
+			"value": "",
+			"description": "If set, only allow users to request import dumps on this wiki."
+		},
+		"RequestSSLHelpUrl": {
+			"value": "",
+			"description": "Full URL. If set, adds a help URL to Special:RequestSSL."
+		},
+		"RequestSSLScriptCommand": {
+			"value": "php {IP}/maintenance/importDump.php --wiki={wiki} --username-prefix=\"{username-prefix}\" {file}",
+			"description": "Generated maintenance script command to use."
+		},
+		"RequestSSLUsersNotifiedOnAllRequests": {
+			"value": [],
+			"description": "Array of usernames to send email notifications to for all requests. Users listed here must have a verified email address on their account. This doesn't do anything if the Echo extension is not installed."
+		}
+	},
+	"ConfigRegistry": {
+		"RequestSSL": "GlobalVarConfig::newInstance"
+	},
+	"DefaultUserOptions": {
+		"echo-subscriptions-email-requestssl-new-request": true,
+		"echo-subscriptions-email-requestssl-request-comment": true,
+		"echo-subscriptions-email-requestssl-request-status-update": true,
+		"echo-subscriptions-web-requestssl-new-request": false,
+		"echo-subscriptions-web-requestssl-request-comment": true,
+		"echo-subscriptions-web-requestssl-request-status-update": true
+	},
+	"HiddenPrefs": [
+		"echo-subscriptions-email-requestssl-new-request",
+		"echo-subscriptions-web-requestssl-new-request"
+	],
+	"RateLimits": {
+		"request-request-ssl": {
+			"user": [
+				5,
+				60
+			]
+		}
+	},
+	"ServiceWiringFiles": [
+		"includes/ServiceWiring.php"
+	],
+	"manifest_version": 2
+}

@@ -1,0 +1,46 @@
+{
+	"name": "miraheze/request-ssl",
+	"type": "mediawiki-extension",
+	"description": "A MediaWiki extension designed to automate user import requests.",
+	"homepage": "https://www.mediawiki.org/wiki/Extension:ImportDump",
+	"license": "GPL-3.0-or-later",
+	"authors": [
+		{
+			"name": "Universal Omega"
+		}
+	],
+	"support": {
+		"issues": "https://phabricator.miraheze.org/tag/importdump/",
+		"wiki": "https://www.mediawiki.org/wiki/Extension:ImportDump"
+	},
+	"require": {
+		"composer/installers": ">=1.0.1"
+	},
+	"require-dev": {
+		"mediawiki/mediawiki-codesniffer": "40.0.1",
+		"mediawiki/mediawiki-phan-config": "0.12.0",
+		"mediawiki/minus-x": "1.1.1",
+		"php-parallel-lint/php-console-highlighter": "1.0.0",
+		"php-parallel-lint/php-parallel-lint": "1.3.2"
+	},
+	"scripts": {
+		"fix": [
+			"minus-x fix .",
+			"phpcbf; if [ $? -eq 1 ]; then exit 0; fi"
+		],
+		"test": [
+			"parallel-lint . --exclude node_modules --exclude vendor",
+			"minus-x check .",
+			"@phpcs"
+		],
+		"phan": "phan -d . --long-progress-bar",
+		"phpcs": "phpcs -sp --cache"
+	},
+	"config": {
+		"prepend-autoloader": false,
+		"optimize-autoloader": true,
+		"allow-plugins": {
+			"composer/installers": true
+		}
+	}
+}
