@@ -9,6 +9,7 @@ return [
 		return new RequestSSLManager(
 			$services->getConfigFactory()->makeConfig( 'RequestSSL' ),
 			$services->getDBLoadBalancerFactory(),
+			$services->getLinkRenderer(),
 			$services->getRepoGroup(),
 			RequestContext::getMain(),
 			new ServiceOptions(

@@ -8,6 +8,7 @@ use ExtensionRegistry;
 use FileBackend;
 use ManualLogEntry;
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserGroupManagerFactory;
 use Message;
@@ -48,6 +49,9 @@ class RequestSSLManager {
 
 	/** @var MessageLocalizer */
 	private $messageLocalizer;
+	
+	/** @var LinkRenderer */
+	private $linkRenderer;
 
 	/** @var ServiceOptions */
 	private $options;
@@ -76,6 +80,7 @@ class RequestSSLManager {
 	public function __construct(
 		Config $config,
 		ILBFactory $dbLoadBalancerFactory,
+		LinkRenderer $linkRenderer,
 		RepoGroup $repoGroup,
 		MessageLocalizer $messageLocalizer,
 		ServiceOptions $options,
@@ -86,6 +91,7 @@ class RequestSSLManager {
 
 		$this->config = $config;
 		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
+		$this->linkRenderer = $linkRenderer;
 		$this->messageLocalizer = $messageLocalizer;
 		$this->options = $options;
 		$this->repoGroup = $repoGroup;
@@ -455,6 +461,10 @@ class RequestSSLManager {
 			],
 			__METHOD__
 		);
+		if ( $status === 'complete' ) {
+			$remoteWiki = new RemoteWiki( $this->getTarget() );
+			$remoteWiki->setServerName( $this->getCustomDomain() );
+		}
 	}
 
 	/**
