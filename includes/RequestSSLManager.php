@@ -461,10 +461,6 @@ class RequestSSLManager {
 			],
 			__METHOD__
 		);
-		if ( $status === 'complete' ) {
-			$remoteWiki = new RemoteWiki( $this->getTarget() );
-			$remoteWiki->setServerName( $this->getCustomDomain() );
-		}
 	}
 
 	/**
@@ -481,6 +477,14 @@ class RequestSSLManager {
 			],
 			__METHOD__
 		);
+	}
+	
+	public function updateManageWiki ( string $remotewiki ) {
+		if ( $status === 'complete' ) {
+			$remoteWiki = new RemoteWiki( $this->getTarget() );
+			$remoteWiki->setServerName( $this->getCustomDomain() );
+			$remoteWiki->commit();
+		}
 	}
 
 	/**
