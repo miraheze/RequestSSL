@@ -105,7 +105,7 @@
 	"logentry-requestsslprivate-interwiki": "{{logentry|[[Special:Log/requestsslprivate]]}}",
 	"logentry-requestsslprivate-request": "{{logentry|[[Special:Log/requestsslprivate]]}}",
 	"logentry-requestsslprivate-statusupdate": "{{logentry|[[Special:Log/requestsslprivate]]}}",
-	"requestrequestssl": "{{doc-special}}",
+	"requestssl": "{{doc-special}}",
 	"requestrequestsslqueue": "{{doc-special}}",
 	"right-handle-request-ssl-interwiki": "{{doc-right|handle-request-ssl-interwiki}}",
 	"right-handle-request-ssl-requests": "{{doc-right|handle-request-ssl-requests}}",
