@@ -98,7 +98,7 @@ class RequestSSLQueuePager extends TablePager {
 				break;
 			case 'request_status':
 				$formatted = $this->linkRenderer->makeLink(
-					SpecialPage::getTitleValueFor( 'RequestRequestSSLQueue', $row->request_id ),
+					SpecialPage::getTitleValueFor( 'RequestSSLQueue', $row->request_id ),
 					$this->msg( 'requestssl-label-' . $row->request_status )->text()
 				);
 

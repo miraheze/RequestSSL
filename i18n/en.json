@@ -100,7 +100,7 @@
 	"logentry-requestssl-statusupdate": "$1 updated status of request ssl request $4 to '$5'.",
 	"logentry-requestsslprivate-request": "$1 requested an request ssl for private wiki $4 in $5.",
 	"logentry-requestsslprivate-statusupdate": "$1 updated status of private request ssl request $4 to '$5'.",
-	"requestrequestssl": "Request ssl",
+	"requestssl": "Request ssl",
 	"requestsslqueue": "SSL Requests Queue",
 	"right-handle-request-ssl-interwiki": "Handle request ssl interwiki",
 	"right-handle-request-ssl-requests": "Handle user request ssl requests",
