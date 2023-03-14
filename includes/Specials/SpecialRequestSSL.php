@@ -49,7 +49,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		RepoGroup $repoGroup,
 		UserFactory $userFactory
 	) {
-		parent::__construct( 'RequestSSL', 'request-request-ssl' );
+		parent::__construct( 'RequestSSL', 'request-ssl' );
 
 		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
 		$this->mimeAnalyzer = $mimeAnalyzer;
