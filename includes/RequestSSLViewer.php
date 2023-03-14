@@ -54,7 +54,7 @@ class RequestSSLViewer {
 		if (
 			$this->requestSslRequestManager->isPrivate() &&
 			$user->getName() !== $this->requestSslRequestManager->getRequester()->getName() &&
-			!$this->permissionManager->userHasRight( $user, 'view-private-import-dump-requests' )
+			!$this->permissionManager->userHasRight( $user, 'view-private-ssl-requests' )
 		) {
 			$this->context->getOutput()->addHTML(
 				Html::errorBox( $this->context->msg( 'requestssl-private' )->escaped() )
@@ -140,7 +140,7 @@ class RequestSSLViewer {
 		}
 
 		if (
-			$this->permissionManager->userHasRight( $user, 'handle-import-dump-requests' ) ||
+			$this->permissionManager->userHasRight( $user, 'handle-ssl-requests' ) ||
 			$user->getActorId() === $this->requestSslRequestManager->getRequester()->getActorId()
 		) {
 			$formDescriptor += [
@@ -278,7 +278,7 @@ class RequestSSLViewer {
 				],
 			];
 
-			if ( $this->permissionManager->userHasRight( $user, 'view-private-import-dump-requests' ) ) {
+			if ( $this->permissionManager->userHasRight( $user, 'view-private-ssl-requests' ) ) {
 				$formDescriptor += [
 					'handle-private' => [
 						'type' => 'check',
