@@ -195,7 +195,7 @@ class RequestSSLViewer {
 			];
 		}
 
-		if ( $this->permissionManager->userHasRight( $user, 'handle-request-ssl-requests' ) ) {
+		if ( $this->permissionManager->userHasRight( $user, 'handle-ssl-requests' ) ) {
 			$validRequest = true;
 			$status = $this->requestSslRequestManager->getStatus();
 			$fileInfo = $this->context->msg( 'requestssl-info-command' )->plaintextParams(
