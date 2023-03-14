@@ -553,6 +553,8 @@ class RequestSSLViewer {
 			$comment = $this->context->msg( 'requestssl-status-updated', strtolower( $statusMessage ) )
 				->inContentLanguage()
 				->escaped();
+			
+			$this->requestSslRequestManager->updateManageWiki( $user );
 
 			if ( $formData['handle-comment'] ) {
 				$commentUser = User::newSystemUser( 'RequestSSL Status Update' );
