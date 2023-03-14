@@ -29,9 +29,9 @@
 		}
 	},
 	"AvailableRights": [
-		"handle-request-ssl-requests",
-		"request-request-ssl"
-		"view-private-request-ssl-requests",
+		"handle-ssl-requests",
+		"request-ssl"
+		"view-private-ssl-requests",
 	],
 	"LogActionsHandlers": {
 		"requestssl/*": "LogFormatter",
