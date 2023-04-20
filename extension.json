@@ -30,7 +30,7 @@
 	},
 	"AvailableRights": [
 		"handle-ssl-requests",
-		"request-ssl"
+		"request-ssl",
 		"view-private-ssl-requests",
 	],
 	"LogActionsHandlers": {
