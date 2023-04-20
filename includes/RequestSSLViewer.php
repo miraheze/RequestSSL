@@ -209,7 +209,6 @@ class RequestSSLViewer {
 					$this->context->msg( 'requestssl-button-copy' )->text()
 				);
 				$info = Html::noticeBox( $fileInfo, '' );
-			}
 
 			$info .= Html::noticeBox(
 				$this->context->msg( 'requestssl-info-groups',
@@ -317,6 +316,8 @@ class RequestSSLViewer {
 					'section' => 'handling',
 				],
 			];
+		}
+
 		return $formDescriptor;
 	}
 
