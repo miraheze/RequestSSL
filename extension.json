@@ -31,7 +31,7 @@
 	"AvailableRights": [
 		"handle-ssl-requests",
 		"request-ssl",
-		"view-private-ssl-requests",
+		"view-private-ssl-requests"
 	],
 	"LogActionsHandlers": {
 		"requestssl/*": "LogFormatter",
