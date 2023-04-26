@@ -1,6 +1,10 @@
 {
 	"name": "RequestSSL",
-	"author": "Universal Omega",
+	"author": [
+		"Universal Omega",
+		"Agent Isai",
+		"Reception123",
+	],
 	"url": "https://github.com/miraheze/RequestSSL",
 	"descriptionmsg": "requestssl-desc",
 	"namemsg": "requestssl-extensionname",
