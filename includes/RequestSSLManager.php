@@ -481,7 +481,8 @@ class RequestSSLManager {
 	}
 	
 	public function updateManageWiki ( string $remotewiki ) {
-		if ( $this->getStatus === 'complete' ) { // Loophole, if status is completed and attempted to change to something like 'in progress', it executes this
+		$status = $this->getStatus;
+		if ( $status == 'complete' ) {
 			$remoteWiki = new RemoteWiki( $this->getTarget() );
 			$remoteWiki->setServerName( $this->getCustomDomain() );
 			$remoteWiki->commit();
