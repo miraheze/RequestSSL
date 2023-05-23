@@ -159,7 +159,7 @@ class RequestSSLManager {
 	 * @param User $user
 	 */
 	public function logStatusUpdate( string $comment, string $newStatus, User $user ) {
-		$requestQueueLink = SpecialPage::getTitleValueFor( 'RequestRequestSSLQueue', (string)$this->ID );
+		$requestQueueLink = SpecialPage::getTitleValueFor( 'RequestSSLQueue', (string)$this->ID );
 		$requestLink = $this->linkRenderer->makeLink( $requestQueueLink, "#{$this->ID}" );
 
 		$logEntry = new ManualLogEntry(
