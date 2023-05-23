@@ -116,7 +116,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'rows' => 4,
 				'label-message' => 'requestssl-label-reason',
 				'help-message' => 'requestssl-help-reason',
-				'required' => true,
+				'required' => false,
 				'validation-callback' => [ $this, 'isValidReason' ],
 			],
 		];
