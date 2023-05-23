@@ -461,6 +461,7 @@ class RequestSSLManager {
 			],
 			__METHOD__
 		);
+		$this->row->request_status = $status;
 	}
 
 	/**
