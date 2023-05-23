@@ -158,10 +158,12 @@ class SpecialRequestSSL extends FormSpecialPage {
 		if ( (bool)$duplicate ) {
 			return Status::newFatal( 'requestssl-duplicate-request' );
 		}
+		
+		$timestamp = $dbw->timestamp();
 
-//		if ( !$status->isOK() ) {
-//			return $status;
-//		}
+		if ( !$status->isOK() ) {
+			return $status;
+		}
 
 		$dbw->insert(
 			'requestssl_requests',
