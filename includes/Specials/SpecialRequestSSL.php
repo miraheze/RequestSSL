@@ -161,10 +161,6 @@ class SpecialRequestSSL extends FormSpecialPage {
 		
 		$timestamp = $dbw->timestamp();
 
-		if ( !$status->isOK() ) {
-			return $status;
-		}
-
 		$dbw->insert(
 			'requestssl_requests',
 			[
