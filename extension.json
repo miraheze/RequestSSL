@@ -5,7 +5,7 @@
 		"Agent Isai",
 		"Reception123"
 	],
-	"url": "https://github.com/miraheze/RequestSSL",
+	"url": "https://github.com/Reception123/RequestSSL",
 	"descriptionmsg": "requestssl-desc",
 	"namemsg": "requestssl-extensionname",
 	"license-name": "GPL-3.0-or-later",
@@ -140,7 +140,7 @@
 	"config": {
 		"RequestSSLCentralWiki": {
 			"value": "",
-			"description": "If set, only allow users to request import dumps on this wiki."
+			"description": "If set, only allow users to request SSL on this wiki."
 		},
 		"RequestSSLHelpUrl": {
 			"value": "",
