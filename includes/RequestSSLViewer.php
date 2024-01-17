@@ -420,6 +420,8 @@ class RequestSSLViewer {
 			return;
 		}
 
+		$oldStatus = $this->requestSslRequestManager->getStatus();
+
 		if ( isset( $formData['submit-edit'] ) ) {
 			$this->requestSslRequestManager->startAtomic( __METHOD__ );
 
@@ -554,8 +556,10 @@ class RequestSSLViewer {
 			$comment = $this->context->msg( 'requestssl-status-updated', strtolower( $statusMessage ) )
 				->inContentLanguage()
 				->escaped();
-			
-			$this->requestSslRequestManager->updateManageWiki( $user );
+
+			if ($oldStatus !== 'complete' && $formData['handle-status'] === 'complete') {
+				$this->requestSslRequestManager->updateManageWiki( $user );
+			}
 
 			if ( $formData['handle-comment'] ) {
 				$commentUser = User::newSystemUser( 'RequestSSL Status Update' );

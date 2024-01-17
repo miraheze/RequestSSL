@@ -479,14 +479,11 @@ class RequestSSLManager {
 			__METHOD__
 		);
 	}
-	
+
 	public function updateManageWiki ( string $remotewiki ) {
-		$status = $this->getStatus;
-		if ( $status == 'complete' ) {
-			$remoteWiki = new RemoteWiki( $this->getTarget() );
-			$remoteWiki->setServerName( $this->getCustomDomain() );
-			$remoteWiki->commit();
-		}
+		$remoteWiki = new RemoteWiki( $this->getTarget() );
+		$remoteWiki->setServerName( $this->getCustomDomain() );
+		$remoteWiki->commit();
 	}
 
 	/**
