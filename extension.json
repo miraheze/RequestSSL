@@ -140,7 +140,7 @@
 	"config": {
 		"RequestSSLCentralWiki": {
 			"value": "",
-			"description": "If set, only allow users to request import dumps on this wiki."
+			"description": "If set, only allow users to request SSL on this wiki."
 		},
 		"RequestSSLHelpUrl": {
 			"value": "",
