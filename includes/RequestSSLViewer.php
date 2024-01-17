@@ -404,7 +404,7 @@ class RequestSSLViewer {
 	 */
 	protected function submitForm(
 		array $formData,
-		HTMLForm $form
+		HTMLForm $form,
 		IContextSource $context
 	) {
 		$user = $form->getUser();
