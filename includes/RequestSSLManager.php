@@ -6,6 +6,7 @@ use Config;
 use EchoEvent;
 use ExtensionRegistry;
 use FileBackend;
+use IContextSource;
 use ManualLogEntry;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Linker\LinkRenderer;
@@ -49,7 +50,7 @@ class RequestSSLManager {
 
 	/** @var MessageLocalizer */
 	private $messageLocalizer;
-	
+
 	/** @var LinkRenderer */
 	private $linkRenderer;
 
@@ -480,10 +481,18 @@ class RequestSSLManager {
 		);
 	}
 
-	public function updateManageWiki ( string $remotewiki ) {
+	public function updateManageWiki ( string $remotewiki, IContextSource $context ) {
 		$remoteWiki = new RemoteWiki( $this->getTarget() );
 		$remoteWiki->setServerName( $this->getCustomDomain() );
 		$remoteWiki->commit();
+    
+   		$logEntry = new ManualLogEntry( 'managewiki', 'settings' );
+		$logEntry->setPerformer( $context->getUser() );
+		$logEntry->setTarget( SpecialPage::getTitleValueFor( 'RequestSSL' ) );
+		$logEntry->setComment( 'Custom domain requested through RequestSSL' );
+		$logEntry->setParameters( ['4::wiki' => $this->getTarget(), '5::changes' => 'servername'] );			
+    		$logID = $logEntry->insert();
+		$logEntry->publish( $logID );
 	}
 
 	/**
