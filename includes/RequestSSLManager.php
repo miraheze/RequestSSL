@@ -491,7 +491,7 @@ class RequestSSLManager {
 			$logEntry = new ManualLogEntry( 'managewiki', 'settings' );
 			$logEntry->setPerformer( $context->getUser() );
 			$logEntry->setTarget( $this->getTarget() );
-			$logEntry->setComment( $logReason );
+			$logEntry->setComment( 'Custom domain requested through RequestSSL' );
 			$logEntry->setParameters( ['4::wiki' => $this->getTarget, '5::changes' => 'servername'] );
 			$logID = $logEntry->insert();
 			$logEntry->publish( $logID );
