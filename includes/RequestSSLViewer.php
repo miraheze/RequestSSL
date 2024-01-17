@@ -391,7 +391,7 @@ class RequestSSLViewer {
 		$htmlForm->suppressDefaultSubmit();
 		$htmlForm->setSubmitCallback(
 			function ( array $formData, HTMLForm $form ) {
-				return $this->submitForm( $formData, $form );
+				return $this->submitForm( $formData, $form, $this->context );
 			}
 		);
 
@@ -405,6 +405,7 @@ class RequestSSLViewer {
 	protected function submitForm(
 		array $formData,
 		HTMLForm $form
+		IContextSource $context
 	) {
 		$user = $form->getUser();
 		if ( !$user->isRegistered() ) {
@@ -554,8 +555,8 @@ class RequestSSLViewer {
 			$comment = $this->context->msg( 'requestssl-status-updated', strtolower( $statusMessage ) )
 				->inContentLanguage()
 				->escaped();
-			
-			$this->requestSslRequestManager->updateManageWiki( $user );
+
+			$this->requestSslRequestManager->updateManageWiki( $user, $context );
 
 			if ( $formData['handle-comment'] ) {
 				$commentUser = User::newSystemUser( 'RequestSSL Status Update' );
