@@ -481,7 +481,7 @@ class RequestSSLManager {
 		);
 	}
 
-	public function updateManageWiki ( string $remotewiki ) {
+	public function updateManageWiki ( string $remotewiki, IContextSource $context ) {
 		$remoteWiki = new RemoteWiki( $this->getTarget() );
 		$remoteWiki->setServerName( $this->getCustomDomain() );
 		$remoteWiki->commit();
