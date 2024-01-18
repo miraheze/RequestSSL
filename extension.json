@@ -171,7 +171,7 @@
 		"echo-subscriptions-web-requestssl-new-request"
 	],
 	"RateLimits": {
-		"request-request-ssl": {
+		"request-ssl": {
 			"user": [
 				5,
 				60
