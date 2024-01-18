@@ -391,7 +391,7 @@ class RequestSSLViewer {
 		$htmlForm->suppressDefaultSubmit();
 		$htmlForm->setSubmitCallback(
 			function ( array $formData, HTMLForm $form ) {
-				return $this->submitForm( $formData, $form, $this->context );
+				return $this->submitForm( $formData, $form, );
 			}
 		);
 
@@ -405,7 +405,6 @@ class RequestSSLViewer {
 	protected function submitForm(
 		array $formData,
 		HTMLForm $form,
-		IContextSource $context
 	) {
 		$user = $form->getUser();
 		if ( !$user->isRegistered() ) {
@@ -470,7 +469,7 @@ class RequestSSLViewer {
 					implode( "\n", $changes )
 				)->inContentLanguage()->escaped();
 
-				$this->requestSslRequestManager->logStatusUpdate( $comment, 'pending', $user );
+				$this->requestSslRequestManager->logStatusUpdate( $comment, 'pending', $this->context );
 
 				$this->requestSslRequestManager->addComment( $comment, User::newSystemUser( 'RequestSSL Extension' ) );
 
