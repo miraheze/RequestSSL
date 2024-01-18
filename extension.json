@@ -29,7 +29,7 @@
 	},
 	"GroupPermissions": {
 		"user": {
-			"request-request-ssl": true
+			"request-ssl": true
 		}
 	},
 	"AvailableRights": [
