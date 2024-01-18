@@ -469,7 +469,7 @@ class RequestSSLViewer {
 					implode( "\n", $changes )
 				)->inContentLanguage()->escaped();
 
-				$this->requestSslRequestManager->logStatusUpdate( $comment, 'pending', $this->context );
+				$this->requestSslRequestManager->logStatusUpdate( $comment, 'pending', $user );
 
 				$this->requestSslRequestManager->addComment( $comment, User::newSystemUser( 'RequestSSL Extension' ) );
 
@@ -558,7 +558,7 @@ class RequestSSLViewer {
 				->escaped();
 
 			if ($oldStatus !== 'complete' && $formData['handle-status'] === 'complete') {
-				$this->requestSslRequestManager->updateManageWiki( $user, $context );
+				$this->requestSslRequestManager->updateManageWiki( $user, $this->context );
 			}
 
 
