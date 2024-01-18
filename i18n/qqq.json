@@ -57,6 +57,7 @@
 	"requestssl-label-target": "Label for the 'target' field.",
 	"requestssl-log-header": "Header for the requestSSL log.",
 	"requestssl-log-name": "{{doc-logpage}}",
+	"requestssl-managewiki-changedservername": "Reason for the servername change on the ManageWiki log",
 	"requestssl-no-changes": "Message displayed if attempting to edit request without making any changes.",
 	"requestssl-notcentral": "Heading for the message displayed if there is a configured central wiki, and it is not the current wiki.\n{{Identical|Disabled}}",
 	"requestssl-notcentral-text": "Text for the message displayed if there is a configured central wiki, and it is not the current wiki.",
