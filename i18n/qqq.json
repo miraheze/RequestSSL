@@ -14,7 +14,7 @@
 	"echo-category-title-requestssl-new-request": "Echo category title for 'requestssl-new-request'.",
 	"echo-category-title-requestssl-request-comment": "Echo category title for 'requestssl-request-comment'.",
 	"echo-category-title-requestssl-request-status-update": "Echo category title for 'requestssl-request-status-update'.",
-	"echo-pref-tooltip-requestssl-new-request": "Echo preference tooltip for 'requestSSL-new-request'.",
+	"echo-pref-tooltip-requestssl-new-request": "Echo preference tooltip for 'requestssl-new-request'.",
 	"echo-pref-tooltip-requestssl-request-comment": "Echo preference tooltip for 'requestSSL-request-comment'.",
 	"echo-pref-tooltip-requestssl-request-status-update": "Echo preference tooltip for 'requestSSL-request-status-update'.",
 	"requestssl-button-copy": "Text for the 'Copy to Clipboard' button.",
