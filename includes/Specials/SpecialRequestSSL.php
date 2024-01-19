@@ -120,7 +120,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'validation-callback' => [ $this, 'isValidReason' ],
 			],
 		];
-		
+
 		return $formDescriptor;
 	}
 
@@ -145,6 +145,22 @@ class SpecialRequestSSL extends FormSpecialPage {
 			$dbw = $this->dbLoadBalancerFactory->getMainLB()->getConnection( DB_PRIMARY );
 		}
 
+		$parsedURL = parse_url( $data['customdomain' ] )
+		if ( !$parsedURL ) {
+			// Very malformed string
+		}
+		if ( array_key_exists( 'scheme', $parsedURL ) ) {
+			if( $parsedURL['scheme'] ) !== 'https' ) {
+				// There is a protocol, but it is not HTTPS
+			}
+		}
+		if ( !array_key_exists( 'host', $parsedURL ) ) {
+			// No domain
+		}
+		if ( array_key_exists( 'port', $parsedURL ) || array_key_exists( 'user', $parsedURL ) || array_key_exists( 'pass', $parsedURL ) || array_key_exists( 'path', $parsedURL ) || array_key_exists( 'path', $parsedURL ) || array_key_exists( 'query', $parsedURL ) || array_key_exists( 'fragment', $parsedURL )) {
+			// Unneccesary components in the URL
+		}
+
 		$duplicate = $dbw->newSelectQueryBuilder()
 			->table( 'requestssl_requests' )
 			->field( '*' )
@@ -158,7 +174,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		if ( (bool)$duplicate ) {
 			return Status::newFatal( 'requestssl-duplicate-request' );
 		}
-		
+
 		$timestamp = $dbw->timestamp();
 
 		$dbw->insert(
