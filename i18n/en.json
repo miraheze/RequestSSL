@@ -35,7 +35,7 @@
 	"requestssl-label-all": "All",
 	"requestssl-label-comment": "Comment:",
 	"requestssl-label-complete": "Complete",
-	"requestssl-label-source": "Custom domain URL:",
+	"requestssl-label-customdomain": "Custom domain URL:",
 	"requestssl-label-declined": "Declined",
 	"requestssl-label-edit-request": "Edit Request",
 	"requestssl-label-inprogress": "In progress",

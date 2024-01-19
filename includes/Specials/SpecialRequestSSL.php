@@ -304,7 +304,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		if (
 			$block && (
 				$user->isBlockedFromUpload() ||
-				$block->appliesToRight( 'request-request-ssl' )
+				$block->appliesToRight( 'request-ssl' )
 			)
 		) {
 			throw new UserBlockedError( $block );
