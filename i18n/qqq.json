@@ -20,7 +20,7 @@
 	"requestssl-button-copy": "Text for the 'Copy to Clipboard' button.",
 	"requestssl-comment-given": "Displayed if a custom comment is given. $1 is the handler's username.",
 	"requestssl-comment-success": "Message displayed when a comment is successfully added to the request.",
-	"requestssl-desc": "{{desc|name=requestSSL|url=https://github.com/miraheze/requestSSL}}",
+	"requestssl-desc": "{{desc|name=requestssl|url=https://github.com/miraheze/requestssl}}",
 	"requestssl-duplicate-request": "Message displayed when user attempts to submit a request that is to similar to an existing open request.",
 	"requestssl-edit-success": "Message displayed when the request is successfully edited.",
 	"requestssl-extensionname": "{{name}}",
