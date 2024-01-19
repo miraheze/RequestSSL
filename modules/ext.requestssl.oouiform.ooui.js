@@ -50,7 +50,7 @@
 		 * @param {boolean} [noHash] A hash will be set according to the current
 		 *  open section. Use this flag to suppress this.
 		 */
-		function switchImportDumpTab( name, noHash ) {
+		function switchRequestSslTab( name, noHash ) {
 			if ( noHash ) {
 				switchingNoHash = true;
 			}
@@ -68,14 +68,14 @@
 				matchedElement, $parentSection;
 			if ( hash.match( /^#mw-section-[\w-]+$/ ) ) {
 				mw.storage.session.remove( 'requestssl-prevTab' );
-				switchImportDumpTab( hash.slice( 1 ) );
+				switchRequestSslTab( hash.slice( 1 ) );
 			} else if ( hash.match( /^#mw-[\w-]+$/ ) ) {
 				matchedElement = document.getElementById( hash.slice( 1 ) );
 				$parentSection = $( matchedElement ).closest( '.requestssl-section-fieldset' );
 				if ( $parentSection.length ) {
 					mw.storage.session.remove( 'requestssl-prevTab' );
 					// Switch to proper tab and scroll to selected item.
-					switchImportDumpTab( $parentSection.attr( 'id' ), true );
+					switchRequestSslTab( $parentSection.attr( 'id' ), true );
 					matchedElement.scrollIntoView();
 				}
 			}
@@ -86,7 +86,7 @@
 			if ( hash.match( /^#mw-[\w-]+/ ) ) {
 				detectHash();
 			} else if ( hash === '' ) {
-				switchImportDumpTab( $( '[id*=mw-section-]' ).attr( 'id' ), true );
+				switchRequestSslTab( $( '[id*=mw-section-]' ).attr( 'id' ), true );
 			}
 		} )
 			// Run the function immediately to select the proper tab on startup.
@@ -95,7 +95,7 @@
 		// Restore the active tab after saving
 		previousTab = mw.storage.session.get( 'requestssl-prevTab' );
 		if ( previousTab ) {
-			switchImportDumpTab( previousTab, true );
+			switchRequestSslTab( previousTab, true );
 			// Deleting the key, the tab states should be reset until we press Save
 			mw.storage.session.remove( 'requestssl-prevTab' );
 		}
