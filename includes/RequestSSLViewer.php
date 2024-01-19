@@ -159,7 +159,7 @@ class RequestSSLViewer {
 					'disabled' => $this->requestSslRequestManager->isLocked(),
 				],
 				'edit-source' => [
-					'label-message' => 'requestssl-label-source',
+					'label-message' => 'requestssl-label-customdomain',
 					'type' => 'url',
 					'section' => 'editing',
 					'required' => true,
