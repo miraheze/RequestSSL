@@ -1,7 +1,7 @@
 # RequestSSL
 An extension designed to automate requesting and generating SSL certificates.
 
-Baed on ImportDump developed by Universal Omega.
+Based on ImportDump developed by Universal Omega.
 
 Licensed under the GPLv3 (or later) LICENSE.
 
