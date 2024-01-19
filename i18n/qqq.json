@@ -91,7 +91,7 @@
 	"requestssl-table-target": "'Target' label for the table on Special:RequestSSLQueue.",
 	"requestssl-unknown": "Message displayed if the request is not found.",
 	"requestssl-usergroups-none": "Displayed value if the requester has no user groups on the target wiki.",
-	"requestsslprivate-log-header": "Header for the RequestSSL private log.",
+	"requestsslprivate-log-header": "Header for the requestssl private log.",
 	"requestsslprivate-log-name": "{{doc-logpage}}",
 	"ipb-action-request-request-ssl": "The label for the action select option on [[Special:Block]] to block a user from requesting import dumps.",
 	"log-action-filter-requestssl": "{{doc-log-action-filter-type|requestssl}}\n{{identical|Type of action}}\n{{related|Log-action-filter}}",
