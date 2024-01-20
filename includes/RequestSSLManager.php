@@ -5,7 +5,6 @@ namespace Miraheze\RequestSSL;
 use Config;
 use EchoEvent;
 use ExtensionRegistry;
-use FileBackend;
 use IContextSource;
 use ManualLogEntry;
 use MediaWiki\Config\ServiceOptions;
