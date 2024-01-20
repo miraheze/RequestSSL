@@ -256,7 +256,7 @@ class RequestSSLManager {
 	 */
 	public function getCommand(): string {
 		$command = $this->options->get( 'RequestSSLScriptCommand' );
-		$customdomain = str_replace( 'https://', '', $this->getCustomDomain() );
+		$customDomain = str_replace( 'https://', '', $this->getCustomDomain() );
 
 		return str_replace( [
 			'{IP}',
@@ -265,7 +265,7 @@ class RequestSSLManager {
 		], [
 			MW_INSTALL_PATH,
 			$this->getTarget(),
-			$customdomain,
+			$customDomain,
 		], $command );
 	}
 
@@ -472,7 +472,7 @@ class RequestSSLManager {
 		$logEntry->setTarget( SpecialPage::getTitleValueFor( 'RequestSSL' ) );
 		$logEntry->setComment( $this->messageLocalizer->msg( 'requestssl-managewiki-changedservername' ) );
 		$logEntry->setParameters( [ '4::wiki' => $this->getTarget(), '5::changes' => 'servername' ] );
-			$logID = $logEntry->insert();
+		$logID = $logEntry->insert();
 		$logEntry->publish( $logID );
 	}
 
