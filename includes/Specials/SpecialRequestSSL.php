@@ -301,8 +301,8 @@ class SpecialRequestSSL extends FormSpecialPage {
 		}
 
 		foreach ( $unneededComponents as $component ) {
-			if ( array_key_exists( $components, $parsedURL ) ) {
-				return Status::newFatal( 'requestssl-customdomain-unneededcomponent' )->getMessage()
+			if ( array_key_exists( $component, $parsedURL ) ) {
+				return Status::newFatal( 'requestssl-customdomain-unneededcomponent' )->getMessage();
 			}
 		}
 		return true;
