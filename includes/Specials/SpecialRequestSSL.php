@@ -101,6 +101,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'label-message' => 'requestssl-label-customdomain',
 				'help-message' => 'requestssl-help-customdomain',
 				'required' => true,
+				'validation-callback' => [ $this, 'isValidCustomDomain' ]
 			],
 			'target' => [
 				'type' => 'text',
@@ -267,6 +268,46 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'agent' => $receiver,
 			] );
 		}
+	}
+
+	/**
+	 * @param ?string $customDomain
+	 * @return string|bool
+	 */
+	public function isValidCustomDomain( ?string $customDomain ) {
+		if ( !$customDomain ) {
+			return Status::newFatal( 'requestssl-customdomain-not-a-url' )->getMessage();
+		}
+
+		$parsedURL = parse_url( $customDomain );
+		if ( !$parsedURL ) {
+			return Status::newFatal( 'requestssl-customdomain-not-a-url' )->getMessage();
+		}
+
+		$unneededComponents = [
+			'port',
+			'user',
+			'pass',
+			'path',
+			'query',
+			'fragment',
+		];
+
+		if ( array_key_exists( 'scheme', $parsedURL ) ) {
+			if ( $parsedURL['scheme'] !== 'https' ) {
+				return Status::newFatal( 'requestssl-customdomain-protocol-not-https' )->getMessage();
+			}
+		}
+		if ( !array_key_exists( 'host', $parsedURL ) ) {
+			return Status::newFatal( 'requestssl-customdomain-no-hostname' )->getMessage();
+		}
+
+		foreach ( $unneededComponents as $component ) {
+			if ( array_key_exists( $component, $parsedURL ) ) {
+				return Status::newFatal( 'requestssl-customdomain-unneeded-component' )->getMessage();
+			}
+		}
+		return true;
 	}
 
 	/**

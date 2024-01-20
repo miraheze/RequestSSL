@@ -476,8 +476,13 @@ class RequestSSLManager {
 	 * @param IContextSource $context
 	 */
 	public function updateManageWiki( string $remotewiki, IContextSource $context ) {
+		$newServerName = parse_url( $this->getCustomDomain(), PHP_URL_HOST );
+		if ( !$newServerName ) {
+			return;
+		}
+
 		$remoteWiki = new RemoteWiki( $this->getTarget() );
-		$remoteWiki->setServerName( $this->getCustomDomain() );
+		$remoteWiki->setServerName( 'https://' . $newServerName );
 		$remoteWiki->commit();
 
 		$logEntry = new ManualLogEntry( 'managewiki', 'settings' );
