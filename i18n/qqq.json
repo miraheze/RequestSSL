@@ -8,9 +8,9 @@
 		]
 	},
 	"action-handle-request-ssl-interwiki": "{{doc-action|handle-request-ssl-interwiki}}",
-	"action-handle-request-ssl-requests": "{{doc-action|handle-request-ssl-requests}}",
-	"action-request-request-ssl": "{{doc-action|request-request-ssl}}",
-	"action-view-private-request-ssl-requests": "{{doc-action|view-private-request-ssl-requests}}",
+	"action-handle-ssl-requests": "{{doc-action|handle-ssl-requests}}",
+	"action-request-ssl": "{{doc-action|request-ssl}}",
+	"action-view-private-ssl-requests": "{{doc-action|view-private-ssl-requests}}",
 	"echo-category-title-requestssl-new-request": "Echo category title for 'requestssl-new-request'.",
 	"echo-category-title-requestssl-request-comment": "Echo category title for 'requestssl-request-comment'.",
 	"echo-category-title-requestssl-request-status-update": "Echo category title for 'requestssl-request-status-update'.",
@@ -109,7 +109,7 @@
 	"requestssl": "{{doc-special}}",
 	"requestsslqueue": "{{doc-special}}",
 	"right-handle-request-ssl-interwiki": "{{doc-right|handle-request-ssl-interwiki}}",
-	"right-handle-request-ssl-requests": "{{doc-right|handle-request-ssl-requests}}",
-	"right-request-request-ssl": "{{doc-right|request-request-ssl}}",
-	"right-view-private-request-ssl-requests": "{{doc-right|view-private-request-ssl-requests}}"
+	"right-handle-ssl-requests": "{{doc-right|handle-ssl-requests}}",
+	"right-request-ssl": "{{doc-right|request-ssl}}",
+	"right-view-private-ssl-requests": "{{doc-right|view-private-ssl-requests}}"
 }
