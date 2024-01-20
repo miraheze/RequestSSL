@@ -148,8 +148,8 @@
 			"description": "Full URL. If set, adds a help URL to Special:RequestSSL."
 		},
 		"RequestSSLScriptCommand": {
-			"value": "php {IP}/maintenance/importDump.php --wiki={wiki} --username-prefix=\"{username-prefix}\" {file}",
-			"description": "Generated maintenance script command to use."
+			"value": "",
+			"description": "Generated command to use for SSL generation."
 		},
 		"RequestSSLUsersNotifiedOnAllRequests": {
 			"value": [],
