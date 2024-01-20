@@ -72,6 +72,7 @@ class RequestSSLManager {
 	/**
 	 * @param Config $config
 	 * @param ILBFactory $dbLoadBalancerFactory
+	 * @param LinkRenderer $linkRenderer
 	 * @param RepoGroup $repoGroup
 	 * @param MessageLocalizer $messageLocalizer
 	 * @param ServiceOptions $options
