@@ -290,7 +290,7 @@ class RequestSSLManager {
 		}
 
 		if ( !$remoteUser ) {
-			return [ $this->messageLocalizer->msg( 'importdump-usergroups-none' )->text() ];
+			return [ $this->messageLocalizer->msg( 'requestssl-usergroups-none' )->text() ];
 		}
 
 		return $this->userGroupManagerFactory
