@@ -100,7 +100,7 @@
 	"logentry-requestsslprivate-statusupdate": "$1 updated status of private SSL certificate request $4 to '$5'.",
 	"requestssl": "Request SSL",
 	"requestsslqueue": "SSL Certificate Requests Queue",
-	"right-handle-request-ssl-requests": "Handle user SSL certificate requests",
-	"right-request-request-ssl": "Request SSL certificates",
-	"right-view-private-request-ssl-requests": "View private SSL certificate requests"
+	"right-handle-ssl-requests": "Handle user SSL certificate requests",
+	"right-request-ssl": "Request SSL certificates",
+	"right-view-private-ssl-requests": "View private SSL certificate requests"
 }
