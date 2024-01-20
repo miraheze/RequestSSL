@@ -4,9 +4,9 @@
 			"Universal Omega"
 		]
 	},
-	"action-handle-request-ssl-requests": "handle SSL certificate requests",
-	"action-request-request-ssl": "request ",
-	"action-view-private-request-ssl-requests": "view private SSL certificate requests",
+	"action-handle-ssl-requests": "handle SSL certificate requests",
+	"action-request-ssl": "request ",
+	"action-view-private-ssl-requests": "view private SSL certificate requests",
 	"echo-category-title-requestssl-new-request": "New SSL certificate request",
 	"echo-category-title-requestssl-request-comment": "Comment added to an SSL request",
 	"echo-category-title-requestssl-request-status-update": "Status updated for an SSL certificate request",
