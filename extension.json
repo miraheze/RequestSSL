@@ -3,7 +3,8 @@
 	"author": [
 		"Universal Omega",
 		"Agent Isai",
-		"Reception123"
+		"Reception123",
+		"Alex"
 	],
 	"url": "https://github.com/miraheze/RequestSSL",
 	"descriptionmsg": "requestssl-desc",
@@ -88,7 +89,7 @@
 			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestSSLQueue",
 			"services": [
 				"DBLoadBalancerFactory",
-				"RequestSSLRequestManager",
+				"RequestSSLManager",
 				"PermissionManager",
 				"UserFactory"
 			]

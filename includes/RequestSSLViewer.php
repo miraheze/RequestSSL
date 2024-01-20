@@ -236,6 +236,7 @@ class RequestSSLViewer {
 				);
 			}
 
+			// @phan-suppress-next-line PhanDeprecatedFunction Only for MW 1.39 or lower.
 			if ( $this->requestSslRequestManager->getRequester()->getGlobalBlock() ) {
 				$info .= Html::errorBox(
 					$this->context->msg( 'requestssl-info-requester-globally-blocked',
