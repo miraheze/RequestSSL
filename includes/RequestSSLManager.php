@@ -9,6 +9,7 @@ use IContextSource;
 use ManualLogEntry;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\User\ActorStoreFactory;
 use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserGroupManagerFactory;
 use Message;
@@ -44,6 +45,9 @@ class RequestSSLManager {
 	/** @var int */
 	private $ID;
 
+	/** @var ActorStoreFactory */
+	private $actorStoreFactory;
+
 	/** @var ILBFactory */
 	private $dbLoadBalancerFactory;
 
@@ -70,6 +74,7 @@ class RequestSSLManager {
 
 	/**
 	 * @param Config $config
+	 * @param ActorStoreFactory $actorStoreFactory
 	 * @param ILBFactory $dbLoadBalancerFactory
 	 * @param LinkRenderer $linkRenderer
 	 * @param RepoGroup $repoGroup
@@ -80,6 +85,7 @@ class RequestSSLManager {
 	 */
 	public function __construct(
 		Config $config,
+		ActorStoreFactory $actorStoreFactory,
 		ILBFactory $dbLoadBalancerFactory,
 		LinkRenderer $linkRenderer,
 		RepoGroup $repoGroup,
@@ -91,6 +97,7 @@ class RequestSSLManager {
 		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
 
 		$this->config = $config;
+		$this->actorStoreFactory = $actorStoreFactory;
 		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
 		$this->linkRenderer = $linkRenderer;
 		$this->messageLocalizer = $messageLocalizer;
@@ -274,15 +281,21 @@ class RequestSSLManager {
 	 */
 	public function getUserGroupsFromTarget() {
 		$userName = $this->getRequester()->getName();
-		$userRightsProxy = UserRightsProxy::newFromName( $this->getTarget(), $userName );
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$remoteUser = $this->actorStoreFactory
+				->getUserIdentityLookup( $this->getTarget() )
+				->getUserIdentityByName( $userName );
+		} else {
+			$remoteUser = UserRightsProxy::newFromName( $this->getTarget(), $userName );
+		}
 
-		if ( !$userRightsProxy ) {
-			return [ $this->messageLocalizer->msg( 'requestssl-usergroups-none' )->text() ];
+		if ( !$remoteUser ) {
+			return [ $this->messageLocalizer->msg( 'importdump-usergroups-none' )->text() ];
 		}
 
 		return $this->userGroupManagerFactory
 			->getUserGroupManager( $this->getTarget() )
-			->getUserGroups( $userRightsProxy );
+			->getUserGroups( $remoteUser );
 	}
 
 	/**
