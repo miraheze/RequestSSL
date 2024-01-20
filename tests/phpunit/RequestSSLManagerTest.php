@@ -26,7 +26,7 @@ class RequestSSLRequestManagerTest extends MediaWikiIntegrationTestCase {
 		$this->db->insert(
 			'requestssl_requests',
 			[
-				'request_source' => 'https://requestssltest.com',
+				'request_customdomain' => 'https://requestssltest.com',
 				'request_target' => 'requestssltest',
 				'request_reason' => 'test',
 				'request_status' => 'pending',
