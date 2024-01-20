@@ -279,7 +279,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	public function isValidCustomDomain( ?string $customDomain ) {
 		$parsedURL = parse_url( $customDomain )
 		if ( !$parsedURL ) {
-			return Status::newFatal( 'requestssl-customdomain-notaurl' );
+			return Status::newFatal( 'requestssl-customdomain-not-a-url' );
 		}
 
 		$unneededComponents = [
@@ -293,16 +293,16 @@ class SpecialRequestSSL extends FormSpecialPage {
 
 		if ( array_key_exists( 'scheme', $parsedURL ) ) {
 			if ( $parsedURL['scheme'] ) !== 'https' ) {
-				return Status::newFatal( 'requestssl-customdomain-protocolnothttps' )->getMessage();
+				return Status::newFatal( 'requestssl-customdomain-protocol-not-https' )->getMessage();
 			}
 		}
 		if ( !array_key_exists( 'host', $parsedURL ) ) {
-			return Status::newFatal( 'requestssl-customdomain-nohostname' )->getMessage();
+			return Status::newFatal( 'requestssl-customdomain-no-hostname' )->getMessage();
 		}
 
 		foreach ( $unneededComponents as $component ) {
 			if ( array_key_exists( $component, $parsedURL ) ) {
-				return Status::newFatal( 'requestssl-customdomain-unneededcomponent' )->getMessage();
+				return Status::newFatal( 'requestssl-customdomain-unneeded-component' )->getMessage();
 			}
 		}
 		return true;
