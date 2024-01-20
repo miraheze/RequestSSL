@@ -103,7 +103,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'label-message' => 'requestssl-label-customdomain',
 				'help-message' => 'requestssl-help-customdomain',
 				'required' => true,
-				'validation-callback' => [$this, 'isValidCustomDomain']
+				'validation-callback' => [ $this, 'isValidCustomDomain' ]
 			],
 			'target' => [
 				'type' => 'text',
