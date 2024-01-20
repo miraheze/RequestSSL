@@ -68,4 +68,3 @@ jobs:
           nickname: miraheze-github
           message: ${{ github.repository }} - ${{ github.actor }} the build has errored.
           sasl_password: ${{ secrets.IRC_MIRAHEZEBOTS }}
-
