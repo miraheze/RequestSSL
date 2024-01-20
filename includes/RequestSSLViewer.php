@@ -159,7 +159,7 @@ class RequestSSLViewer {
 					'disabled' => $this->requestSslRequestManager->isLocked(),
 				],
 				'edit-source' => [
-					'label-message' => 'requestssl-label-source',
+					'label-message' => 'requestssl-label-customdomain',
 					'type' => 'url',
 					'section' => 'editing',
 					'required' => true,
@@ -391,7 +391,7 @@ class RequestSSLViewer {
 		$htmlForm->suppressDefaultSubmit();
 		$htmlForm->setSubmitCallback(
 			function ( array $formData, HTMLForm $form ) {
-				return $this->submitForm( $formData, $form, $this->context );
+				return $this->submitForm( $formData, $form, );
 			}
 		);
 
@@ -405,7 +405,6 @@ class RequestSSLViewer {
 	protected function submitForm(
 		array $formData,
 		HTMLForm $form,
-		IContextSource $context
 	) {
 		$user = $form->getUser();
 		if ( !$user->isRegistered() ) {
@@ -559,7 +558,7 @@ class RequestSSLViewer {
 				->escaped();
 
 			if ($oldStatus !== 'complete' && $formData['handle-status'] === 'complete') {
-				$this->requestSslRequestManager->updateManageWiki( $user, $context );
+				$this->requestSslRequestManager->updateManageWiki( $user, $this->context );
 			}
 
 

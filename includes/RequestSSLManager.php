@@ -481,16 +481,16 @@ class RequestSSLManager {
 		);
 	}
 
-	public function updateManageWiki ( string $remotewiki, IContextSource $context ) {
+	public function updateManageWiki( string $remotewiki, IContextSource $context ) {
 		$remoteWiki = new RemoteWiki( $this->getTarget() );
 		$remoteWiki->setServerName( $this->getCustomDomain() );
 		$remoteWiki->commit();
-    
+
    		$logEntry = new ManualLogEntry( 'managewiki', 'settings' );
 		$logEntry->setPerformer( $context->getUser() );
 		$logEntry->setTarget( SpecialPage::getTitleValueFor( 'RequestSSL' ) );
-		$logEntry->setComment( 'Custom domain requested through RequestSSL' );
-		$logEntry->setParameters( ['4::wiki' => $this->getTarget(), '5::changes' => 'servername'] );			
+		$logEntry->setComment( $this->messageLocalizer->msg( 'requestssl-managewiki-changedservername' ) );
+		$logEntry->setParameters( ['4::wiki' => $this->getTarget(), '5::changes' => 'servername'] );
     		$logID = $logEntry->insert();
 		$logEntry->publish( $logID );
 	}

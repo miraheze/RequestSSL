@@ -17,7 +17,7 @@ class SpecialRequestSSLQueue extends SpecialPage {
 	private $dbLoadBalancerFactory;
 
 	/** @var RequestSSLManager */
-	private $importDumpRequestManager;
+	private $requestSslRequestManager;
 
 	/** @var PermissionManager */
 	private $permissionManager;
@@ -27,20 +27,20 @@ class SpecialRequestSSLQueue extends SpecialPage {
 
 	/**
 	 * @param ILBFactory $dbLoadBalancerFactory
-	 * @param RequestSSLManager $importDumpRequestManager
+	 * @param RequestSSLManager $requestSslRequestManager
 	 * @param PermissionManager $permissionManager
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
 		ILBFactory $dbLoadBalancerFactory,
-		RequestSSLManager $importDumpRequestManager,
+		RequestSSLManager $requestSslRequestManager,
 		PermissionManager $permissionManager,
 		UserFactory $userFactory
 	) {
 		parent::__construct( 'RequestSSLQueue' );
 
 		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
-		$this->importDumpRequestManager = $importDumpRequestManager;
+		$this->requestSslRequestManager = $requestSslRequestManager;
 		$this->permissionManager = $permissionManager;
 		$this->userFactory = $userFactory;
 	}
@@ -119,7 +119,7 @@ class SpecialRequestSSLQueue extends SpecialPage {
 		$requestViewer = new RequestSSLViewer(
 			$this->getConfig(),
 			$this->getContext(),
-			$this->importDumpRequestManager,
+			$this->requestSslRequestManager,
 			$this->permissionManager
 		);
 
