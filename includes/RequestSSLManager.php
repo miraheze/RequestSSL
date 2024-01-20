@@ -252,17 +252,6 @@ class RequestSSLManager {
 	}
 
 	/**
-	 * @param string $prefix
-	 * @param string $url
-	 * @param User $user
-	 * @return bool
-	 */
-
-	/**
-	 * @return string
-	 */
-
-	/**
 	 * @return string
 	 */
 	public function getCommand(): string {
@@ -482,9 +471,8 @@ class RequestSSLManager {
 	}
 	/**
 	 * @param string $remotewiki
-	 * @param IContextSource $ context
+	 * @param IContextSource $context
 	 */
-
 	public function updateManageWiki( string $remotewiki, IContextSource $context ) {
 		$remoteWiki = new RemoteWiki( $this->getTarget() );
 		$remoteWiki->setServerName( $this->getCustomDomain() );
