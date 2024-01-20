@@ -103,6 +103,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'label-message' => 'requestssl-label-customdomain',
 				'help-message' => 'requestssl-help-customdomain',
 				'required' => true,
+				'validation-callback' => [$this, 'isValidCustomDomain']
 			],
 			'target' => [
 				'type' => 'text',
@@ -143,22 +144,6 @@ class SpecialRequestSSL extends FormSpecialPage {
 			)->getConnection( DB_PRIMARY, [], $centralWiki );
 		} else {
 			$dbw = $this->dbLoadBalancerFactory->getMainLB()->getConnection( DB_PRIMARY );
-		}
-
-		$parsedURL = parse_url( $data['customdomain' ] )
-		if ( !$parsedURL ) {
-			// Very malformed string
-		}
-		if ( array_key_exists( 'scheme', $parsedURL ) ) {
-			if( $parsedURL['scheme'] ) !== 'https' ) {
-				// There is a protocol, but it is not HTTPS
-			}
-		}
-		if ( !array_key_exists( 'host', $parsedURL ) ) {
-			// No domain
-		}
-		if ( array_key_exists( 'port', $parsedURL ) || array_key_exists( 'user', $parsedURL ) || array_key_exists( 'pass', $parsedURL ) || array_key_exists( 'path', $parsedURL ) || array_key_exists( 'path', $parsedURL ) || array_key_exists( 'query', $parsedURL ) || array_key_exists( 'fragment', $parsedURL )) {
-			// Unneccesary components in the URL
 		}
 
 		$duplicate = $dbw->newSelectQueryBuilder()
@@ -285,6 +270,42 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'agent' => $receiver,
 			] );
 		}
+	}
+
+	/**
+	 * @param ?string $customDomain
+	 * @return string|bool
+	 */
+	public function isValidCustomDomain( ?string $customDomain ) {
+		$parsedURL = parse_url( $customDomain )
+		if ( !$parsedURL ) {
+			return Status::newFatal( 'requestssl-customdomain-notaurl' );
+		}
+
+		$unneededComponents = [
+			'port',
+			'user',
+			'pass',
+			'path',
+			'query',
+			'fragment',
+		];
+
+		if ( array_key_exists( 'scheme', $parsedURL ) ) {
+			if ( $parsedURL['scheme'] ) !== 'https' ) {
+				return Status::newFatal( 'requestssl-customdomain-protocolnothttps' )->getMessage();
+			}
+		}
+		if ( !array_key_exists( 'host', $parsedURL ) ) {
+			return Status::newFatal( 'requestssl-customdomain-nohostname' )->getMessage();
+		}
+
+		foreach ( $unneededComponents as $component ) {
+			if ( array_key_exists( $components, $parsedURL ) ) {
+				return Status::newFatal( 'requestssl-customdomain-unneededcomponent' )->getMessage()
+			}
+		}
+		return true;
 	}
 
 	/**
