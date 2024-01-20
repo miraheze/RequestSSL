@@ -433,13 +433,13 @@ class RequestSSLManager {
 	}
 
 	/**
-	 * @param string $source
+	 * @param string $customDomain
 	 */
-	public function setSource( string $customdomain ) {
+	public function setSource( string $customDomain ) {
 		$this->dbw->update(
 			'requestssl_requests',
 			[
-				'request_customdomain' => $customdomain,
+				'request_customdomain' => $customDomain,
 			],
 			[
 				'request_id' => $this->ID,
@@ -480,6 +480,10 @@ class RequestSSLManager {
 			__METHOD__
 		);
 	}
+	/**
+	 * @param string $remotewiki
+	 * @param IContextSource $ context
+	 */
 
 	public function updateManageWiki( string $remotewiki, IContextSource $context ) {
 		$remoteWiki = new RemoteWiki( $this->getTarget() );
