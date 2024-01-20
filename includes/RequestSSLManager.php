@@ -288,18 +288,6 @@ class RequestSSLManager {
 	/**
 	 * @return string
 	 */
-
-	/**
-	 * @return bool
-	 */
-
-	/**
-	 * @return int
-	 */
-
-	/**
-	 * @return string
-	 */
 	public function getReason(): string {
 		return $this->row->request_reason;
 	}
