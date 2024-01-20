@@ -8,6 +8,7 @@ return [
 	'RequestSSLManager' => static function ( MediaWikiServices $services ): RequestSSLManager {
 		return new RequestSSLManager(
 			$services->getConfigFactory()->makeConfig( 'RequestSSL' ),
+			$services->getActorStoreFactory(),
 			$services->getDBLoadBalancerFactory(),
 			$services->getLinkRenderer(),
 			$services->getRepoGroup(),
