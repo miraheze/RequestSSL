@@ -279,7 +279,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	public function isValidCustomDomain( ?string $customDomain ) {
 		$parsedURL = parse_url( $customDomain )
 		if ( !$parsedURL ) {
-			return Status::newFatal( 'requestssl-customdomain-not-a-url' );
+			return Status::newFatal( 'requestssl-customdomain-not-a-url' )->getMessage();
 		}
 
 		$unneededComponents = [
