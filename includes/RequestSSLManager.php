@@ -464,7 +464,7 @@ class RequestSSLManager {
 	 */
 	public function updateManageWiki( string $remotewiki, IContextSource $context ) {
 		$newServerName = parse_url( $this->getCustomDomain(), PHP_URL_HOST );
-		if ( !isset( $newServerName ) ) {
+		if ( !$newServerName ) {
 			return;
 		}
 
