@@ -22,7 +22,7 @@
 				"options": { "notnull": true }
 			},
 			{
-				"name": "request_source",
+				"name": "request_customdomain",
 				"comment": "",
 				"type": "string",
 				"options": { "notnull": true }
