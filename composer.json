@@ -11,7 +11,7 @@
 	],
 	"support": {
 		"issues": "https://phabricator.miraheze.org/tag/requestssl/",
-		"wiki": "https://www.mediawiki.org/wiki/Extension:RequestSSL
+		"wiki": "https://www.mediawiki.org/wiki/Extension:RequestSSL"
 	},
 	"require": {
 		"composer/installers": ">=1.0.1"
