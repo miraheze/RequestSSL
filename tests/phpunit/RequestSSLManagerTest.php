@@ -3,7 +3,7 @@
 namespace Miraheze\RequestSSL\Tests;
 
 use MediaWikiIntegrationTestCase;
-use Miraheze\RequestSSL\RequestSSLRequestManager;
+use Miraheze\RequestSSL\RequestSSLManager;
 use ReflectionClass;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
@@ -11,9 +11,9 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
  * @group RequestSSL
  * @group Database
  * @group Medium
- * @coversDefaultClass \Miraheze\RequestSSL\RequestSSLRequestManager
+ * @coversDefaultClass \Miraheze\RequestSSL\RequestSSLManager
  */
-class RequestSSLRequestManagerTest extends MediaWikiIntegrationTestCase {
+class RequestSSLManagerTest extends MediaWikiIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
@@ -38,9 +38,9 @@ class RequestSSLRequestManagerTest extends MediaWikiIntegrationTestCase {
 		);
 	}
 
-	private function getRequestSSLRequestManager(): RequestSSLRequestManager {
+	private function getRequestSSLManager(): RequestSSLManager {
 		$services = $this->getServiceContainer();
-		$manager = $services->getService( 'RequestSSLRequestManager' );
+		$manager = $services->getService( 'RequestSSLManager' );
 
 		$manager->fromID( 1 );
 
@@ -52,7 +52,7 @@ class RequestSSLRequestManagerTest extends MediaWikiIntegrationTestCase {
 	 * @covers ::fromID
 	 */
 	public function testFromID() {
-		$manager = $this->getRequestSSLRequestManager();
+		$manager = $this->getRequestSSLManager();
 
 		$reflectedClass = new ReflectionClass( $manager );
 		$reflection = $reflectedClass->getProperty( 'ID' );
@@ -67,7 +67,7 @@ class RequestSSLRequestManagerTest extends MediaWikiIntegrationTestCase {
 	 * @covers ::exists
 	 */
 	public function testExists() {
-		$manager = $this->getRequestSSLRequestManager();
+		$manager = $this->getRequestSSLManager();
 
 		$this->assertTrue( $manager->exists() );
 	}
