@@ -111,5 +111,5 @@
 	"right-handle-request-ssl-interwiki": "{{doc-right|handle-request-ssl-interwiki}}",
 	"right-handle-ssl-requests": "{{doc-right|handle-ssl-requests}}",
 	"right-request-ssl": "{{doc-right|request-ssl}}",
-	"right-view-private-ssl-requests": "{{doc-right|view-private-request-ssl-requests}}"
+	"right-view-private-ssl-requests": "{{doc-right|view-private-ssl-requests}}"
 }
