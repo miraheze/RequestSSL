@@ -558,10 +558,9 @@ class RequestSSLViewer {
 				->inContentLanguage()
 				->escaped();
 
-			if ($oldStatus !== 'complete' && $formData['handle-status'] === 'complete') {
+			if ( $oldStatus !== 'complete' && $formData['handle-status'] === 'complete' ) {
 				$this->requestSslRequestManager->updateManageWiki( $user, $this->context );
 			}
-
 
 			if ( $formData['handle-comment'] ) {
 				$commentUser = User::newSystemUser( 'RequestSSL Status Update' );

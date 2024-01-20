@@ -5,7 +5,6 @@ namespace Miraheze\RequestSSL\Specials;
 use EchoEvent;
 use ErrorPageError;
 use ExtensionRegistry;
-use FileRepo;
 use FormSpecialPage;
 use Html;
 use ManualLogEntry;
@@ -13,7 +12,6 @@ use MediaWiki\User\UserFactory;
 use Message;
 use MimeAnalyzer;
 use Miraheze\CreateWiki\RemoteWiki;
-use PermissionsError;
 use RepoGroup;
 use SpecialPage;
 use Status;
@@ -120,7 +118,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'validation-callback' => [ $this, 'isValidReason' ],
 			],
 		];
-		
+
 		return $formDescriptor;
 	}
 
@@ -158,7 +156,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		if ( (bool)$duplicate ) {
 			return Status::newFatal( 'requestssl-duplicate-request' );
 		}
-		
+
 		$timestamp = $dbw->timestamp();
 
 		$dbw->insert(

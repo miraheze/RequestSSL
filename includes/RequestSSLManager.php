@@ -5,7 +5,6 @@ namespace Miraheze\RequestSSL;
 use Config;
 use EchoEvent;
 use ExtensionRegistry;
-use FileBackend;
 use IContextSource;
 use ManualLogEntry;
 use MediaWiki\Config\ServiceOptions;
@@ -257,7 +256,7 @@ class RequestSSLManager {
 	 */
 	public function getCommand(): string {
 		$command = $this->options->get( 'RequestSSLScriptCommand' );
-		$customdomain = str_replace('https://', '', $this->getCustomDomain());
+		$customDomain = str_replace( 'https://', '', $this->getCustomDomain() );
 
 		return str_replace( [
 			'{IP}',
@@ -266,7 +265,7 @@ class RequestSSLManager {
 		], [
 			MW_INSTALL_PATH,
 			$this->getTarget(),
-			$customdomain,
+			$customDomain,
 		], $command );
 	}
 
@@ -458,6 +457,7 @@ class RequestSSLManager {
 			__METHOD__
 		);
 	}
+
 	/**
 	 * @param string $remotewiki
 	 * @param IContextSource $context
@@ -467,12 +467,12 @@ class RequestSSLManager {
 		$remoteWiki->setServerName( $this->getCustomDomain() );
 		$remoteWiki->commit();
 
-   		$logEntry = new ManualLogEntry( 'managewiki', 'settings' );
+		$logEntry = new ManualLogEntry( 'managewiki', 'settings' );
 		$logEntry->setPerformer( $context->getUser() );
 		$logEntry->setTarget( SpecialPage::getTitleValueFor( 'RequestSSL' ) );
 		$logEntry->setComment( $this->messageLocalizer->msg( 'requestssl-managewiki-changedservername' ) );
-		$logEntry->setParameters( ['4::wiki' => $this->getTarget(), '5::changes' => 'servername'] );
-    		$logID = $logEntry->insert();
+		$logEntry->setParameters( [ '4::wiki' => $this->getTarget(), '5::changes' => 'servername' ] );
+		$logID = $logEntry->insert();
 		$logEntry->publish( $logID );
 	}
 
