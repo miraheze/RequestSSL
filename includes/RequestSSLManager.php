@@ -72,6 +72,7 @@ class RequestSSLManager {
 	/**
 	 * @param Config $config
 	 * @param ILBFactory $dbLoadBalancerFactory
+	 * @param LinkRenderer $linkRenderer
 	 * @param RepoGroup $repoGroup
 	 * @param MessageLocalizer $messageLocalizer
 	 * @param ServiceOptions $options
@@ -252,17 +253,6 @@ class RequestSSLManager {
 	}
 
 	/**
-	 * @param string $prefix
-	 * @param string $url
-	 * @param User $user
-	 * @return bool
-	 */
-
-	/**
-	 * @return string
-	 */
-
-	/**
 	 * @return string
 	 */
 	public function getCommand(): string {
@@ -295,18 +285,6 @@ class RequestSSLManager {
 			->getUserGroupManager( $this->getTarget() )
 			->getUserGroups( $userRightsProxy );
 	}
-
-	/**
-	 * @return string
-	 */
-
-	/**
-	 * @return bool
-	 */
-
-	/**
-	 * @return int
-	 */
 
 	/**
 	 * @return string
@@ -433,13 +411,13 @@ class RequestSSLManager {
 	}
 
 	/**
-	 * @param string $source
+	 * @param string $customDomain
 	 */
-	public function setSource( string $customdomain ) {
+	public function setSource( string $customDomain ) {
 		$this->dbw->update(
 			'requestssl_requests',
 			[
-				'request_customdomain' => $customdomain,
+				'request_customdomain' => $customDomain,
 			],
 			[
 				'request_id' => $this->ID,
@@ -480,7 +458,10 @@ class RequestSSLManager {
 			__METHOD__
 		);
 	}
-
+	/**
+	 * @param string $remotewiki
+	 * @param IContextSource $context
+	 */
 	public function updateManageWiki( string $remotewiki, IContextSource $context ) {
 		$remoteWiki = new RemoteWiki( $this->getTarget() );
 		$remoteWiki->setServerName( $this->getCustomDomain() );

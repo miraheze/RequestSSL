@@ -5,7 +5,7 @@ use MediaWiki\MediaWikiServices;
 use Miraheze\RequestSSL\RequestSSLManager;
 
 return [
-	'RequestSSLRequestManager' => static function ( MediaWikiServices $services ): RequestSSLManager {
+	'RequestSSLManager' => static function ( MediaWikiServices $services ): RequestSSLManager {
 		return new RequestSSLManager(
 			$services->getConfigFactory()->makeConfig( 'RequestSSL' ),
 			$services->getDBLoadBalancerFactory(),
