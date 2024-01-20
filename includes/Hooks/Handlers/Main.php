@@ -46,7 +46,7 @@ class Main implements
 			return;
 		}
 
-		$actions[ 'request-import-dump' ] = 200;
+		$actions[ 'request-ssl' ] = 300;
 	}
 
 	/**
