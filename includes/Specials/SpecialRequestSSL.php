@@ -12,6 +12,7 @@ use MediaWiki\User\UserFactory;
 use Message;
 use MimeAnalyzer;
 use Miraheze\CreateWiki\RemoteWiki;
+use Miraheze\RequestSSL\DomainCheckJob;
 use RepoGroup;
 use SpecialPage;
 use Status;
@@ -207,6 +208,10 @@ class SpecialRequestSSL extends FormSpecialPage {
 		) {
 			$this->sendNotifications( $data['reason'], $this->getUser()->getName(), $requestID, $data['target'] );
 		}
+
+		$jobQueueGroup = MediaWikiServices::getInstance()->getJobQueueGroupFactory()->makeJobQueueGroup();
+		$domainCheckJob = new DomainCheckJob( $requestID );
+		$jobQueueGroup->lazyPush( $domainCheckJob );
 
 		return Status::newGood();
 	}
