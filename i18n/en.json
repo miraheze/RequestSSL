@@ -42,7 +42,7 @@
 	"requestssl-label-customdomain": "Custom domain URL:",
 	"requestssl-label-declined": "Declined",
 	"requestssl-label-edit-request": "Edit Request",
-	"requestssl-label-inprogress": "In progress",
+	"requestssl-label-notpointed": "Not pointed",
 	"requestssl-label-lock": "Lock this request from being edited or from comments being added to it?",
 	"requestssl-label-pending": "Pending",
 	"requestssl-label-private": "Mark this request as private?",

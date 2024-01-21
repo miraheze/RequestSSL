@@ -45,7 +45,7 @@
 	"requestssl-label-customdomain": "Label for the 'source' field.",
 	"requestssl-label-declined": "'Declined' status label.",
 	"requestssl-label-edit-request": "Label for the 'Edit Request' submit button.",
-	"requestssl-label-inprogress": "'In progress' status label.",
+	"requestssl-label-notpointed": "'Not pointed' status label.",
 	"requestssl-label-lock": "Label for the 'lock' checkbox.",
 	"requestssl-label-pending": "'Pending' status label.",
 	"requestssl-label-private": "Label for the 'private' checkbox.",
