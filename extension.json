@@ -39,7 +39,7 @@
 		"view-private-ssl-requests"
 	],
 	"JobClasses": {
-		"DomainCheckJob" : "Miraheze\\RequestSSL\\DomainCheckJob"
+		"DomainCheckJob": "Miraheze\\RequestSSL\\DomainCheckJob"
 	},
 	"LogActionsHandlers": {
 		"requestssl/*": "LogFormatter",
