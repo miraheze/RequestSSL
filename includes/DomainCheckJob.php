@@ -15,7 +15,7 @@ class DomainCheckJob extends Job {
 	public function run() {
 		$requestSslManager = new RequestSSLManager()->fromID( $this->params['requestID'] );
 		$isPointed = false;
-		HookContainer::run( 'RequestSSLDomainCheck', [&$requestSslManager, &$isPointer] );
+		HookContainer::run( 'RequestSSLDomainCheck', [&$requestSslManager, &$isPointed] );
 		if ( $isPointed ) {
 			$requestSslManager->addComment( wfMessage( 'requestssl-domaincheck-pointed' )->plain(), User::newSystemUser( 'RequestSSL Extension' ) );
 		} else {
