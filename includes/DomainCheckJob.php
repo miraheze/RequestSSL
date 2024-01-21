@@ -3,8 +3,9 @@
 namespace Miraheze\RequestSSL;
 
 use Job;
-use MediaWiki\MediaWikiServices;
+use MediaWiki\HookContainer\HookContainer;
 use Miraheze\RequestSSL\RequestSSLManager;
+use User;
 
 class DomainCheckJob extends Job {
 	public function __construct( array $params ) {
@@ -14,5 +15,12 @@ class DomainCheckJob extends Job {
 	public function run() {
 		$requestSslManager = new RequestSSLManager()->fromID( $this->params['requestID'] );
 		$isPointed = false;
+		HookContainer::run( 'RequestSSLDomainCheck', [&$requestSslManager, &$isPointer] );
+		if ( $isPointed ) {
+			$requestSslManager->addComment( wfMessage( 'requestssl-domaincheck-pointed' )->plain(), User::newSystemUser( 'RequestSSL Extension' ) );
+		} else {
+			$requestSslManager->addComment( wfMessage( 'requestssl-domaincheck-not-pointed' )->plain(), User::newSystemUser( 'RequestSSL Extension' ) );
+			$requestSslManager->setStatus( 'not pointed' );
+		}
 	}
 }

@@ -245,7 +245,7 @@ class RequestSSLViewer {
 				);
 
 				$validRequest = false;
-				if ( $status === 'pending' || $status === 'inprogress' ) {
+				if ( $status === 'pending' ) {
 					$status = 'declined';
 				}
 			}
@@ -258,7 +258,7 @@ class RequestSSLViewer {
 				);
 
 				$validRequest = false;
-				if ( $status === 'pending' || $status === 'inprogress' ) {
+				if ( $status === 'pending' ) {
 					$status = 'declined';
 				}
 			}
@@ -296,7 +296,7 @@ class RequestSSLViewer {
 					'label-message' => 'requestssl-label-update-status',
 					'options-messages' => [
 						'requestssl-label-pending' => 'pending',
-						'requestssl-label-inprogress' => 'inprogress',
+						'requestssl-label-notpointed' => 'notpointed',
 						'requestssl-label-complete' => 'complete',
 						'requestssl-label-declined' => 'declined',
 					],
