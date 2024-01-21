@@ -20,7 +20,7 @@ class DomainCheckJob extends Job {
 			$requestSslManager->addComment( wfMessage( 'requestssl-domaincheck-pointed' )->plain(), User::newSystemUser( 'RequestSSL Extension' ) );
 		} else {
 			$requestSslManager->addComment( wfMessage( 'requestssl-domaincheck-not-pointed' )->plain(), User::newSystemUser( 'RequestSSL Extension' ) );
-			$requestSslManager->setStatus( 'not pointed' );
+			$requestSslManager->setStatus( 'notpointed' );
 		}
 	}
 }
