@@ -12,7 +12,7 @@ class DomainCheckJob extends Job {
 	}
 
 	public function run() {
-		$requestSslManager = new RequestSSLManager()->fromID( $this->params['ID'] );
+		$requestSslManager = new RequestSSLManager()->fromID( $this->params['requestID'] );
 		$isPointed = false;
 	}
 }
