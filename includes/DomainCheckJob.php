@@ -1,10 +1,10 @@
 <?php
 
-namespace Miraheze\RequestSSL
+namespace Miraheze\RequestSSL;
 
-use Job
-use MediaWiki\MediaWikiServices
-use Miraheze\RequestSSL\RequestSSLManager
+use Job;
+use MediaWiki\MediaWikiServices;
+use Miraheze\RequestSSL\RequestSSLManager;
 
 class DomainCheckJob extends Job {
 	public function __construct( array $params ) {
