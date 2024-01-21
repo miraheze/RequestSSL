@@ -9,6 +9,7 @@ use FormSpecialPage;
 use Html;
 use ManualLogEntry;
 use MediaWiki\User\UserFactory;
+use MediaWiki\MediaWikiServices;
 use Message;
 use MimeAnalyzer;
 use Miraheze\CreateWiki\RemoteWiki;
