@@ -211,7 +211,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		}
 
 		$jobQueueGroup = MediaWikiServices::getInstance()->getJobQueueGroupFactory()->makeJobQueueGroup();
-		$domainCheckJob = new DomainCheckJob( $requestID );
+		$domainCheckJob = new DomainCheckJob( ['requestID' => $requestID] );
 		$jobQueueGroup->lazyPush( $domainCheckJob );
 
 		return Status::newGood();
