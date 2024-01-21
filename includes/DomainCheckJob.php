@@ -5,7 +5,7 @@ namespace Miraheze\RequestSSL;
 use GenericParameterJob;
 use Job;
 use MediaWiki\HookContainer\HookContainer;
-use MediaWiki\MediaWikiServices
+use MediaWiki\MediaWikiServices;
 use Miraheze\RequestSSL\RequestSSLManager;
 use User;
 
