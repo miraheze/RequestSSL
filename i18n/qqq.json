@@ -21,6 +21,8 @@
 	"requestssl-comment-success": "Message displayed when a comment is successfully added to the request.",
 	"requestssl-customdomain-no-hostname": "Message displayed when no hostname has been inputted.",
 	"requestssl-customdomain-not-a-url": "Message displayed when the custom domain input in the Special:RequestSSL form does not resemble a URL.",
+	"requestssl-customdomain-not-pointed": "Comment posted by the extension in the request if the domain is not pointed",
+	"requestssl-customdomain-pointed": "Comment posted by the extension if the domain is pointed",
 	"requestssl-customdomain-protocol-not-https": "Message displayed when there is a protocol, but this protocol is not HTTPS.",
 	"requestssl-customdomain-unneeded-component": "Message displayed when there are unnecessary components in the URL.",
 	"requestssl-desc": "{{desc|name=requestssl|url=https://github.com/miraheze/requestssl}}",
