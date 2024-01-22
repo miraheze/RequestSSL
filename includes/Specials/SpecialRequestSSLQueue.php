@@ -84,7 +84,7 @@ class SpecialRequestSSLQueue extends SpecialPage {
 				'label-message' => 'requestssl-label-status',
 				'options-messages' => [
 					'requestssl-label-pending' => 'pending',
-					'requestssl-label-inprogress' => 'inprogress',
+					'requestssl-label-notpointed' => 'notpointed',
 					'requestssl-label-complete' => 'complete',
 					'requestssl-label-declined' => 'declined',
 					'requestssl-label-all' => '*',
