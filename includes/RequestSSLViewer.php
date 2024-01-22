@@ -559,7 +559,7 @@ class RequestSSLViewer {
 				->escaped();
 
 			if ( $oldStatus !== 'complete' && $formData['handle-status'] === 'complete' ) {
-				$this->requestSslRequestManager->updateManageWiki( $user, $this->context );
+				$this->requestSslRequestManager->updateManageWiki( $user, $this->context->getUser() );
 			}
 
 			if ( $formData['handle-comment'] ) {

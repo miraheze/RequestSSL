@@ -5,7 +5,6 @@ namespace Miraheze\RequestSSL;
 use Config;
 use EchoEvent;
 use ExtensionRegistry;
-use IContextSource;
 use ManualLogEntry;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Linker\LinkRenderer;
@@ -473,9 +472,9 @@ class RequestSSLManager {
 
 	/**
 	 * @param string $remotewiki
-	 * @param IContextSource $context
+	 * @param User $user
 	 */
-	public function updateManageWiki( string $remotewiki, IContextSource $context ) {
+	public function updateManageWiki( string $remotewiki, User $user ) {
 		$newServerName = parse_url( $this->getCustomDomain(), PHP_URL_HOST );
 		if ( !$newServerName ) {
 			return;
@@ -486,7 +485,7 @@ class RequestSSLManager {
 		$remoteWiki->commit();
 
 		$logEntry = new ManualLogEntry( 'managewiki', 'settings' );
-		$logEntry->setPerformer( $context->getUser() );
+		$logEntry->setPerformer( $user );
 		$logEntry->setTarget( SpecialPage::getTitleValueFor( 'RequestSSL' ) );
 		$logEntry->setComment( $this->messageLocalizer->msg( 'requestssl-managewiki-changedservername' ) );
 		$logEntry->setParameters( [ '4::wiki' => $this->getTarget(), '5::changes' => 'servername' ] );
