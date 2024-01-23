@@ -294,7 +294,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		];
 
 		if ( !array_key_exists( 'scheme', $parsedURL ) ) {
-			return Status::newFatal( 'request-ssl-customdomain-not-https' );
+			return Status::newFatal( 'requestssl-customdomain-protocol-not-https' )->getMessage();
 		} else {
 			if ( $parsedURL['scheme'] !== 'https' ) {
 				return Status::newFatal( 'requestssl-customdomain-protocol-not-https' )->getMessage();
