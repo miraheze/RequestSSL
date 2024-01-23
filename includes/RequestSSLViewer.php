@@ -3,6 +3,7 @@
 namespace Miraheze\RequestSSL;
 
 use Config;
+use ExtensionRegistry;
 use Html;
 use HTMLForm;
 use IContextSource;
@@ -559,7 +560,10 @@ class RequestSSLViewer {
 				->escaped();
 
 			if ( $oldStatus !== 'complete' && $formData['handle-status'] === 'complete' ) {
-				$this->requestSslRequestManager->updateManageWiki( $user, $this->context->getUser() );
+				$serverNameUpdated = $this->requestSslRequestManager->updateServerName();
+					if ( $serverNameUpdated && ExtensionRegistry::getInstance()->isLoaded( 'ManageWiki' ) ) {
+						$this->requestSslRequestManager->logToManageWiki( $this->context->getUser() );
+					}
 			}
 
 			if ( $formData['handle-comment'] ) {

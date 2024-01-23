@@ -367,6 +367,19 @@ class RequestSSLManager {
 	}
 
 	/**
+	 * @param User $user
+	 */
+	public function logToManageWiki( User $user ) {
+		$logEntry = new ManualLogEntry( 'managewiki', 'settings' );
+		$logEntry->setPerformer( $user );
+		$logEntry->setTarget( SpecialPage::getTitleValueFor( 'RequestSSLQueue', (string)$this->ID ) );
+		$logEntry->setComment( $this->messageLocalizer->msg( 'requestssl-managewiki-changedservername' ) );
+		$logEntry->setParameters( [ '4::wiki' => $this->getTarget(), '5::changes' => 'servername' ] );
+		$logID = $logEntry->insert();
+		$logEntry->publish( $logID );
+	}
+
+	/**
 	 * @param string $fname
 	 */
 	public function startAtomic( string $fname ) {
@@ -471,26 +484,18 @@ class RequestSSLManager {
 	}
 
 	/**
-	 * @param string $remotewiki
-	 * @param User $user
+	 * @return bool
 	 */
-	public function updateManageWiki( string $remotewiki, User $user ) {
+	public function updateServerName(): bool {
 		$newServerName = parse_url( $this->getCustomDomain(), PHP_URL_HOST );
 		if ( !$newServerName ) {
-			return;
+			return false;
 		}
 
 		$remoteWiki = new RemoteWiki( $this->getTarget() );
 		$remoteWiki->setServerName( 'https://' . $newServerName );
 		$remoteWiki->commit();
-
-		$logEntry = new ManualLogEntry( 'managewiki', 'settings' );
-		$logEntry->setPerformer( $user );
-		$logEntry->setTarget( SpecialPage::getTitleValueFor( 'RequestSSL' ) );
-		$logEntry->setComment( $this->messageLocalizer->msg( 'requestssl-managewiki-changedservername' ) );
-		$logEntry->setParameters( [ '4::wiki' => $this->getTarget(), '5::changes' => 'servername' ] );
-		$logID = $logEntry->insert();
-		$logEntry->publish( $logID );
+		return true;
 	}
 
 	/**
