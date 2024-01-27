@@ -4,7 +4,7 @@ namespace Miraheze\RequestSSL\Hooks;
 
 interface RequestSSLDomainCheckHook {
 	/**
-	 * @param Miraheze\RequestSSL\RequestSSLManager &$requestSslManager
+	 * @param \Miraheze\RequestSSL\RequestSSLManager &$requestSslManager
 	 * @param bool &$isPointed
 	 * @return void
 	 */
