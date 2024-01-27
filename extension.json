@@ -113,6 +113,9 @@
 		}
 	},
 	"HookHandlers": {
+		"default": {
+			"class": "Miraheze\\RequestSSL\\Hooks"
+		},
 		"Installer": {
 			"class": "Miraheze\\RequestSSL\\Hooks\\Handlers\\Installer"
 		},
