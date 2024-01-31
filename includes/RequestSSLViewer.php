@@ -442,7 +442,7 @@ class RequestSSLViewer {
 					$formData['edit-source']
 				)->escaped();
 
-				$this->requestSslRequestManager->setSource( $formData['edit-source'] );
+				$this->requestSslRequestManager->setCustomDomain( $formData['edit-source'] );
 			}
 
 			if ( $this->requestSslRequestManager->getTarget() !== $formData['edit-target'] ) {
