@@ -25,11 +25,6 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
 
 class RequestSSLManager {
 
-	private const SYSTEM_USERS = [
-		'RequestSSL Extension',
-		'RequestSSL Status Update',
-	];
-
 	public const CONSTRUCTOR_OPTIONS = [
 		'RequestSSLCentralWiki',
 		'RequestSSLScriptCommand',
@@ -152,10 +147,7 @@ class RequestSSLManager {
 			__METHOD__
 		);
 
-		if (
-			ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) &&
-			!in_array( $user->getName(), self::SYSTEM_USERS )
-		) {
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) ) {
 			$this->sendNotification( $comment, 'requestssl-request-comment', $user );
 		}
 	}
@@ -203,7 +195,7 @@ class RequestSSLManager {
 		$requestLink = SpecialPage::getTitleFor( 'RequestSSLQueue', (string)$this->ID )->getFullURL();
 
 		$involvedUsers = array_values( array_filter(
-			array_diff( $this->getInvolvedUsers(), [ $user ] )
+			$this->getInvolvedUsers()
 		) );
 
 		foreach ( $involvedUsers as $receiver ) {
