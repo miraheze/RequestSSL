@@ -200,7 +200,7 @@ class RequestSSLManager {
 	 * @param User $user
 	 */
 	public function sendNotification( string $comment, string $type, User $user ) {
-		$requestLink = SpecialPage::getTitleFor( 'RequestRequestSSLQueue', (string)$this->ID )->getFullURL();
+		$requestLink = SpecialPage::getTitleFor( 'RequestSSLQueue', (string)$this->ID )->getFullURL();
 
 		$involvedUsers = array_values( array_filter(
 			array_diff( $this->getInvolvedUsers(), [ $user ] )
