@@ -467,7 +467,7 @@ class RequestSSLViewer {
 				$this->requestSslRequestManager->setStatus( 'pending' );
 
 				$comment = $this->context->msg( 'requestssl-request-reopened', $user->getName() )->rawParams(
-					implode( "\n", $changes )
+					implode( "\n\n", $changes )
 				)->inContentLanguage()->escaped();
 
 				$this->requestSslRequestManager->logStatusUpdate( $comment, 'pending', $user );
@@ -479,7 +479,7 @@ class RequestSSLViewer {
 				);
 			} else {
 				$comment = $this->context->msg( 'requestssl-request-edited', $user->getName() )->rawParams(
-					implode( "\n", $changes )
+					implode( "\n\n", $changes )
 				)->inContentLanguage()->escaped();
 
 				$this->requestSslRequestManager->addComment( $comment, User::newSystemUser( 'RequestSSL Extension' ) );
