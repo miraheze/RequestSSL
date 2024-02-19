@@ -430,7 +430,7 @@ class RequestSSLViewer {
 
 		if ( isset( $formData['submit-comment'] ) ) {
 			$this->requestSslRequestManager->addComment( $formData['comment'], $user );
-			$out->addHTML( 
+			$out->addHTML(
 				Html::successBox(
 					Html::element(
 						'p',
