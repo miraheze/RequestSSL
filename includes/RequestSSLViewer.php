@@ -57,7 +57,14 @@ class RequestSSLViewer {
 			!$this->permissionManager->userHasRight( $user, 'view-private-ssl-requests' )
 		) {
 			$this->context->getOutput()->addHTML(
-				Html::errorBox( $this->context->msg( 'requestssl-private' )->escaped() )
+				Html::warningBox(
+					Html::element(
+						'p',
+						[],
+						$this->context->msg( 'requestssl-private' )->escaped()
+					),
+					'mw-notify-error'
+				)
 			);
 
 			return [];
@@ -65,7 +72,14 @@ class RequestSSLViewer {
 
 		if ( $this->requestSslRequestManager->isLocked() ) {
 			$this->context->getOutput()->addHTML(
-				Html::errorBox( $this->context->msg( 'requestssl-request-locked' )->escaped() )
+				Html::warningBox(
+					Html::element(
+						'p',
+						[],
+						$this->context->msg( 'requestssl-request-locked' )->escaped()
+					),
+					'mw-notify-error'
+				)
 			);
 		}
 
@@ -416,7 +430,16 @@ class RequestSSLViewer {
 
 		if ( isset( $formData['submit-comment'] ) ) {
 			$this->requestSslRequestManager->addComment( $formData['comment'], $user );
-			$out->addHTML( Html::successBox( $this->context->msg( 'requestssl-comment-success' )->escaped() ) );
+			$out->addHTML( 
+				Html::successBox(
+					Html::element(
+						'p',
+						[],
+						$this->context->msg( 'requestssl-comment-success' )->escaped()
+					),
+					'mw-notify-success'
+				)
+			);
 
 			return;
 		}
@@ -458,8 +481,16 @@ class RequestSSLViewer {
 			if ( !$changes ) {
 				$this->requestSslRequestManager->endAtomic( __METHOD__ );
 
-				$out->addHTML( Html::errorBox( $this->context->msg( 'requestssl-no-changes' )->escaped() ) );
-
+				$this->context->getOutput()->addHTML(
+					Html::warningBox(
+						Html::element(
+							'p',
+							[],
+							$this->context->msg( 'requestssl-no-changes' )->escaped()
+						),
+						'mw-notify-error'
+					)
+				);
 				return;
 			}
 
@@ -487,7 +518,16 @@ class RequestSSLViewer {
 
 			$this->requestSslRequestManager->endAtomic( __METHOD__ );
 
-			$out->addHTML( Html::successBox( $this->context->msg( 'requestssl-edit-success' )->escaped() ) );
+			$out->addHTML(
+				Html::successBox(
+					Html::element(
+						'p',
+						[],
+						$this->context->msg( 'requestssl-edit-success' )->escaped()
+					),
+					'mw-notify-success'
+				)
+			);
 
 			return;
 		}
@@ -517,31 +557,68 @@ class RequestSSLViewer {
 				$this->requestSslRequestManager->endAtomic( __METHOD__ );
 
 				if ( !$changes ) {
-					$out->addHTML( Html::errorBox( $this->context->msg( 'requestssl-no-changes' )->escaped() ) );
+					$out->addHTML(
+						Html::warningBox(
+							Html::element(
+								'p',
+								[],
+								$this->context->msg( 'requestssl-no-changes' )->escaped()
+							),
+							'mw-notify-error'
+						)
+					);
 					return;
 				}
 
 				if ( in_array( 'private', $changes ) ) {
 					$out->addHTML(
-						Html::successBox( $this->context->msg( 'requestssl-success-private' )->escaped() )
+						Html::successBox(
+							Html::element(
+								'p',
+								[],
+								$this->context->msg( 'requestssl-success-private' )->escaped()
+							),
+							'mw-notify-success'
+						)
 					);
 				}
 
 				if ( in_array( 'public', $changes ) ) {
 					$out->addHTML(
-						Html::successBox( $this->context->msg( 'requestssl-success-public' )->escaped() )
+						Html::successBox(
+							Html::element(
+								'p',
+								[],
+								$this->context->msg( 'requestssl-success-public' )->escaped()
+							),
+							'mw-notify-success'
+						)
 					);
 				}
 
 				if ( in_array( 'locked', $changes ) ) {
 					$out->addHTML(
-						Html::successBox( $this->context->msg( 'requestssl-success-locked' )->escaped() )
+						Html::successBox(
+							Html::element(
+								'p',
+								[],
+								$this->context->msg( 'requestssl-success-locked' )->escaped()
+							),
+							'mw-notify-success'
+						)
 					);
 				}
 
 				if ( in_array( 'unlocked', $changes ) ) {
 					$out->addHTML(
-						Html::successBox( $this->context->msg( 'requestssl-success-unlocked' )->escaped() )
+						Html::successBox(
+							Html::element(
+								'p',
+								[],
+								$this->context->msg( 'requestssl-success-unlocked' )->escaped()
+							),
+							'mw-notify-success'
+						)
 					);
 				}
 
@@ -581,7 +658,16 @@ class RequestSSLViewer {
 
 			$this->requestSslRequestManager->endAtomic( __METHOD__ );
 
-			$out->addHTML( Html::successBox( $this->context->msg( 'requestssl-status-updated-success' )->escaped() ) );
+			$out->addHTML(
+				Html::successBox(
+					Html::element(
+						'p',
+						[],
+						$this->context->msg( 'requestssl-status-updated-success' )->escaped()
+					),
+					'mw-notify-success'
+				)
+			);
 		}
 	}
 }

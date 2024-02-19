@@ -5,7 +5,7 @@
 		]
 	},
 	"action-handle-ssl-requests": "handle SSL certificate requests",
-	"action-request-ssl": "request ",
+	"action-request-ssl": "request SSL certificates",
 	"action-view-private-ssl-requests": "view private SSL certificate requests",
 	"echo-category-title-requestssl-new-request": "New SSL certificate request",
 	"echo-category-title-requestssl-request-comment": "Comment added to an SSL request",
@@ -24,6 +24,8 @@
 	"requestssl-duplicate-request": "Unable to submit this request. It is too similar to an already open request.",
 	"requestssl-edit-success": "Request successfully edited.",
 	"requestssl-extensionname": "RequestSSL",
+	"requestsslqueue-header": "Search through custom domain requests",
+	"requestsslqueue-header-info": "You can use this form to search through custom domain requests. Use the parameters below to refine your search.",
 	"requestssl-header-comment-withtimestamp": "Comment given by $1 at $2",
 	"requestssl-help-reason": "Please add any additional comments that you think may be relevant to this request.",
 	"requestssl-help-customdomain": "Enter the full URL for the desired custom domain (i.e. https://example.org).",

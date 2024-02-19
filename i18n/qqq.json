@@ -27,6 +27,8 @@
 	"requestssl-duplicate-request": "Message displayed when user attempts to submit a request that is to similar to an existing open request.",
 	"requestssl-edit-success": "Message displayed when the request is successfully edited.",
 	"requestssl-extensionname": "{{name}}",
+	"requestsslqueue-header": "Legend header for request page",
+	"requestsslqueue-header-info": "Information under legend header",
 	"requestssl-header-comment-withtimestamp": "Timestamp for comment.",
 	"requestssl-help-reason": "Help for the 'reason' field.",
 	"requestssl-help-customdomain": "Help for the 'source' field.",

@@ -70,7 +70,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		}
 
 		if ( !$this->getUser()->isRegistered() ) {
-			$loginURL = SpecialPage::getTitleFor( 'Userlogin' )
+			$loginURL = SpecialPage::getTitleFor( 'UserLogin' )
 				->getFullURL( [
 					'returnto' => $this->getPageTitle()->getPrefixedText(),
 				]
@@ -80,6 +80,8 @@ class SpecialRequestSSL extends FormSpecialPage {
 		}
 
 		$this->checkPermissions();
+
+		$this->getOutput()->addModules( [ 'mediawiki.special.userrights' ] );
 
 		if ( $this->getConfig()->get( 'RequestSSLHelpUrl' ) ) {
 			$this->getOutput()->addHelpLink( $this->getConfig()->get( 'RequestSSLHelpUrl' ), true );
@@ -181,7 +183,12 @@ class SpecialRequestSSL extends FormSpecialPage {
 
 		$this->getOutput()->addHTML(
 			Html::successBox(
-				$this->msg( 'requestssl-success' )->rawParams( $requestLink )->escaped()
+				Html::element(
+					'p',
+					[],
+					$this->msg( 'requestssl-success' )->rawParams( $requestLink )->escaped()
+				),
+				'mw-notify-success'
 			)
 		);
 
