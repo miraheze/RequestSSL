@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Ajeje Brazorf",
+			"Amire80",
 			"McDutchie",
 			"Universal Omega",
 			"Verdy p"
@@ -103,7 +104,7 @@
 	"log-action-filter-requestsslprivate": "{{doc-log-action-filter-type|requestsslprivate}}\n{{identical|Type of action}}\n{{related|Log-action-filter}}",
 	"log-action-filter-requestsslprivate-request": "{{doc-log-action-filter-action|requestsslprivate|request}}",
 	"log-action-filter-requestsslprivate-statusupdate": "{{doc-log-action-filter-action|requestsslprivate|statusupdate}}",
-	"logentry-requestssl-request": "{{logentry|[[Special:Log/requestssl]]}}",
+	"logentry-requestssl-request": "{{logentry|[[Special:Log/requestssl]]}}\n\nMore parameters:\n* $4 - target wiki\n* $5 - servername",
 	"logentry-requestssl-statusupdate": "{{logentry|[[Special:Log/requestssl]]}}",
 	"logentry-requestsslprivate-request": "{{logentry|[[Special:Log/requestsslprivate]]}}",
 	"logentry-requestsslprivate-statusupdate": "{{logentry|[[Special:Log/requestsslprivate]]}}",
