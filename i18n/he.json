@@ -6,7 +6,7 @@
 		]
 	},
 	"action-handle-ssl-requests": "טיפול בבקשות אישורי SSL",
-	"action-request-ssl": "בקשה",
+	"action-request-ssl": "לבקש אישורי SSL",
 	"action-view-private-ssl-requests": "הצגת בקשות אישורי SSL פרטיים",
 	"echo-category-title-requestssl-new-request": "בקשת אישור SSL חדשה",
 	"echo-category-title-requestssl-request-comment": "נוספה הערה לבקשת SSL",
@@ -24,6 +24,8 @@
 	"requestssl-desc": "הרחבה שתוכננה לבקש אישורי SSL בשם המשתמש אוטומטית.",
 	"requestssl-duplicate-request": "לא ניתן להגיש את הבקשה הזאת. היא דומה מדי לבקשה פתוחה אחרת.",
 	"requestssl-edit-success": "הבקשה נערכה.",
+	"requestsslqueue-header": "חיפוש בבקשות תחום מותאמות אישית",
+	"requestsslqueue-header-info": "אפשר להשתמש בטופס הזה כדי לחפש בקשות תחום מותאם אישית. הפרמטרים למטה מכווננים את החיפוש שלך.",
 	"requestssl-header-comment-withtimestamp": "ההערה נכתבה על־ידי $1 ב־$2:",
 	"requestssl-help-reason": "נא להוסיף הערות נוספות שלדעתך תהיינה מתאימות לבקשה הזאת.",
 	"requestssl-help-customdomain": "נא למלא את הכתובת המלאה של שם התחום הרצוי (למשל: https://example.org).",

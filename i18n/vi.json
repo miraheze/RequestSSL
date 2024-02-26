@@ -5,7 +5,7 @@
 		]
 	},
 	"action-handle-ssl-requests": "xử lý yêu cầu chứng chỉ SSL",
-	"action-request-ssl": "yêu cầu",
+	"action-request-ssl": "yêu cầu chứng chỉ SSL",
 	"action-view-private-ssl-requests": "xem các yêu cầu chứng chỉ SSL riêng tư",
 	"echo-category-title-requestssl-new-request": "Yêu cầu chứng chỉ SSL mới",
 	"echo-category-title-requestssl-request-comment": "Bình luận đã được thêm vào yêu cầu SSL",
@@ -23,6 +23,8 @@
 	"requestssl-desc": "Tiện ích mở rộng được thiết kế để tự động hóa các yêu cầu chứng chỉ SSL của người dùng.",
 	"requestssl-duplicate-request": "Không thể gửi yêu cầu này. Nó quá giống với một yêu cầu đã mở.",
 	"requestssl-edit-success": "Yêu cầu đã được chỉnh sửa thành công.",
+	"requestsslqueue-header": "Tìm yêu cầu tên miền tùy chỉnh",
+	"requestsslqueue-header-info": "Bạn có thể sử dụng biểu mẫu này để tìm kiếm các yêu cầu tên miền tùy chỉnh. Sử dụng các tham số dưới đây để tinh chỉnh tìm kiếm của bạn.",
 	"requestssl-header-comment-withtimestamp": "Bình luận được đưa ra bởi $1 vào lúc $2",
 	"requestssl-help-reason": "Vui lòng thêm bất kỳ bình luận bổ sung nào mà bạn cho rằng có thể liên quan đến yêu cầu này.",
 	"requestssl-help-customdomain": "Nhập URL đầy đủ cho tên miền mong muốn (ví dụ: https://example.org).",

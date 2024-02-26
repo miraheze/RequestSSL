@@ -6,7 +6,7 @@
 		]
 	},
 	"action-handle-ssl-requests": "ракување со барања за SSL-уверенија",
-	"action-request-ssl": "барање",
+	"action-request-ssl": "барање на SSL-уверенија",
 	"action-view-private-ssl-requests": "гледање на приватни барања за SSL-уверенија",
 	"echo-category-title-requestssl-new-request": "Ново барање за SSL-уверение",
 	"echo-category-title-requestssl-request-comment": "Додаден коментар во SSL-барање",
@@ -24,6 +24,8 @@
 	"requestssl-desc": "Додаток предвиден да ги автоматизира барањата за SSL-уверенија.",
 	"requestssl-duplicate-request": "Не можев да го поднесам ова барање. Премногу е сличен на веќе постоечко барање.",
 	"requestssl-edit-success": "Барањето е успешно изменето.",
+	"requestsslqueue-header": "Пребарај преку прилагодени доменски барања",
+	"requestsslqueue-header-info": "Со овој образец можете да пребарувате прилагодени доменски барања. Послужете се со параметрите подолу за да го уточните пребарувањето.",
 	"requestssl-header-comment-withtimestamp": "Коментар на $1 во $2",
 	"requestssl-help-reason": "Додајте дополнителни коментари за кои мислите дека може да бидат релевантни на ова барање.",
 	"requestssl-help-customdomain": "Внесете ја целосната URL-адреса на саканиот прилагоден домен (т.е. https://example.org).",

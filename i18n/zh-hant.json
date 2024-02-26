@@ -1,13 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
-			"Kly"
+			"Kly",
+			"Winston Sung"
 		]
 	},
 	"action-handle-ssl-requests": "處理 SSL 憑證請求",
-	"action-request-ssl": "請求",
+	"action-request-ssl": "請求 SSL 憑證",
 	"action-view-private-ssl-requests": "查看私有 SSL 憑證請求",
 	"echo-category-title-requestssl-new-request": "新的 SSL 憑證請求",
+	"echo-category-title-requestssl-request-status-update": "已更新SSL憑證請求狀態",
+	"echo-pref-tooltip-requestssl-new-request": "當有新的 SSL 憑證請求時通知我。",
 	"requestssl-button-copy": "（複製到剪貼簿）",
 	"requestssl-customdomain-not-a-url": "您未輸入有效的 URL。",
 	"requestssl-customdomain-protocol-not-https": "協定無效。請確認將協定設成 <code>https://</code>。",
