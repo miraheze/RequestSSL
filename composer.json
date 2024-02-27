@@ -10,7 +10,7 @@
 		}
 	],
 	"support": {
-		"issues": "https://phabricator.miraheze.org/tag/requestssl/",
+		"issues": "https://issue-tracker.miraheze.org/tag/requestssl/",
 		"wiki": "https://www.mediawiki.org/wiki/Extension:RequestSSL"
 	},
 	"require": {
