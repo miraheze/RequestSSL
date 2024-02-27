@@ -57,7 +57,6 @@
 	"requestssl-label-update-status": "Set the status of this request to:",
 	"requestssl-log-header": "This is a log of all ssl requests and status updates.",
 	"requestssl-log-name": "SSL Requests log",
-	"requestssl-managewiki-changedservername": "Custom domain requested through RequestSSL",
 	"requestssl-no-changes": "No changes made.",
 	"requestssl-notcentral": "Disabled",
 	"requestssl-notcentral-text": "SSL certificate requests are disabled on this wiki. Please request an SSL certificate from the central wiki.",
