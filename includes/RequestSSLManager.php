@@ -372,7 +372,7 @@ class RequestSSLManager {
 		$logEntry = new ManualLogEntry( 'managewiki', 'settings' );
 		$logEntry->setPerformer( $user );
 		$logEntry->setTarget( SpecialPage::getTitleValueFor( 'RequestSSLQueue', (string)$this->ID ) );
-		$logEntry->setComment( $this->messageLocalizer->msg( 'requestssl-managewiki-changedservername' ) );
+		$logEntry->setComment( "[[Special:RequestSSLQueue/{$this->ID}|Requested]]" );
 		$logEntry->setParameters( [ '4::wiki' => $this->getTarget(), '5::changes' => 'servername' ] );
 		$logID = $logEntry->insert();
 		$logEntry->publish( $logID );
