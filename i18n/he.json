@@ -57,7 +57,6 @@
 	"requestssl-label-update-status": "הגדרת מצב הבקשה הזאת ל־:",
 	"requestssl-log-header": "זה יומן של כל בקשות ה־ssl ועדכוני המצב.",
 	"requestssl-log-name": "יומן בקשות SSL",
-	"requestssl-managewiki-changedservername": "שם תחום מותאם התבקש דרך RequestSSL",
 	"requestssl-no-changes": "לא נעשו שינויים.",
 	"requestssl-notcentral": "מושבת",
 	"requestssl-notcentral-text": "בקשות אישורי SSL כבויות בוויקי הזה. נא לבקש אישור SSL מהוויקי המרכזי.",

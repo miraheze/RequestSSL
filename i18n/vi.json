@@ -56,7 +56,6 @@
 	"requestssl-label-update-status": "Đặt trạng thái của yêu cầu này thành:",
 	"requestssl-log-header": "Đây là nhật trình gồm tất cả các yêu cầu SSl và cập nhật trạng thái.",
 	"requestssl-log-name": "Nhật trình yêu cầu SSL",
-	"requestssl-managewiki-changedservername": "Tên miền tùy chỉnh được yêu cầu qua RequestSSL",
 	"requestssl-no-changes": "Không có thay đổi nào được thực hiện.",
 	"requestssl-notcentral": "Đã bị tắt",
 	"requestssl-notcentral-text": "Yêu cầu chứng chỉ SSL bị vô hiệu hóa trên wiki này. Vui lòng yêu cầu chứng chỉ SSL từ wiki trung tâm.",

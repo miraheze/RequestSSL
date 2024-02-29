@@ -25,7 +25,6 @@
 	"requestssl-label-status": "狀態：",
 	"requestssl-label-target": "目標資料庫名稱：",
 	"requestssl-log-name": "SSL 請求日誌",
-	"requestssl-managewiki-changedservername": "透過 RequestSSL 請求的自訂網域",
 	"requestssl-notification-header-new-request": "新的 SSL 憑證請求 #$1",
 	"requestssl-request-edited-reason": "原因：\n先前的值：$1\n新的值：$2",
 	"requestssl-request-edited-source": "來源：\n先前的值：$1\n新的值：$2",

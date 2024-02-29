@@ -57,7 +57,6 @@
 	"requestssl-label-update-status": "Нов статус на барањево:",
 	"requestssl-log-header": "Ова е дневник на сите SSL-барања и статусни измени.",
 	"requestssl-log-name": "Дневник на SSL-барања",
-	"requestssl-managewiki-changedservername": "Побаран прилагоден домен преку RequestSSL",
 	"requestssl-no-changes": "Нема направено промени.",
 	"requestssl-notcentral": "Оневозможено",
 	"requestssl-notcentral-text": "Барањата за SSL-уверенија е оневозможени на ова вики. Побарате уверение од централното вики.",
