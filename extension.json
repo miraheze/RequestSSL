@@ -82,7 +82,8 @@
 				"DBLoadBalancerFactory",
 				"MimeAnalyzer",
 				"RepoGroup",
-				"UserFactory"
+				"UserFactory",
+				"CreateWikiHookRunner"
 			]
 		},
 		"RequestSSLQueue": {
