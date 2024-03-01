@@ -79,11 +79,11 @@
 		"RequestSSL": {
 			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestSSL",
 			"services": [
+				"CreateWikiHookRunner",
 				"DBLoadBalancerFactory",
 				"MimeAnalyzer",
 				"RepoGroup",
-				"UserFactory",
-				"CreateWikiHookRunner"
+				"UserFactory"
 			]
 		},
 		"RequestSSLQueue": {
