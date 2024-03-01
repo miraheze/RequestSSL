@@ -13,6 +13,7 @@ use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserGroupManagerFactory;
 use Message;
 use MessageLocalizer;
+use Miraheze\CreateWiki\Hooks\CreateWikiHookRunner;
 use Miraheze\CreateWiki\RemoteWiki;
 use RepoGroup;
 use SpecialPage;
@@ -46,6 +47,9 @@ class RequestSSLManager {
 	/** @var ActorStoreFactory */
 	private $actorStoreFactory;
 
+	/** @var CreateWikiHookRunner */
+	private $createWikiHookRunner;
+
 	/** @var ILBFactory */
 	private $dbLoadBalancerFactory;
 
@@ -73,6 +77,7 @@ class RequestSSLManager {
 	/**
 	 * @param Config $config
 	 * @param ActorStoreFactory $actorStoreFactory
+	 * @param CreateWikiHookRunner $createWikiHookRunner
 	 * @param ILBFactory $dbLoadBalancerFactory
 	 * @param LinkRenderer $linkRenderer
 	 * @param RepoGroup $repoGroup
@@ -84,6 +89,7 @@ class RequestSSLManager {
 	public function __construct(
 		Config $config,
 		ActorStoreFactory $actorStoreFactory,
+		CreateWikiHookRunner $createWikiHookRunner,
 		ILBFactory $dbLoadBalancerFactory,
 		LinkRenderer $linkRenderer,
 		RepoGroup $repoGroup,
@@ -361,7 +367,7 @@ class RequestSSLManager {
 			return false;
 		}
 
-		$remoteWiki = new RemoteWiki( $this->getTarget() );
+		$remoteWiki = new RemoteWiki( $this->getTarget(), $this->createWikiHookRunner );
 		return (bool)$remoteWiki->isPrivate();
 	}
 
@@ -491,7 +497,7 @@ class RequestSSLManager {
 			return false;
 		}
 
-		$remoteWiki = new RemoteWiki( $this->getTarget() );
+		$remoteWiki = new RemoteWiki( $this->getTarget(), $this->createWikiHookRunner );
 		$remoteWiki->setServerName( 'https://' . $newServerName );
 		$remoteWiki->commit();
 		return true;

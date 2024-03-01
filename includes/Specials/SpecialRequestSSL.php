@@ -11,6 +11,7 @@ use ManualLogEntry;
 use MediaWiki\User\UserFactory;
 use Message;
 use MimeAnalyzer;
+use Miraheze\CreateWiki\Hooks\CreateWikiHookRunner;
 use Miraheze\CreateWiki\RemoteWiki;
 use RepoGroup;
 use SpecialPage;
@@ -22,6 +23,9 @@ use WikiMap;
 use Wikimedia\Rdbms\ILBFactory;
 
 class SpecialRequestSSL extends FormSpecialPage {
+
+	/** @var CreateWikiHookRunner */
+	private $createWikiHookRunner;
 
 	/** @var ILBFactory */
 	private $dbLoadBalancerFactory;
@@ -42,6 +46,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
+		CreateWikiHookRunner $createWikiHookRunner,
 		ILBFactory $dbLoadBalancerFactory,
 		MimeAnalyzer $mimeAnalyzer,
 		RepoGroup $repoGroup,
@@ -49,6 +54,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	) {
 		parent::__construct( 'RequestSSL', 'request-ssl' );
 
+		$this->createWikiHookRunner = $createWikiHookRunner;
 		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
 		$this->mimeAnalyzer = $mimeAnalyzer;
 		$this->repoGroup = $repoGroup;
@@ -230,7 +236,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 			return 'requestssl';
 		}
 
-		$remoteWiki = new RemoteWiki( $target );
+		$remoteWiki = new RemoteWiki( $target, $this->createWikiHookRunner );
 		return $remoteWiki->isPrivate() ? 'requestsslprivate' : 'requestssl';
 	}
 
