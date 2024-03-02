@@ -2,7 +2,7 @@
 
 namespace Miraheze\RequestSSL;
 
-use GenericParameterJobM
+use GenericParameterJob;
 use Job;
 use MediaWiki\MediaWikiServices;
 
