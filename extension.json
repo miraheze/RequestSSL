@@ -147,6 +147,10 @@
 			"value": "",
 			"description": "If set, only allow users to request a SSL certificate on this wiki."
 		},
+		"RequestSSLDomainCheckCNAME": {
+			"value": "",
+			"description": "String. Specifies the CNAME record that RequestSSL will look for on automatic domain checks. If a domain has this CNAME record, it is considered to be pointed"
+		},
 		"RequestSSLHelpUrl": {
 			"value": "",
 			"description": "Full URL. If set, adds a help URL to Special:RequestSSL."
