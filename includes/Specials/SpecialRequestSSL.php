@@ -230,8 +230,9 @@ class SpecialRequestSSL extends FormSpecialPage {
 			$this->sendNotifications( $data['reason'], $this->getUser()->getName(), $requestID, $data['target'] );
 		}
 
-		$domainCheckJob = new DomainCheckJob( ['requestID' => $requestID] )
-		$this->jobQueueGroup->lazyPush( $domainCheckJob );
+		$domainCheckJob = new DomainCheckJob( ['requestID' => $requestID] );
+		$jobQueueGroup = $this->jobQueueGroupFactory->makeJobQueueGroup();
+		$jobQueueGroup->lazyPush( $domainCheckJob );
 
 		return Status::newGood();
 	}
