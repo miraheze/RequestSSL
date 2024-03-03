@@ -84,6 +84,7 @@
 			"services": [
 				"CreateWikiHookRunner",
 				"DBLoadBalancerFactory",
+				"JobQueueGroupFactory",
 				"MimeAnalyzer",
 				"RepoGroup",
 				"UserFactory"
