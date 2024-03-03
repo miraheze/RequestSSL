@@ -151,6 +151,10 @@
 			"value": "",
 			"description": "String. Specifies the CNAME record that RequestSSL will look for on automatic domain checks. If a domain has this CNAME record, it is considered to be pointed"
 		},
+		"RequestSSLDomainCheckReverseDNSRegex": {
+			"value": [],
+			"value": "String. If the automatic domain check returns A or AAAA records instead of a CNAME, check the reverse DNS of the IP address against this regex. The domain is considered pointed if there's a match"
+		},
 		"RequestSSLHelpUrl": {
 			"value": "",
 			"description": "Full URL. If set, adds a help URL to Special:RequestSSL."
