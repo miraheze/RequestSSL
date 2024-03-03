@@ -101,6 +101,7 @@ class RequestSSLManager {
 
 		$this->config = $config;
 		$this->actorStoreFactory = $actorStoreFactory;
+		$this->createWikiHookRunner = $createWikiHookRunner;
 		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
 		$this->linkRenderer = $linkRenderer;
 		$this->messageLocalizer = $messageLocalizer;
