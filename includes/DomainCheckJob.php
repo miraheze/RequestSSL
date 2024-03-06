@@ -21,7 +21,7 @@ class DomainCheckJob extends Job implements GenericParameterJob {
 			return;
 		}
 		$config = $mwServices->getConfigFactory()->makeConfig('RequestSSL');
-		$cname = $config->get( 'RequestSSLDomainCheckCNAME' )
+		$cname = $config->get( 'RequestSSLDomainCheckCNAME' );
 		// TODO: Support rDNS and NS checks
 		// CNAME check
 		$dnsCNAMEData = dns_get_record( $customDomain, DNS_CNAME );
