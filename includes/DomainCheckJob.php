@@ -11,8 +11,28 @@ class DomainCheckJob extends Job implements GenericParameterJob {
 		parent:__construct( 'DomainCheckJob', $params );
 	}
 	public function run() {
-		$requestSslManager = MediaWikiServices::getInstance()->get( 'RequestSSLManager' );
+		$mwServices = MediaWikiServices::getInstance();
+		$requestSslManager = $mwServices->get( 'RequestSSLManager' );
 		$requestSslManager->fromID( $this->params['requestID'] );
-		// Do something useful
+		$customDomain = parse_url( $requestSslManager->getCustomDomain(), PHP_URL_HOST );
+		if ( !customDomain ) {
+			// Custom domain does not have a hostname, bail out.
+			// TODO: Log an exception.
+			return;
+		}
+		$config = $mwServices->getConfigFactory()->makeConfig('RequestSSL');
+		$cname = $config->get( 'RequestSSLDomainCheckCNAME' )
+		// TODO: Support rDNS and NS checks
+		// CNAME check
+		$dnsCNAMEData = dns_get_record( $customDomain, DNS_CNAME );
+		if ( !(bool)$dnsCNAMEData ) {
+			$requestSslManager->addComment( 'RequestSSL could not determine whether or not this domain is pointed: DNS returned no data during CNAME check.', User::newSystemUser( 'RequestSSL Extension' ) );
+		} else {
+			if ( $dnsCNAMEData['type'] === 'CNAME' && $dnsCNAMEData['target'] === $cname ) {
+				$requestSslManager->addComment( 'Domain is pointed via CNAME.', User::newSystemUser( 'RequestSSL Extension' ) );
+			} else {
+				$requestSslManager->addComment( 'Domain is not pointed via CNAME. It is possible it is pointed via other means.', User::newSystemUser( 'RequestSSL Extension' ) );
+			}
+		}
 	}
 }
