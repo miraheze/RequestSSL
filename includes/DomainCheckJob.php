@@ -5,6 +5,7 @@ namespace Miraheze\RequestSSL;
 use GenericParameterJob;
 use Job;
 use MediaWiki\MediaWikiServices;
+use User;
 
 class DomainCheckJob extends Job implements GenericParameterJob {
 	public function __construct( array $params ) {
@@ -18,7 +19,7 @@ class DomainCheckJob extends Job implements GenericParameterJob {
 		if ( !customDomain ) {
 			// Custom domain does not have a hostname, bail out.
 			// TODO: Log an exception.
-			return;
+			return true;
 		}
 		$config = $mwServices->getConfigFactory()->makeConfig('RequestSSL');
 		$cname = $config->get( 'RequestSSLDomainCheckCNAME' );
@@ -34,5 +35,6 @@ class DomainCheckJob extends Job implements GenericParameterJob {
 				$requestSslManager->addComment( 'Domain is not pointed via CNAME. It is possible it is pointed via other means.', User::newSystemUser( 'RequestSSL Extension' ) );
 			}
 		}
+		return true;
 	}
 }
