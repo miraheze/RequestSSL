@@ -26,7 +26,7 @@ class DomainCheckJob extends Job implements GenericParameterJob {
 		// TODO: Support rDNS and NS checks
 		// CNAME check
 		$dnsCNAMEData = dns_get_record( $customDomain, DNS_CNAME );
-		if ( !(bool)$dnsCNAMEData ) {
+		if ( !$dnsCNAMEData ) {
 			$requestSslManager->addComment( 'RequestSSL could not determine whether or not this domain is pointed: DNS returned no data during CNAME check.', User::newSystemUser( 'RequestSSL Extension' ) );
 		} else {
 			if ( $dnsCNAMEData[0]['type'] === 'CNAME' && $dnsCNAMEData[0]['target'] === $cname ) {
