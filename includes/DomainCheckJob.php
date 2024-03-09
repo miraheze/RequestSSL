@@ -9,7 +9,7 @@ use User;
 
 class DomainCheckJob extends Job implements GenericParameterJob {
 	public function __construct( array $params ) {
-		parent:__construct( 'DomainCheckJob', $params );
+		parent::__construct( 'DomainCheckJob', $params );
 	}
 	public function run() {
 		$mwServices = MediaWikiServices::getInstance();
