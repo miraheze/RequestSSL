@@ -16,7 +16,7 @@ class DomainCheckJob extends Job implements GenericParameterJob {
 		$requestSslManager = $mwServices->get( 'RequestSSLManager' );
 		$requestSslManager->fromID( $this->params['requestID'] );
 		$customDomain = parse_url( $requestSslManager->getCustomDomain(), PHP_URL_HOST );
-		if ( !customDomain ) {
+		if ( !$customDomain ) {
 			// Custom domain does not have a hostname, bail out.
 			// TODO: Log an exception.
 			return true;
