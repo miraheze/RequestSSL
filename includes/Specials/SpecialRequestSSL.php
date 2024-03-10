@@ -14,7 +14,7 @@ use Message;
 use MimeAnalyzer;
 use Miraheze\CreateWiki\Hooks\CreateWikiHookRunner;
 use Miraheze\CreateWiki\RemoteWiki;
-use Miraheze\RequestSSL\DomainCheckJob;
+use Miraheze\RequestSSL\Jobs\DomainCheckJob;
 use RepoGroup;
 use SpecialPage;
 use Status;
