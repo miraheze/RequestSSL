@@ -1,6 +1,6 @@
 <?php
 
-namespace Miraheze\RequestSSL;
+namespace Miraheze\RequestSSL\Jobs;
 
 use GenericParameterJob;
 use Job;
