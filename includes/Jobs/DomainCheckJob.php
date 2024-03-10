@@ -44,7 +44,7 @@ class DomainCheckJob extends Job implements GenericParameterJob {
 		$customDomain = parse_url( $this->requestSslManager->getCustomDomain(), PHP_URL_HOST );
 		if ( !$customDomain ) {
 			// Custom domain does not have a hostname, bail out.
-			// TODO: Log an exception.
+			$this->setLastError( 'Custom domain does not have a hostname.' );
 			return true;
 		}
 		$cname = $this->config->get( 'RequestSSLDomainCheckCNAME' );
