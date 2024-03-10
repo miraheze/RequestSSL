@@ -7,7 +7,7 @@ use ConfigFactory;
 use GenericParameterJob;
 use Job;
 use Miraheze\RequestSSL\RequestSSLManager;
-use User;
+use MediaWiki\User\User;
 
 class DomainCheckJob extends Job implements GenericParameterJob {
 
