@@ -8,6 +8,7 @@ use GenericParameterJob;
 use Job;
 use Miraheze\RequestSSL\RequestSSLManager;
 use MediaWiki\User\User;
+use Title
 
 class DomainCheckJob extends Job implements GenericParameterJob {
 
@@ -21,11 +22,13 @@ class DomainCheckJob extends Job implements GenericParameterJob {
 	private $requestSslManager;
 
 	/**
+	 * @param Title $title
 	 * @param array $params
 	 * @param ConfigFactory $configFactory
 	 * @param RequestSSLManager $requestSslManager
 	*/
 	public function __construct(
+		Title $title,
 		array $params,
 		ConfigFactory $configFactory,
 		RequestSSLManager $requestSslManager
