@@ -8,7 +8,7 @@ use GenericParameterJob;
 use Job;
 use Miraheze\RequestSSL\RequestSSLManager;
 use MediaWiki\User\User;
-use Title
+use Title;
 
 class DomainCheckJob extends Job implements GenericParameterJob {
 
