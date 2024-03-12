@@ -90,7 +90,7 @@
 			"services": [
 				"CreateWikiHookRunner",
 				"DBLoadBalancerFactory",
-				"JobQueueGroupFactory",
+				"JobQueueGroup",
 				"MimeAnalyzer",
 				"RepoGroup",
 				"UserFactory"
