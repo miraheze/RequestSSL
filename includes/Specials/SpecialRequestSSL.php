@@ -9,7 +9,7 @@ use FormSpecialPage;
 use Html;
 use JobSpecification;
 use ManualLogEntry;
-use MediaWiki\JobQueue\JobQueueGroup;
+use JobQueueGroup;
 use MediaWiki\User\UserFactory;
 use Message;
 use MimeAnalyzer;
