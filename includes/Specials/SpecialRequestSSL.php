@@ -47,7 +47,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	/**
 	 * @param CreateWikiHookRunner $createWikiHookRunner
 	 * @param ILBFactory $dbLoadBalancerFactory
-	 * @param JobQueueGroup $jobQueueGroupFactory
+	 * @param JobQueueGroup $jobQueueGroup
 	 * @param MimeAnalyzer $mimeAnalyzer
 	 * @param RepoGroup $repoGroup
 	 * @param UserFactory $userFactory
