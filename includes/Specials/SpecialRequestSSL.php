@@ -9,7 +9,7 @@ use FormSpecialPage;
 use Html;
 use JobSpecification;
 use ManualLogEntry;
-use MediaWiki\JobQueue\JobQueueGroupFactory;
+use MediaWiki\JobQueue\JobQueueGroup;
 use MediaWiki\User\UserFactory;
 use Message;
 use MimeAnalyzer;
@@ -32,8 +32,8 @@ class SpecialRequestSSL extends FormSpecialPage {
 	/** @var ILBFactory */
 	private $dbLoadBalancerFactory;
 
-	/** @var JobQueueGroupFactory */
-	private $jobQueueGroupFactory;
+	/** @var JobQueueGroup */
+	private $jobQueueGroup;
 
 	/** @var MimeAnalyzer */
 	private $mimeAnalyzer;
@@ -47,7 +47,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	/**
 	 * @param CreateWikiHookRunner $createWikiHookRunner
 	 * @param ILBFactory $dbLoadBalancerFactory
-	 * @param JobQueueGroupFactory $jobQueueGroupFactory
+	 * @param JobQueueGroup $jobQueueGroupFactory
 	 * @param MimeAnalyzer $mimeAnalyzer
 	 * @param RepoGroup $repoGroup
 	 * @param UserFactory $userFactory
@@ -55,7 +55,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	public function __construct(
 		CreateWikiHookRunner $createWikiHookRunner,
 		ILBFactory $dbLoadBalancerFactory,
-		JobQueueGroupFactory $jobQueueGroupFactory,
+		JobQueueGroup $jobQueueGroup,
 		MimeAnalyzer $mimeAnalyzer,
 		RepoGroup $repoGroup,
 		UserFactory $userFactory
@@ -64,7 +64,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 
 		$this->createWikiHookRunner = $createWikiHookRunner;
 		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
-		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
+		$this->jobQueueGroup = $jobQueueGroup;
 		$this->mimeAnalyzer = $mimeAnalyzer;
 		$this->repoGroup = $repoGroup;
 		$this->userFactory = $userFactory;
@@ -231,8 +231,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		}
 
 		$domainCheckJob = new JobSpecification( 'DomainCheckJob', ['requestID' => $requestID] );
-		$jobQueueGroup = $this->jobQueueGroupFactory->makeJobQueueGroup();
-		$jobQueueGroup->lazyPush( $domainCheckJob );
+		$this->jobQueueGroup->lazyPush( $domainCheckJob );
 
 		return Status::newGood();
 	}
