@@ -40,6 +40,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	private $userFactory;
 
 	/**
+	 * @param CreateWikiHookRunner $createWikiHookRunner
 	 * @param ILBFactory $dbLoadBalancerFactory
 	 * @param MimeAnalyzer $mimeAnalyzer
 	 * @param RepoGroup $repoGroup
