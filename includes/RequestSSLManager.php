@@ -13,21 +13,20 @@ use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserGroupManagerFactory;
 use Message;
 use MessageLocalizer;
+use Miraheze\CreateWiki\Hooks\CreateWikiHookRunner;
 use Miraheze\CreateWiki\RemoteWiki;
 use RepoGroup;
 use SpecialPage;
 use stdClass;
 use User;
-use UserRightsProxy;
 use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\ILBFactory;
 use Wikimedia\Rdbms\SelectQueryBuilder;
 
 class RequestSSLManager {
 
-	private const SYSTEM_USERS = [
+	private const IGNORED_USERS = [
 		'RequestSSL Extension',
-		'RequestSSL Status Update',
 	];
 
 	public const CONSTRUCTOR_OPTIONS = [
@@ -46,6 +45,9 @@ class RequestSSLManager {
 
 	/** @var ActorStoreFactory */
 	private $actorStoreFactory;
+
+	/** @var CreateWikiHookRunner */
+	private $createWikiHookRunner;
 
 	/** @var ILBFactory */
 	private $dbLoadBalancerFactory;
@@ -74,6 +76,7 @@ class RequestSSLManager {
 	/**
 	 * @param Config $config
 	 * @param ActorStoreFactory $actorStoreFactory
+	 * @param CreateWikiHookRunner $createWikiHookRunner
 	 * @param ILBFactory $dbLoadBalancerFactory
 	 * @param LinkRenderer $linkRenderer
 	 * @param RepoGroup $repoGroup
@@ -85,6 +88,7 @@ class RequestSSLManager {
 	public function __construct(
 		Config $config,
 		ActorStoreFactory $actorStoreFactory,
+		CreateWikiHookRunner $createWikiHookRunner,
 		ILBFactory $dbLoadBalancerFactory,
 		LinkRenderer $linkRenderer,
 		RepoGroup $repoGroup,
@@ -97,6 +101,7 @@ class RequestSSLManager {
 
 		$this->config = $config;
 		$this->actorStoreFactory = $actorStoreFactory;
+		$this->createWikiHookRunner = $createWikiHookRunner;
 		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
 		$this->linkRenderer = $linkRenderer;
 		$this->messageLocalizer = $messageLocalizer;
@@ -154,7 +159,7 @@ class RequestSSLManager {
 
 		if (
 			ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) &&
-			!in_array( $user->getName(), self::SYSTEM_USERS )
+			!in_array( $user->getName(), self::IGNORED_USERS )
 		) {
 			$this->sendNotification( $comment, 'requestssl-request-comment', $user );
 		}
@@ -200,7 +205,7 @@ class RequestSSLManager {
 	 * @param User $user
 	 */
 	public function sendNotification( string $comment, string $type, User $user ) {
-		$requestLink = SpecialPage::getTitleFor( 'RequestRequestSSLQueue', (string)$this->ID )->getFullURL();
+		$requestLink = SpecialPage::getTitleFor( 'RequestSSLQueue', (string)$this->ID )->getFullURL();
 
 		$involvedUsers = array_values( array_filter(
 			array_diff( $this->getInvolvedUsers(), [ $user ] )
@@ -254,7 +259,7 @@ class RequestSSLManager {
 	 * @return array
 	 */
 	public function getInvolvedUsers(): array {
-		return array_unique( array_column( $this->getComments(), 'user' ) + [ $this->getRequester() ] );
+		return array_unique( array_merge( array_column( $this->getComments(), 'user' ), [ $this->getRequester() ] ) );
 	}
 
 	/**
@@ -280,13 +285,9 @@ class RequestSSLManager {
 	 */
 	public function getUserGroupsFromTarget() {
 		$userName = $this->getRequester()->getName();
-		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
-			$remoteUser = $this->actorStoreFactory
-				->getUserIdentityLookup( $this->getTarget() )
-				->getUserIdentityByName( $userName );
-		} else {
-			$remoteUser = UserRightsProxy::newFromName( $this->getTarget(), $userName );
-		}
+		$remoteUser = $this->actorStoreFactory
+			->getUserIdentityLookup( $this->getTarget() )
+			->getUserIdentityByName( $userName );
 
 		if ( !$remoteUser ) {
 			return [ $this->messageLocalizer->msg( 'requestssl-usergroups-none' )->text() ];
@@ -362,8 +363,21 @@ class RequestSSLManager {
 			return false;
 		}
 
-		$remoteWiki = new RemoteWiki( $this->getTarget() );
+		$remoteWiki = new RemoteWiki( $this->getTarget(), $this->createWikiHookRunner );
 		return (bool)$remoteWiki->isPrivate();
+	}
+
+	/**
+	 * @param User $user
+	 */
+	public function logToManageWiki( User $user ) {
+		$logEntry = new ManualLogEntry( 'managewiki', 'settings' );
+		$logEntry->setPerformer( $user );
+		$logEntry->setTarget( SpecialPage::getTitleValueFor( 'RequestSSLQueue', (string)$this->ID ) );
+		$logEntry->setComment( "[[Special:RequestSSLQueue/{$this->ID}|Requested]]" );
+		$logEntry->setParameters( [ '4::wiki' => $this->getTarget(), '5::changes' => 'servername' ] );
+		$logID = $logEntry->insert();
+		$logEntry->publish( $logID );
 	}
 
 	/**
@@ -471,26 +485,18 @@ class RequestSSLManager {
 	}
 
 	/**
-	 * @param string $remotewiki
-	 * @param User $user
+	 * @return bool
 	 */
-	public function updateManageWiki( string $remotewiki, User $user ) {
+	public function updateServerName(): bool {
 		$newServerName = parse_url( $this->getCustomDomain(), PHP_URL_HOST );
 		if ( !$newServerName ) {
-			return;
+			return false;
 		}
 
-		$remoteWiki = new RemoteWiki( $this->getTarget() );
+		$remoteWiki = new RemoteWiki( $this->getTarget(), $this->createWikiHookRunner );
 		$remoteWiki->setServerName( 'https://' . $newServerName );
 		$remoteWiki->commit();
-
-		$logEntry = new ManualLogEntry( 'managewiki', 'settings' );
-		$logEntry->setPerformer( $user );
-		$logEntry->setTarget( SpecialPage::getTitleValueFor( 'RequestSSL' ) );
-		$logEntry->setComment( $this->messageLocalizer->msg( 'requestssl-managewiki-changedservername' ) );
-		$logEntry->setParameters( [ '4::wiki' => $this->getTarget(), '5::changes' => 'servername' ] );
-		$logID = $logEntry->insert();
-		$logEntry->publish( $logID );
+		return true;
 	}
 
 	/**

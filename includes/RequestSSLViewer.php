@@ -3,6 +3,7 @@
 namespace Miraheze\RequestSSL;
 
 use Config;
+use ExtensionRegistry;
 use Html;
 use HTMLForm;
 use IContextSource;
@@ -57,7 +58,14 @@ class RequestSSLViewer {
 			!$this->permissionManager->userHasRight( $user, 'view-private-ssl-requests' )
 		) {
 			$this->context->getOutput()->addHTML(
-				Html::errorBox( $this->context->msg( 'requestssl-private' )->escaped() )
+				Html::warningBox(
+					Html::element(
+						'p',
+						[],
+						$this->context->msg( 'requestssl-private' )->text()
+					),
+					'mw-notify-error'
+				)
 			);
 
 			return [];
@@ -65,7 +73,14 @@ class RequestSSLViewer {
 
 		if ( $this->requestSslRequestManager->isLocked() ) {
 			$this->context->getOutput()->addHTML(
-				Html::errorBox( $this->context->msg( 'requestssl-request-locked' )->escaped() )
+				Html::warningBox(
+					Html::element(
+						'p',
+						[],
+						$this->context->msg( 'requestssl-request-locked' )->text()
+					),
+					'mw-notify-error'
+				)
 			);
 		}
 
@@ -416,7 +431,16 @@ class RequestSSLViewer {
 
 		if ( isset( $formData['submit-comment'] ) ) {
 			$this->requestSslRequestManager->addComment( $formData['comment'], $user );
-			$out->addHTML( Html::successBox( $this->context->msg( 'requestssl-comment-success' )->escaped() ) );
+			$out->addHTML(
+				Html::successBox(
+					Html::element(
+						'p',
+						[],
+						$this->context->msg( 'requestssl-comment-success' )->text()
+					),
+					'mw-notify-success'
+				)
+			);
 
 			return;
 		}
@@ -458,8 +482,16 @@ class RequestSSLViewer {
 			if ( !$changes ) {
 				$this->requestSslRequestManager->endAtomic( __METHOD__ );
 
-				$out->addHTML( Html::errorBox( $this->context->msg( 'requestssl-no-changes' )->escaped() ) );
-
+				$this->context->getOutput()->addHTML(
+					Html::warningBox(
+						Html::element(
+							'p',
+							[],
+							$this->context->msg( 'requestssl-no-changes' )->text()
+						),
+						'mw-notify-error'
+					)
+				);
 				return;
 			}
 
@@ -467,7 +499,7 @@ class RequestSSLViewer {
 				$this->requestSslRequestManager->setStatus( 'pending' );
 
 				$comment = $this->context->msg( 'requestssl-request-reopened', $user->getName() )->rawParams(
-					implode( "\n", $changes )
+					implode( "\n\n", $changes )
 				)->inContentLanguage()->escaped();
 
 				$this->requestSslRequestManager->logStatusUpdate( $comment, 'pending', $user );
@@ -479,7 +511,7 @@ class RequestSSLViewer {
 				);
 			} else {
 				$comment = $this->context->msg( 'requestssl-request-edited', $user->getName() )->rawParams(
-					implode( "\n", $changes )
+					implode( "\n\n", $changes )
 				)->inContentLanguage()->escaped();
 
 				$this->requestSslRequestManager->addComment( $comment, User::newSystemUser( 'RequestSSL Extension' ) );
@@ -487,7 +519,16 @@ class RequestSSLViewer {
 
 			$this->requestSslRequestManager->endAtomic( __METHOD__ );
 
-			$out->addHTML( Html::successBox( $this->context->msg( 'requestssl-edit-success' )->escaped() ) );
+			$out->addHTML(
+				Html::successBox(
+					Html::element(
+						'p',
+						[],
+						$this->context->msg( 'requestssl-edit-success' )->text()
+					),
+					'mw-notify-success'
+				)
+			);
 
 			return;
 		}
@@ -517,31 +558,68 @@ class RequestSSLViewer {
 				$this->requestSslRequestManager->endAtomic( __METHOD__ );
 
 				if ( !$changes ) {
-					$out->addHTML( Html::errorBox( $this->context->msg( 'requestssl-no-changes' )->escaped() ) );
+					$out->addHTML(
+						Html::warningBox(
+							Html::element(
+								'p',
+								[],
+								$this->context->msg( 'requestssl-no-changes' )->text()
+							),
+							'mw-notify-error'
+						)
+					);
 					return;
 				}
 
 				if ( in_array( 'private', $changes ) ) {
 					$out->addHTML(
-						Html::successBox( $this->context->msg( 'requestssl-success-private' )->escaped() )
+						Html::successBox(
+							Html::element(
+								'p',
+								[],
+								$this->context->msg( 'requestssl-success-private' )->text()
+							),
+							'mw-notify-success'
+						)
 					);
 				}
 
 				if ( in_array( 'public', $changes ) ) {
 					$out->addHTML(
-						Html::successBox( $this->context->msg( 'requestssl-success-public' )->escaped() )
+						Html::successBox(
+							Html::element(
+								'p',
+								[],
+								$this->context->msg( 'requestssl-success-public' )->text()
+							),
+							'mw-notify-success'
+						)
 					);
 				}
 
 				if ( in_array( 'locked', $changes ) ) {
 					$out->addHTML(
-						Html::successBox( $this->context->msg( 'requestssl-success-locked' )->escaped() )
+						Html::successBox(
+							Html::element(
+								'p',
+								[],
+								$this->context->msg( 'requestssl-success-locked' )->text()
+							),
+							'mw-notify-success'
+						)
 					);
 				}
 
 				if ( in_array( 'unlocked', $changes ) ) {
 					$out->addHTML(
-						Html::successBox( $this->context->msg( 'requestssl-success-unlocked' )->escaped() )
+						Html::successBox(
+							Html::element(
+								'p',
+								[],
+								$this->context->msg( 'requestssl-success-unlocked' )->text()
+							),
+							'mw-notify-success'
+						)
 					);
 				}
 
@@ -559,7 +637,10 @@ class RequestSSLViewer {
 				->escaped();
 
 			if ( $oldStatus !== 'complete' && $formData['handle-status'] === 'complete' ) {
-				$this->requestSslRequestManager->updateManageWiki( $user, $this->context->getUser() );
+				$serverNameUpdated = $this->requestSslRequestManager->updateServerName();
+				if ( $serverNameUpdated && ExtensionRegistry::getInstance()->isLoaded( 'ManageWiki' ) ) {
+					$this->requestSslRequestManager->logToManageWiki( $this->context->getUser() );
+				}
 			}
 
 			if ( $formData['handle-comment'] ) {
@@ -581,7 +662,16 @@ class RequestSSLViewer {
 
 			$this->requestSslRequestManager->endAtomic( __METHOD__ );
 
-			$out->addHTML( Html::successBox( $this->context->msg( 'requestssl-status-updated-success' )->escaped() ) );
+			$out->addHTML(
+				Html::successBox(
+					Html::element(
+						'p',
+						[],
+						$this->context->msg( 'requestssl-status-updated-success' )->text()
+					),
+					'mw-notify-success'
+				)
+			);
 		}
 	}
 }

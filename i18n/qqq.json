@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Ajeje Brazorf",
+			"Amire80",
 			"McDutchie",
 			"Universal Omega",
 			"Verdy p"
@@ -27,6 +28,8 @@
 	"requestssl-duplicate-request": "Message displayed when user attempts to submit a request that is to similar to an existing open request.",
 	"requestssl-edit-success": "Message displayed when the request is successfully edited.",
 	"requestssl-extensionname": "{{name}}",
+	"requestsslqueue-header": "Legend header for request page",
+	"requestsslqueue-header-info": "Information under legend header",
 	"requestssl-header-comment-withtimestamp": "Timestamp for comment.",
 	"requestssl-help-reason": "Help for the 'reason' field.",
 	"requestssl-help-customdomain": "Help for the 'source' field.",
@@ -58,7 +61,6 @@
 	"requestssl-label-update-status": "Label for the handling section of Special:RequestSSLQueue:",
 	"requestssl-log-header": "Header for the requestssl log.",
 	"requestssl-log-name": "{{doc-logpage}}",
-	"requestssl-managewiki-changedservername": "Reason for the servername change on the ManageWiki log",
 	"requestssl-no-changes": "Message displayed if attempting to edit request without making any changes.",
 	"requestssl-notcentral": "Heading for the message displayed if there is a configured central wiki, and it is not the current wiki.\n{{Identical|Disabled}}",
 	"requestssl-notcentral-text": "Text for the message displayed if there is a configured central wiki, and it is not the current wiki.",
@@ -101,7 +103,7 @@
 	"log-action-filter-requestsslprivate": "{{doc-log-action-filter-type|requestsslprivate}}\n{{identical|Type of action}}\n{{related|Log-action-filter}}",
 	"log-action-filter-requestsslprivate-request": "{{doc-log-action-filter-action|requestsslprivate|request}}",
 	"log-action-filter-requestsslprivate-statusupdate": "{{doc-log-action-filter-action|requestsslprivate|statusupdate}}",
-	"logentry-requestssl-request": "{{logentry|[[Special:Log/requestssl]]}}",
+	"logentry-requestssl-request": "{{logentry|[[Special:Log/requestssl]]}}\n\nMore parameters:\n* $4 - target wiki\n* $5 - servername",
 	"logentry-requestssl-statusupdate": "{{logentry|[[Special:Log/requestssl]]}}",
 	"logentry-requestsslprivate-request": "{{logentry|[[Special:Log/requestsslprivate]]}}",
 	"logentry-requestsslprivate-statusupdate": "{{logentry|[[Special:Log/requestsslprivate]]}}",

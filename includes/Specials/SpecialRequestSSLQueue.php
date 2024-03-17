@@ -65,6 +65,10 @@ class SpecialRequestSSLQueue extends SpecialPage {
 		$target = $this->getRequest()->getText( 'target' );
 
 		$formDescriptor = [
+			'info' => [
+				'type' => 'info',
+				'default' => $this->msg( 'requestsslqueue-header-info' )->text(),
+			],
 			'target' => [
 				'type' => 'text',
 				'name' => 'target',
@@ -94,7 +98,12 @@ class SpecialRequestSSLQueue extends SpecialPage {
 		];
 
 		$htmlForm = HTMLForm::factory( 'ooui', $formDescriptor, $this->getContext() );
-		$htmlForm->setMethod( 'get' )->prepareForm()->displayForm( false );
+		$htmlForm
+			->setMethod( 'get' )
+			->setWrapperLegendMsg( 'requestsslqueue-header' )
+			->setSubmitTextMsg( 'search' )
+			->prepareForm()
+			->displayForm( false );
 
 		$pager = new RequestSSLQueuePager(
 			$this->getConfig(),
@@ -122,6 +131,8 @@ class SpecialRequestSSLQueue extends SpecialPage {
 			$this->requestSslRequestManager,
 			$this->permissionManager
 		);
+
+		$this->getOutput()->addModules( [ 'mediawiki.special.userrights' ] );
 
 		$htmlForm = $requestViewer->getForm( (int)$par );
 

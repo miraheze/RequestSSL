@@ -55,7 +55,7 @@
 		"requestsslprivate"
 	],
 	"LogRestrictions": {
-		"requestsslprivate": "view-private-request-ssl-requests"
+		"requestsslprivate": "view-private-ssl-requests"
 	},
 	"ActionFilteredLogs": {
 		"requestssl": {
@@ -79,6 +79,7 @@
 		"RequestSSL": {
 			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestSSL",
 			"services": [
+				"CreateWikiHookRunner",
 				"DBLoadBalancerFactory",
 				"MimeAnalyzer",
 				"RepoGroup",
