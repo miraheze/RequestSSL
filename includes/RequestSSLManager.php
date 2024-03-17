@@ -438,7 +438,7 @@ class RequestSSLManager {
 	/**
 	 * @param string $customDomain
 	 */
-	public function setSource( string $customDomain ) {
+	public function setCustomDomain( string $customDomain ) {
 		$this->dbw->update(
 			'requestssl_requests',
 			[
