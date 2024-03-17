@@ -192,7 +192,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 				Html::element(
 					'p',
 					[],
-					$this->msg( 'requestssl-success' )->rawParams( $requestLink )->escaped()
+					$this->msg( 'requestssl-success' )->rawParams( $requestLink )->text()
 				),
 				'mw-notify-success'
 			)
