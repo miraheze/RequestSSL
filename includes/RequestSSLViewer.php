@@ -62,7 +62,7 @@ class RequestSSLViewer {
 					Html::element(
 						'p',
 						[],
-						$this->context->msg( 'requestssl-private' )->escaped()
+						$this->context->msg( 'requestssl-private' )->text()
 					),
 					'mw-notify-error'
 				)
@@ -77,7 +77,7 @@ class RequestSSLViewer {
 					Html::element(
 						'p',
 						[],
-						$this->context->msg( 'requestssl-request-locked' )->escaped()
+						$this->context->msg( 'requestssl-request-locked' )->text()
 					),
 					'mw-notify-error'
 				)
@@ -436,7 +436,7 @@ class RequestSSLViewer {
 					Html::element(
 						'p',
 						[],
-						$this->context->msg( 'requestssl-comment-success' )->escaped()
+						$this->context->msg( 'requestssl-comment-success' )->text()
 					),
 					'mw-notify-success'
 				)
@@ -487,7 +487,7 @@ class RequestSSLViewer {
 						Html::element(
 							'p',
 							[],
-							$this->context->msg( 'requestssl-no-changes' )->escaped()
+							$this->context->msg( 'requestssl-no-changes' )->text()
 						),
 						'mw-notify-error'
 					)
@@ -524,7 +524,7 @@ class RequestSSLViewer {
 					Html::element(
 						'p',
 						[],
-						$this->context->msg( 'requestssl-edit-success' )->escaped()
+						$this->context->msg( 'requestssl-edit-success' )->text()
 					),
 					'mw-notify-success'
 				)
@@ -563,7 +563,7 @@ class RequestSSLViewer {
 							Html::element(
 								'p',
 								[],
-								$this->context->msg( 'requestssl-no-changes' )->escaped()
+								$this->context->msg( 'requestssl-no-changes' )->text()
 							),
 							'mw-notify-error'
 						)
@@ -577,7 +577,7 @@ class RequestSSLViewer {
 							Html::element(
 								'p',
 								[],
-								$this->context->msg( 'requestssl-success-private' )->escaped()
+								$this->context->msg( 'requestssl-success-private' )->text()
 							),
 							'mw-notify-success'
 						)
@@ -590,7 +590,7 @@ class RequestSSLViewer {
 							Html::element(
 								'p',
 								[],
-								$this->context->msg( 'requestssl-success-public' )->escaped()
+								$this->context->msg( 'requestssl-success-public' )->text()
 							),
 							'mw-notify-success'
 						)
@@ -603,7 +603,7 @@ class RequestSSLViewer {
 							Html::element(
 								'p',
 								[],
-								$this->context->msg( 'requestssl-success-locked' )->escaped()
+								$this->context->msg( 'requestssl-success-locked' )->text()
 							),
 							'mw-notify-success'
 						)
@@ -616,7 +616,7 @@ class RequestSSLViewer {
 							Html::element(
 								'p',
 								[],
-								$this->context->msg( 'requestssl-success-unlocked' )->escaped()
+								$this->context->msg( 'requestssl-success-unlocked' )->text()
 							),
 							'mw-notify-success'
 						)
@@ -638,9 +638,9 @@ class RequestSSLViewer {
 
 			if ( $oldStatus !== 'complete' && $formData['handle-status'] === 'complete' ) {
 				$serverNameUpdated = $this->requestSslRequestManager->updateServerName();
-					if ( $serverNameUpdated && ExtensionRegistry::getInstance()->isLoaded( 'ManageWiki' ) ) {
-						$this->requestSslRequestManager->logToManageWiki( $this->context->getUser() );
-					}
+				if ( $serverNameUpdated && ExtensionRegistry::getInstance()->isLoaded( 'ManageWiki' ) ) {
+					$this->requestSslRequestManager->logToManageWiki( $this->context->getUser() );
+				}
 			}
 
 			if ( $formData['handle-comment'] ) {
@@ -667,7 +667,7 @@ class RequestSSLViewer {
 					Html::element(
 						'p',
 						[],
-						$this->context->msg( 'requestssl-status-updated-success' )->escaped()
+						$this->context->msg( 'requestssl-status-updated-success' )->text()
 					),
 					'mw-notify-success'
 				)
