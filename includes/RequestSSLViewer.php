@@ -524,7 +524,7 @@ class RequestSSLViewer {
 					Html::element(
 						'p',
 						[],
-						$this->context->msg( 'requestssl-edit-success' )->escaped()
+						$this->context->msg( 'requestssl-edit-success' )->text()
 					),
 					'mw-notify-success'
 				)
