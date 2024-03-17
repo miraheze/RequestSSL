@@ -638,9 +638,9 @@ class RequestSSLViewer {
 
 			if ( $oldStatus !== 'complete' && $formData['handle-status'] === 'complete' ) {
 				$serverNameUpdated = $this->requestSslRequestManager->updateServerName();
-					if ( $serverNameUpdated && ExtensionRegistry::getInstance()->isLoaded( 'ManageWiki' ) ) {
-						$this->requestSslRequestManager->logToManageWiki( $this->context->getUser() );
-					}
+				if ( $serverNameUpdated && ExtensionRegistry::getInstance()->isLoaded( 'ManageWiki' ) ) {
+					$this->requestSslRequestManager->logToManageWiki( $this->context->getUser() );
+				}
 			}
 
 			if ( $formData['handle-comment'] ) {
