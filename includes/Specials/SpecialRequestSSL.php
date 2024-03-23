@@ -7,7 +7,9 @@ use ErrorPageError;
 use ExtensionRegistry;
 use FormSpecialPage;
 use Html;
+use JobSpecification;
 use ManualLogEntry;
+use JobQueueGroup;
 use MediaWiki\User\UserFactory;
 use Message;
 use MimeAnalyzer;
@@ -30,6 +32,9 @@ class SpecialRequestSSL extends FormSpecialPage {
 	/** @var ILBFactory */
 	private $dbLoadBalancerFactory;
 
+	/** @var JobQueueGroup */
+	private $jobQueueGroup;
+
 	/** @var MimeAnalyzer */
 	private $mimeAnalyzer;
 
@@ -42,6 +47,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	/**
 	 * @param CreateWikiHookRunner $createWikiHookRunner
 	 * @param ILBFactory $dbLoadBalancerFactory
+	 * @param JobQueueGroup $jobQueueGroup
 	 * @param MimeAnalyzer $mimeAnalyzer
 	 * @param RepoGroup $repoGroup
 	 * @param UserFactory $userFactory
@@ -49,6 +55,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	public function __construct(
 		CreateWikiHookRunner $createWikiHookRunner,
 		ILBFactory $dbLoadBalancerFactory,
+		JobQueueGroup $jobQueueGroup,
 		MimeAnalyzer $mimeAnalyzer,
 		RepoGroup $repoGroup,
 		UserFactory $userFactory
@@ -57,6 +64,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 
 		$this->createWikiHookRunner = $createWikiHookRunner;
 		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
+		$this->jobQueueGroup = $jobQueueGroup;
 		$this->mimeAnalyzer = $mimeAnalyzer;
 		$this->repoGroup = $repoGroup;
 		$this->userFactory = $userFactory;
@@ -221,6 +229,9 @@ class SpecialRequestSSL extends FormSpecialPage {
 		) {
 			$this->sendNotifications( $data['reason'], $this->getUser()->getName(), $requestID, $data['target'] );
 		}
+
+		$domainCheckJob = new JobSpecification( 'DomainCheckJob', ['requestID' => $requestID] );
+		$this->jobQueueGroup->lazyPush( $domainCheckJob );
 
 		return Status::newGood();
 	}
