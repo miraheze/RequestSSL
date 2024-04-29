@@ -58,7 +58,7 @@
 	"requestssl-log-header": "זה יומן של כל בקשות ה־ssl ועדכוני המצב.",
 	"requestssl-log-name": "יומן בקשות SSL",
 	"requestssl-no-changes": "לא נעשו שינויים.",
-	"requestssl-notcentral": "מושבת",
+	"requestssl-notcentral": "כבוי",
 	"requestssl-notcentral-text": "בקשות אישורי SSL כבויות בוויקי הזה. נא לבקש אישור SSL מהוויקי המרכזי.",
 	"requestssl-notification-body-new-request": "התקבלה בקשת אישור SSL חדשה.<br />הסיבה שניתנה: $1<br />המבקש: $2<br />מסד הנתונים המיועד: $3",
 	"requestssl-notification-header-comment": "בקשת אישור SSL מס׳ $1 זכתה לתגובה.",
