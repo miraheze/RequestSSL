@@ -7,7 +7,7 @@
 			"Waki285"
 		]
 	},
-	"action-handle-ssl-requests": "SSL証明書リクエストを処理する",
+	"action-handle-ssl-requests": "SSL証明書申請の処理",
 	"action-request-ssl": "SSL 証明書のリクエスト",
 	"action-view-private-ssl-requests": "非公開の SSL 証明書リクエストの閲覧",
 	"echo-category-title-requestssl-new-request": "新しいSSL証明書リクエスト",
@@ -107,7 +107,7 @@
 	"logentry-requestsslprivate-statusupdate": "$1 が非公開SSL証明書リクエスト $4 のステータスを '$5' に{{GENDER:$2|更新しました}}。",
 	"requestssl": "SSLをリクエスト",
 	"requestsslqueue": "SSL証明書リクエストキュー",
-	"right-handle-ssl-requests": "利用者のSSL証明書の申請を処理する",
+	"right-handle-ssl-requests": "利用者のSSL証明書の申請を処理",
 	"right-request-ssl": "SSL 証明書をリクエスト",
 	"right-view-private-ssl-requests": "非公開の SSL 証明書リクエストを閲覧"
 }
