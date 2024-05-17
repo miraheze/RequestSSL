@@ -38,6 +38,16 @@
 		"request-ssl",
 		"view-private-ssl-requests"
 	],
+	"JobClasses": {
+		"DomainCheckJob": {
+			"class": "Miraheze\\RequestSSL\\Jobs\\DomainCheckJob",
+			"services": [
+				"ConfigFactory",
+				"RequestSSLManager"
+			],
+			"needsPage": false
+		}
+	},
 	"LogActionsHandlers": {
 		"requestssl/*": "LogFormatter",
 		"requestsslprivate/*": "LogFormatter"
@@ -81,6 +91,7 @@
 			"services": [
 				"CreateWikiHookRunner",
 				"DBLoadBalancerFactory",
+				"JobQueueGroup",
 				"MimeAnalyzer",
 				"RepoGroup",
 				"UserFactory"
@@ -143,6 +154,10 @@
 		"RequestSSLCentralWiki": {
 			"value": "",
 			"description": "If set, only allow users to request a SSL certificate on this wiki."
+		},
+		"RequestSSLDomainCheckCNAME": {
+			"value": "",
+			"description": "String. Specifies the CNAME record that RequestSSL will look for on automatic domain checks. If a domain has this CNAME record, it is considered to be pointed"
 		},
 		"RequestSSLHelpUrl": {
 			"value": "",
