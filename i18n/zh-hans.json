@@ -1,14 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
-			"Anterdc99"
+			"Anterdc99",
+			"LittlePaw365"
 		]
 	},
 	"action-handle-ssl-requests": "处理SSL证书申请",
 	"action-request-ssl": "申请SSL证书",
 	"action-view-private-ssl-requests": "查看非公开SSL证书申请",
 	"echo-category-title-requestssl-new-request": "新的SSL证书申请",
-	"echo-category-title-requestssl-request-comment": "添加到SSL申请的意见",
+	"echo-category-title-requestssl-request-comment": "SSL申请收到评论",
 	"echo-category-title-requestssl-request-status-update": "已更新SSL证书申请状态",
 	"echo-pref-tooltip-requestssl-new-request": "当有新的SSL证书申请时通知我。",
 	"echo-pref-tooltip-requestssl-request-comment": "当我参与的SSL证书申请有意见时通知我。",
@@ -51,7 +52,7 @@
 	"requestssl-label-requested-date": "申请日期：",
 	"requestssl-label-requester": "申请者：",
 	"requestssl-label-status": "状态：",
-	"requestssl-label-status-updated-comment": "添加到此申请的可选附加意见：",
+	"requestssl-label-status-updated-comment": "要添加到该申请的额外评论（选填）：",
 	"requestssl-label-target": "目标数据库名称：",
 	"requestssl-label-update-status": "设置此申请的状态为：",
 	"requestssl-log-header": "这是所有SSL申请和状态更新的日志。",
