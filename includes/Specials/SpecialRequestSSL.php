@@ -15,6 +15,7 @@ use Miraheze\CreateWiki\Hooks\CreateWikiHookRunner;
 use Miraheze\CreateWiki\RemoteWiki;
 use RepoGroup;
 use SpecialPage;
+use Status;
 use User;
 use UserBlockedError;
 use UserNotLoggedIn;
