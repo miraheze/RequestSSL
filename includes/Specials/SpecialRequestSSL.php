@@ -286,16 +286,16 @@ class SpecialRequestSSL extends FormSpecialPage {
 
 	/**
 	 * @param ?string $customDomain
-	 * @return string|bool
+	 * @return string|bool|Message
 	 */
 	public function isValidCustomDomain( ?string $customDomain ) {
 		if ( !$customDomain ) {
-			return Status::newFatal( 'requestssl-customdomain-not-a-url' )->getMessage();
+			return $this->msg( 'requestssl-customdomain-not-a-url' );
 		}
 
 		$parsedURL = parse_url( $customDomain );
 		if ( !$parsedURL ) {
-			return Status::newFatal( 'requestssl-customdomain-not-a-url' )->getMessage();
+			return $this->msg( 'requestssl-customdomain-not-a-url' );
 		}
 
 		$unneededComponents = [
@@ -308,19 +308,19 @@ class SpecialRequestSSL extends FormSpecialPage {
 		];
 
 		if ( !array_key_exists( 'scheme', $parsedURL ) ) {
-			return Status::newFatal( 'requestssl-customdomain-protocol-not-https' )->getMessage();
+			return $this->msg( 'requestssl-customdomain-protocol-not-https' );
 		} else {
 			if ( $parsedURL['scheme'] !== 'https' ) {
-				return Status::newFatal( 'requestssl-customdomain-protocol-not-https' )->getMessage();
+				return $this->msg( 'requestssl-customdomain-protocol-not-https' );
 			}
 		}
 		if ( !array_key_exists( 'host', $parsedURL ) ) {
-			return Status::newFatal( 'requestssl-customdomain-no-hostname' )->getMessage();
+			return $this->msg( 'requestssl-customdomain-no-hostname' );
 		}
 
 		foreach ( $unneededComponents as $component ) {
 			if ( array_key_exists( $component, $parsedURL ) ) {
-				return Status::newFatal( 'requestssl-customdomain-unneeded-component' )->getMessage();
+				return $this->msg( 'requestssl-customdomain-unneeded-component' );
 			}
 		}
 		return true;
@@ -328,11 +328,11 @@ class SpecialRequestSSL extends FormSpecialPage {
 
 	/**
 	 * @param ?string $target
-	 * @return string|bool
+	 * @return string|bool|Message
 	 */
 	public function isValidDatabase( ?string $target ) {
 		if ( !in_array( $target, $this->getConfig()->get( 'LocalDatabases' ) ) ) {
-			return Status::newFatal( 'requestssl-invalid-target' )->getMessage();
+			return $this->msg( 'requestssl-invalid-target' );
 		}
 
 		return true;
@@ -340,11 +340,11 @@ class SpecialRequestSSL extends FormSpecialPage {
 
 	/**
 	 * @param ?string $reason
-	 * @return string|bool
+	 * @return string|bool|Message
 	 */
 	public function isValidReason( ?string $reason ) {
 		if ( !$reason || ctype_space( $reason ) ) {
-			return Status::newFatal( 'htmlform-required' )->getMessage();
+			return $this->msg( 'htmlform-required' );
 		}
 
 		return true;
