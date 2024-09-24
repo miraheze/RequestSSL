@@ -9,7 +9,7 @@ use HTMLForm;
 use IContextSource;
 use Linker;
 use MediaWiki\Permissions\PermissionManager;
-use Status;
+use Message;
 use User;
 use UserNotLoggedIn;
 use WikiMap;
@@ -340,11 +340,11 @@ class RequestSSLViewer {
 	/**
 	 * @param ?string $comment
 	 * @param array $alldata
-	 * @return string|bool
+	 * @return string|bool|Message
 	 */
 	public function isValidComment( ?string $comment, array $alldata ) {
 		if ( isset( $alldata['submit-comment'] ) && ( !$comment || ctype_space( $comment ) ) ) {
-			return Status::newFatal( 'htmlform-required' )->getMessage();
+			return $this->context->msg( 'htmlform-required' );
 		}
 
 		return true;
@@ -352,11 +352,11 @@ class RequestSSLViewer {
 
 	/**
 	 * @param ?string $target
-	 * @return string|bool
+	 * @return string|bool|Message
 	 */
 	public function isValidDatabase( ?string $target ) {
 		if ( !in_array( $target, $this->config->get( 'LocalDatabases' ) ) ) {
-			return Status::newFatal( 'requestssl-invalid-target' )->getMessage();
+			return $this->context->msg( 'requestssl-invalid-target' );
 		}
 
 		return true;
@@ -364,11 +364,11 @@ class RequestSSLViewer {
 
 	/**
 	 * @param ?string $reason
-	 * @return string|bool
+	 * @return string|bool|Message
 	 */
 	public function isValidReason( ?string $reason ) {
 		if ( !$reason || ctype_space( $reason ) ) {
-			return Status::newFatal( 'htmlform-required' )->getMessage();
+			return $this->context->msg( 'htmlform-required' );
 		}
 
 		return true;
