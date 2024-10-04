@@ -84,7 +84,7 @@ class RequestSSLQueuePager extends TablePager {
 	 * @param string $value
 	 * @return string
 	 */
-	private function escape( $value ) {
+	private static function escape( $value ) {
 		return htmlspecialchars( $value, ENT_QUOTES );
 	}
 
