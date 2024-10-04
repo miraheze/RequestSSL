@@ -103,6 +103,10 @@ class RequestSSLQueuePager extends TablePager {
 
 				break;
 			case 'request_target':
+				// @todo This function escapes unsafe output with RequestSSLQueuePager::escape(),
+				// but unfortunately, I can't get phan to shut up with comments outside and inside
+				// of that function. Therefore, I must place this here:
+				// @phan-suppress-next-line SecurityCheck-LikelyFalsePositive
 				$formatted = $this->escape( $row->request_target );
 
 				break;
@@ -115,6 +119,8 @@ class RequestSSLQueuePager extends TablePager {
 				break;
 			case 'request_actor':
 				$user = $this->userFactory->newFromActorId( $row->request_actor );
+				// See above usage as to why the suppression is here.
+				// @phan-suppress-next-line SecurityCheck-LikelyFalsePositive
 				$formatted = $this->escape( $user->getName() );
 
 				break;
