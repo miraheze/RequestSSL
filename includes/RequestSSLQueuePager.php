@@ -79,6 +79,16 @@ class RequestSSLQueuePager extends TablePager {
 	}
 
 	/**
+	 * Safely HTML-escapes $value
+	 *
+	 * @param string $value
+	 * @return string
+	 */
+	private function escape( $value ) {
+		return htmlspecialchars( $value, ENT_QUOTES );
+	}
+
+	/**
 	 * @param string $name
 	 * @param string $value
 	 * @return string
@@ -89,11 +99,11 @@ class RequestSSLQueuePager extends TablePager {
 		switch ( $name ) {
 			case 'request_timestamp':
 				$language = $this->getLanguage();
-				$formatted = $language->timeanddate( $row->request_timestamp );
+				$formatted = $this->escape( $language->timeanddate( $row->request_timestamp ) );
 
 				break;
 			case 'request_target':
-				$formatted = $row->request_target;
+				$formatted = $this->escape( $row->request_target );
 
 				break;
 			case 'request_status':
@@ -105,11 +115,11 @@ class RequestSSLQueuePager extends TablePager {
 				break;
 			case 'request_actor':
 				$user = $this->userFactory->newFromActorId( $row->request_actor );
-				$formatted = $user->getName();
+				$formatted = $this->escape( $user->getName() );
 
 				break;
 			default:
-				$formatted = "Unable to format $name";
+				$formatted = $this->escape( "Unable to format $name" );
 		}
 
 		return $formatted;
