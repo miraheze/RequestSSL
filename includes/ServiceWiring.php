@@ -9,9 +9,9 @@ return [
 		return new RequestSSLManager(
 			$services->getConfigFactory()->makeConfig( 'RequestSSL' ),
 			$services->getActorStoreFactory(),
-			$services->get( 'CreateWikiHookRunner' ),
 			$services->getDBLoadBalancerFactory(),
 			$services->getLinkRenderer(),
+			$services->get( 'RemoteWikiFactory' ),
 			$services->getRepoGroup(),
 			RequestContext::getMain(),
 			new ServiceOptions(

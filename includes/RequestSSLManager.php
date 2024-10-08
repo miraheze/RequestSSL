@@ -13,8 +13,7 @@ use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserGroupManagerFactory;
 use Message;
 use MessageLocalizer;
-use Miraheze\CreateWiki\Hooks\CreateWikiHookRunner;
-use Miraheze\CreateWiki\RemoteWiki;
+use Miraheze\CreateWiki\Services\RemoteWikiFactory;
 use RepoGroup;
 use SpecialPage;
 use stdClass;
@@ -46,9 +45,6 @@ class RequestSSLManager {
 	/** @var ActorStoreFactory */
 	private $actorStoreFactory;
 
-	/** @var CreateWikiHookRunner */
-	private $createWikiHookRunner;
-
 	/** @var ILBFactory */
 	private $dbLoadBalancerFactory;
 
@@ -60,6 +56,9 @@ class RequestSSLManager {
 
 	/** @var ServiceOptions */
 	private $options;
+
+	/** @var RemoteWikiFactory */
+	private $remoteWikiFactory;
 
 	/** @var RepoGroup */
 	private $repoGroup;
@@ -76,9 +75,9 @@ class RequestSSLManager {
 	/**
 	 * @param Config $config
 	 * @param ActorStoreFactory $actorStoreFactory
-	 * @param CreateWikiHookRunner $createWikiHookRunner
 	 * @param ILBFactory $dbLoadBalancerFactory
 	 * @param LinkRenderer $linkRenderer
+	 * @param RemoteWikiFactory $remoteWikiFactory
 	 * @param RepoGroup $repoGroup
 	 * @param MessageLocalizer $messageLocalizer
 	 * @param ServiceOptions $options
@@ -88,9 +87,9 @@ class RequestSSLManager {
 	public function __construct(
 		Config $config,
 		ActorStoreFactory $actorStoreFactory,
-		CreateWikiHookRunner $createWikiHookRunner,
 		ILBFactory $dbLoadBalancerFactory,
 		LinkRenderer $linkRenderer,
+		RemoteWikiFactory $remoteWikiFactory,
 		RepoGroup $repoGroup,
 		MessageLocalizer $messageLocalizer,
 		ServiceOptions $options,
@@ -101,11 +100,11 @@ class RequestSSLManager {
 
 		$this->config = $config;
 		$this->actorStoreFactory = $actorStoreFactory;
-		$this->createWikiHookRunner = $createWikiHookRunner;
 		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
 		$this->linkRenderer = $linkRenderer;
 		$this->messageLocalizer = $messageLocalizer;
 		$this->options = $options;
+		$this->remoteWikiFactory = $remoteWikiFactory;
 		$this->repoGroup = $repoGroup;
 		$this->userFactory = $userFactory;
 		$this->userGroupManagerFactory = $userGroupManagerFactory;
@@ -363,8 +362,8 @@ class RequestSSLManager {
 			return false;
 		}
 
-		$remoteWiki = new RemoteWiki( $this->getTarget(), $this->createWikiHookRunner );
-		return (bool)$remoteWiki->isPrivate();
+		$remoteWiki = $this->remoteWikiFactory->newInstance( $this->getTarget() );
+		return $remoteWiki->isPrivate();
 	}
 
 	/**
@@ -493,7 +492,7 @@ class RequestSSLManager {
 			return false;
 		}
 
-		$remoteWiki = new RemoteWiki( $this->getTarget(), $this->createWikiHookRunner );
+		$remoteWiki = $this->remoteWikiFactory->newInstance( $this->getTarget() );
 		$remoteWiki->setServerName( 'https://' . $newServerName );
 		$remoteWiki->commit();
 		return true;
