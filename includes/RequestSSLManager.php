@@ -492,7 +492,7 @@ class RequestSSLManager {
 			return false;
 		}
 
-		$remoteWiki = new RemoteWiki( $this->getTarget(), $this->createWikiHookRunner );
+		$remoteWiki = $this->remoteWikiFactory->newInstance( $this->getTarget() );
 		$remoteWiki->setServerName( 'https://' . $newServerName );
 		$remoteWiki->commit();
 		return true;
