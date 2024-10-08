@@ -11,8 +11,7 @@ use ManualLogEntry;
 use MediaWiki\User\UserFactory;
 use Message;
 use MimeAnalyzer;
-use Miraheze\CreateWiki\Hooks\CreateWikiHookRunner;
-use Miraheze\CreateWiki\RemoteWiki;
+use Miraheze\CreateWiki\Services\RemoteWikiFactory;
 use RepoGroup;
 use SpecialPage;
 use Status;
@@ -24,14 +23,14 @@ use Wikimedia\Rdbms\ILBFactory;
 
 class SpecialRequestSSL extends FormSpecialPage {
 
-	/** @var CreateWikiHookRunner */
-	private $createWikiHookRunner;
-
 	/** @var ILBFactory */
 	private $dbLoadBalancerFactory;
 
 	/** @var MimeAnalyzer */
 	private $mimeAnalyzer;
+
+	/** @var RemoteWikiFactory */
+	private $remoteWikiFactory;
 
 	/** @var RepoGroup */
 	private $repoGroup;
@@ -40,24 +39,24 @@ class SpecialRequestSSL extends FormSpecialPage {
 	private $userFactory;
 
 	/**
-	 * @param CreateWikiHookRunner $createWikiHookRunner
 	 * @param ILBFactory $dbLoadBalancerFactory
 	 * @param MimeAnalyzer $mimeAnalyzer
+	 * @param RemoteWikiFactory $remoteWikiFactory
 	 * @param RepoGroup $repoGroup
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
-		CreateWikiHookRunner $createWikiHookRunner,
 		ILBFactory $dbLoadBalancerFactory,
 		MimeAnalyzer $mimeAnalyzer,
+		RemoteWikiFactory $remoteWikiFactory,
 		RepoGroup $repoGroup,
 		UserFactory $userFactory
 	) {
 		parent::__construct( 'RequestSSL', 'request-ssl' );
 
-		$this->createWikiHookRunner = $createWikiHookRunner;
 		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
 		$this->mimeAnalyzer = $mimeAnalyzer;
+		$this->remoteWikiFactory = $remoteWikiFactory;
 		$this->repoGroup = $repoGroup;
 		$this->userFactory = $userFactory;
 	}
@@ -237,7 +236,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 			return 'requestssl';
 		}
 
-		$remoteWiki = new RemoteWiki( $target, $this->createWikiHookRunner );
+		$remoteWiki = $this->remoteWikiFactory->newInstance( $target );
 		return $remoteWiki->isPrivate() ? 'requestsslprivate' : 'requestssl';
 	}
 
