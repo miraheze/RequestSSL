@@ -156,7 +156,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 			->table( 'requestssl_requests' )
 			->field( '*' )
 			->where( [
-				'request_reason' => $data['reason'],
+				'request_target' => $data['target'],
 				'request_status' => 'pending',
 			] )
 			->caller( __METHOD__ )
