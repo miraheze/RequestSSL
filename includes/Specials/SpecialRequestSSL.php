@@ -123,7 +123,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'rows' => 4,
 				'label-message' => 'requestssl-label-reason',
 				'help-message' => 'requestssl-help-reason',
-				'required' => false,
+				'required' => true,
 				'validation-callback' => [ $this, 'isValidReason' ],
 			],
 		];
