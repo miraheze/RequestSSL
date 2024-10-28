@@ -3,6 +3,7 @@
 		"authors": [
 			"Adriendelucca",
 			"Graineahumus",
+			"Mahabarata",
 			"McDutchie",
 			"Melimeli",
 			"SleaY",
@@ -31,6 +32,7 @@
 	"requestssl-edit-success": "Demande modifiée avec succès.",
 	"requestssl-extensionname": "DemandeSSL",
 	"requestsslqueue-header": "Rechercher parmi les requêtes de domaine personnalisées",
+	"requestsslqueue-header-info": "Vous pouvez utiliser ce formulaire pour rechercher des demandes de domaine personnalisé. Utilisez les paramètres ci-dessous pour affiner votre recherche.",
 	"requestssl-header-comment-withtimestamp": "Commentaire laissé par $1 à $2",
 	"requestssl-help-reason": "Veuillez ajouter tout commentaire supplémentaire qui, selon vous, pourrait être pertinent à cette demande.",
 	"requestssl-help-customdomain": "Saisissez l’URL complète du domaine personnalisé souhaité (c’est-à-dire https://example.org).",
