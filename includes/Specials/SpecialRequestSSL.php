@@ -123,7 +123,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'rows' => 4,
 				'label-message' => 'requestssl-label-reason',
 				'help-message' => 'requestssl-help-reason',
-				'required' => false,
+				'required' => true,
 				'validation-callback' => [ $this, 'isValidReason' ],
 			],
 		];
@@ -156,7 +156,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 			->table( 'requestssl_requests' )
 			->field( '*' )
 			->where( [
-				'request_reason' => $data['reason'],
+				'request_target' => $data['target'],
 				'request_status' => 'pending',
 			] )
 			->caller( __METHOD__ )
