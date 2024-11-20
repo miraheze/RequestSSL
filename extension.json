@@ -12,7 +12,7 @@
 	"license-name": "GPL-3.0-or-later",
 	"type": "specialpage",
 	"requires": {
-		"MediaWiki": ">= 1.39.0"
+		"MediaWiki": ">= 1.42.0"
 	},
 	"MessagesDirs": {
 		"RequestSSL": [
@@ -79,7 +79,7 @@
 		"RequestSSL": {
 			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestSSL",
 			"services": [
-				"DBLoadBalancerFactory",
+				"ConnectionProvider",
 				"MimeAnalyzer",
 				"RemoteWikiFactory",
 				"RepoGroup",
@@ -89,7 +89,7 @@
 		"RequestSSLQueue": {
 			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestSSLQueue",
 			"services": [
-				"DBLoadBalancerFactory",
+				"ConnectionProvider",
 				"RequestSSLManager",
 				"PermissionManager",
 				"UserFactory"
@@ -117,13 +117,12 @@
 		"Main": {
 			"class": "Miraheze\\RequestSSL\\Hooks\\Handlers\\Main",
 			"services": [
-				"ConfigFactory"
+				"ConnectionProvider"
 			]
 		}
 	},
 	"ResourceModules": {
 		"ext.requestssl.oouiform": {
-			"targets": [ "desktop", "mobile" ],
 			"scripts": "ext.requestssl.oouiform.ooui.js",
 			"dependencies": [
 				"mediawiki.storage",
@@ -131,7 +130,6 @@
 			]
 		},
 		"ext.requestssl.oouiform.styles": {
-			"targets": [ "desktop", "mobile" ],
 			"styles": "ext.requestssl.oouiform.ooui.less"
 		}
 	},
@@ -140,10 +138,6 @@
 		"remoteExtPath": "RequestSSL/modules"
 	},
 	"config": {
-		"RequestSSLCentralWiki": {
-			"value": "",
-			"description": "If set, only allow users to request a SSL certificate on this wiki."
-		},
 		"RequestSSLHelpUrl": {
 			"value": "",
 			"description": "Full URL. If set, adds a help URL to Special:RequestSSL."
@@ -182,6 +176,9 @@
 	},
 	"ServiceWiringFiles": [
 		"includes/ServiceWiring.php"
+	],
+	"DatabaseVirtualDomains": [
+		"virtual-requestssl"
 	],
 	"manifest_version": 2
 }

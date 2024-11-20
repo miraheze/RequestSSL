@@ -8,7 +8,7 @@ use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\User\UserFactory;
 use SpecialPage;
 use TablePager;
-use Wikimedia\Rdbms\ILBFactory;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 class RequestSSLQueuePager extends TablePager {
 
@@ -30,7 +30,7 @@ class RequestSSLQueuePager extends TablePager {
 	/**
 	 * @param Config $config
 	 * @param IContextSource $context
-	 * @param ILBFactory $dbLoadBalancerFactory
+	 * @param IConnectionProvider $connectionProvider
 	 * @param LinkRenderer $linkRenderer
 	 * @param UserFactory $userFactory
 	 * @param string $requester
@@ -40,7 +40,7 @@ class RequestSSLQueuePager extends TablePager {
 	public function __construct(
 		Config $config,
 		IContextSource $context,
-		ILBFactory $dbLoadBalancerFactory,
+		IConnectionProvider $connectionProvider,
 		LinkRenderer $linkRenderer,
 		UserFactory $userFactory,
 		string $requester,
@@ -49,14 +49,7 @@ class RequestSSLQueuePager extends TablePager {
 	) {
 		parent::__construct( $context, $linkRenderer );
 
-		$centralWiki = $config->get( 'RequestSSLCentralWiki' );
-		if ( $centralWiki ) {
-			$this->mDb = $dbLoadBalancerFactory->getMainLB(
-				$centralWiki
-			)->getConnection( DB_REPLICA, [], $centralWiki );
-		} else {
-			$this->mDb = $dbLoadBalancerFactory->getMainLB()->getConnection( DB_REPLICA );
-		}
+		$this->mDb = $connectionProvider->getReplicaDatabase( 'virtual-requestssl' );
 
 		$this->linkRenderer = $linkRenderer;
 		$this->userFactory = $userFactory;

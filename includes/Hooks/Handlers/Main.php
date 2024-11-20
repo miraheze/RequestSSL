@@ -2,8 +2,6 @@
 
 namespace Miraheze\RequestSSL\Hooks\Handlers;
 
-use Config;
-use ConfigFactory;
 use EchoAttributeManager;
 use MediaWiki\Block\Hook\GetAllBlockActionsHook;
 use MediaWiki\User\Hook\UserGetReservedNamesHook;
@@ -11,20 +9,21 @@ use Miraheze\RequestSSL\Notifications\EchoNewRequestPresentationModel;
 use Miraheze\RequestSSL\Notifications\EchoRequestCommentPresentationModel;
 use Miraheze\RequestSSL\Notifications\EchoRequestStatusUpdatePresentationModel;
 use WikiMap;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 class Main implements
 	GetAllBlockActionsHook,
 	UserGetReservedNamesHook
 {
 
-	/** @var Config */
-	private $config;
+	/** @var IConnectionProvider */
+	private $connectionProvider;
 
 	/**
-	 * @param ConfigFactory $configFactory
+	 * @param IConnectionProvider $connectionProvider
 	 */
-	public function __construct( ConfigFactory $configFactory ) {
-		$this->config = $configFactory->makeConfig( 'RequestSSL' );
+	public function __construct( IConnectionProvider $connectionProvider ) {
+		$this->connectionProvider = $connectionProvider;
 	}
 
 	/**
@@ -39,10 +38,8 @@ class Main implements
 	 * @param array &$actions
 	 */
 	public function onGetAllBlockActions( &$actions ) {
-		if (
-			$this->config->get( 'RequestSSLCentralWiki' ) &&
-			!WikiMap::isCurrentWikiId( $this->config->get( 'RequestSSLCentralWiki' ) )
-		) {
+		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestssl' );
+		if ( !WikiMap::isCurrentWikiDbDomain( $dbr->getDomainID() ) ) {
 			return;
 		}
 
@@ -55,10 +52,8 @@ class Main implements
 	 * @param array &$icons
 	 */
 	public function onBeforeCreateEchoEvent( &$notifications, &$notificationCategories, &$icons ) {
-		if (
-			$this->config->get( 'RequestSSLCentralWiki' ) &&
-			!WikiMap::isCurrentWikiId( $this->config->get( 'RequestSSLCentralWiki' ) )
-		) {
+		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestssl' );
+		if ( !WikiMap::isCurrentWikiDbDomain( $dbr->getDomainID() ) ) {
 			return;
 		}
 

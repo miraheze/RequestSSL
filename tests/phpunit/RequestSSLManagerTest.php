@@ -2,9 +2,10 @@
 
 namespace Miraheze\RequestSSL\Tests;
 
+use MediaWiki\MainConfigNames;
 use MediaWikiIntegrationTestCase;
 use Miraheze\RequestSSL\RequestSSLManager;
-use ReflectionClass;
+use Wikimedia\TestingAccessWrapper;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
@@ -14,28 +15,30 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
  * @coversDefaultClass \Miraheze\RequestSSL\RequestSSLManager
  */
 class RequestSSLManagerTest extends MediaWikiIntegrationTestCase {
-	protected function setUp(): void {
-		parent::setUp();
 
-		$this->tablesUsed[] = 'requestssl_requests';
-	}
+	public function addDBDataOnce(): void {
+		$this->setMwGlobals( MainConfigNames::VirtualDomainsMapping, [
+			'virtual-requestssl' => [ 'db' => 'wikidb' ],
+		] );
 
-	public function addDBData() {
 		ConvertibleTimestamp::setFakeTime( ConvertibleTimestamp::now() );
 
-		$this->db->insert(
-			'requestssl_requests',
-			[
+		$connectionProvider = $this->getServiceContainer()->getConnectionProvider();
+		$dbw = $connectionProvider->getPrimaryDatabase( 'virtual-requestssl' );
+
+		$dbw->newInsertQueryBuilder()
+			->insertInto( 'requestssl_requests' )
+			->ignore()
+			->row( [
 				'request_customdomain' => 'https://requestssltest.com',
 				'request_target' => 'requestssltest',
 				'request_reason' => 'test',
 				'request_status' => 'pending',
 				'request_actor' => $this->getTestUser()->getUser()->getActorId(),
 				'request_timestamp' => $this->db->timestamp(),
-			],
-			__METHOD__,
-			[ 'IGNORE' ]
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	private function getRequestSSLManager(): RequestSSLManager {
@@ -52,15 +55,11 @@ class RequestSSLManagerTest extends MediaWikiIntegrationTestCase {
 	 * @covers ::fromID
 	 */
 	public function testFromID() {
-		$manager = $this->getRequestSSLManager();
+		$manager = TestingAccessWrapper::newFromObject(
+			$this->getRequestSSLManager()
+		);
 
-		$reflectedClass = new ReflectionClass( $manager );
-		$reflection = $reflectedClass->getProperty( 'ID' );
-		$reflection->setAccessible( true );
-
-		$ID = $reflection->getValue( $manager );
-
-		$this->assertSame( 1, $ID );
+		$this->assertSame( 1, $manager->ID );
 	}
 
 	/**
