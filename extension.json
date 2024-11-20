@@ -117,13 +117,13 @@
 		"Main": {
 			"class": "Miraheze\\RequestSSL\\Hooks\\Handlers\\Main",
 			"services": [
-				"ConfigFactory"
+				"ConfigFactory",
+				"ConnectionProvider"
 			]
 		}
 	},
 	"ResourceModules": {
 		"ext.requestssl.oouiform": {
-			"targets": [ "desktop", "mobile" ],
 			"scripts": "ext.requestssl.oouiform.ooui.js",
 			"dependencies": [
 				"mediawiki.storage",
@@ -131,7 +131,6 @@
 			]
 		},
 		"ext.requestssl.oouiform.styles": {
-			"targets": [ "desktop", "mobile" ],
 			"styles": "ext.requestssl.oouiform.ooui.less"
 		}
 	},
