@@ -2,6 +2,7 @@
 
 namespace Miraheze\RequestSSL\Specials;
 
+use ErrorPageError;
 use HTMLForm;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\User\UserFactory;
@@ -9,12 +10,13 @@ use Miraheze\RequestSSL\RequestSSLManager;
 use Miraheze\RequestSSL\RequestSSLQueuePager;
 use Miraheze\RequestSSL\RequestSSLViewer;
 use SpecialPage;
-use Wikimedia\Rdbms\ILBFactory;
+use WikiMap;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 class SpecialRequestSSLQueue extends SpecialPage {
 
-	/** @var ILBFactory */
-	private $dbLoadBalancerFactory;
+	/** @var IConnectionProvider */
+	private $connectionProvider;
 
 	/** @var RequestSSLManager */
 	private $requestSslRequestManager;
@@ -26,20 +28,20 @@ class SpecialRequestSSLQueue extends SpecialPage {
 	private $userFactory;
 
 	/**
-	 * @param ILBFactory $dbLoadBalancerFactory
+	 * @param IConnectionProvider $connectionProvider 
 	 * @param RequestSSLManager $requestSslRequestManager
 	 * @param PermissionManager $permissionManager
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
-		ILBFactory $dbLoadBalancerFactory,
+		IConnectionProvider $connectionProvider,
 		RequestSSLManager $requestSslRequestManager,
 		PermissionManager $permissionManager,
 		UserFactory $userFactory
 	) {
 		parent::__construct( 'RequestSSLQueue' );
 
-		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
+		$this->connectionProvider = $connectionProvider;
 		$this->requestSslRequestManager = $requestSslRequestManager;
 		$this->permissionManager = $permissionManager;
 		$this->userFactory = $userFactory;
@@ -50,6 +52,11 @@ class SpecialRequestSSLQueue extends SpecialPage {
 	 */
 	public function execute( $par ) {
 		$this->setHeaders();
+
+		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestssl' );
+		if ( !WikiMap::isCurrentWikiDbDomain( $dbr->getDomainID() ) ) {
+			throw new ErrorPageError( 'requestssl-notcentral', 'requestssl-notcentral-text' );
+		}
 
 		if ( $par ) {
 			$this->lookupRequest( $par );
@@ -108,7 +115,7 @@ class SpecialRequestSSLQueue extends SpecialPage {
 		$pager = new RequestSSLQueuePager(
 			$this->getConfig(),
 			$this->getContext(),
-			$this->dbLoadBalancerFactory,
+			$this->connectionProvider,
 			$this->getLinkRenderer(),
 			$this->userFactory,
 			$requester,
