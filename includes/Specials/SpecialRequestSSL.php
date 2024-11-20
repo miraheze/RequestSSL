@@ -19,12 +19,12 @@ use User;
 use UserBlockedError;
 use UserNotLoggedIn;
 use WikiMap;
-use Wikimedia\Rdbms\ILBFactory;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 class SpecialRequestSSL extends FormSpecialPage {
 
-	/** @var ILBFactory */
-	private $dbLoadBalancerFactory;
+	/** @var IConnectionProvider */
+	private $connectionProvider;
 
 	/** @var MimeAnalyzer */
 	private $mimeAnalyzer;
@@ -39,14 +39,14 @@ class SpecialRequestSSL extends FormSpecialPage {
 	private $userFactory;
 
 	/**
-	 * @param ILBFactory $dbLoadBalancerFactory
+	 * @param IConnectionProvider $connectionProvider
 	 * @param MimeAnalyzer $mimeAnalyzer
 	 * @param RemoteWikiFactory $remoteWikiFactory
 	 * @param RepoGroup $repoGroup
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
-		ILBFactory $dbLoadBalancerFactory,
+		IConnectionProvider $connectionProvider,
 		MimeAnalyzer $mimeAnalyzer,
 		RemoteWikiFactory $remoteWikiFactory,
 		RepoGroup $repoGroup,
@@ -54,7 +54,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	) {
 		parent::__construct( 'RequestSSL', 'request-ssl' );
 
-		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
+		$this->connectionProvider = $connectionProvider;
 		$this->mimeAnalyzer = $mimeAnalyzer;
 		$this->remoteWikiFactory = $remoteWikiFactory;
 		$this->repoGroup = $repoGroup;
@@ -68,10 +68,8 @@ class SpecialRequestSSL extends FormSpecialPage {
 		$this->setParameter( $par );
 		$this->setHeaders();
 
-		if (
-			$this->getConfig()->get( 'RequestSSLCentralWiki' ) &&
-			!WikiMap::isCurrentWikiId( $this->getConfig()->get( 'RequestSSLCentralWiki' ) )
-		) {
+		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestssl' );
+		if ( !WikiMap::isCurrentWikiDbDomain( $dbr->getDomainID() ) ) {
 			throw new ErrorPageError( 'requestssl-notcentral', 'requestssl-notcentral-text' );
 		}
 
@@ -143,14 +141,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 			return Status::newFatal( 'sessionfailure' );
 		}
 
-		$centralWiki = $this->getConfig()->get( 'RequestSSLCentralWiki' );
-		if ( $centralWiki ) {
-			$dbw = $this->dbLoadBalancerFactory->getMainLB(
-				$centralWiki
-			)->getConnection( DB_PRIMARY, [], $centralWiki );
-		} else {
-			$dbw = $this->dbLoadBalancerFactory->getMainLB()->getConnection( DB_PRIMARY );
-		}
+		$dbw = $this->connectionProvider->getPrimaryDatabase( 'virtual-requestssl' );
 
 		$duplicate = $dbw->newSelectQueryBuilder()
 			->table( 'requestssl_requests' )
@@ -362,12 +353,6 @@ class SpecialRequestSSL extends FormSpecialPage {
 			)
 		) {
 			throw new UserBlockedError( $block );
-		}
-
-		// @phan-suppress-next-line PhanDeprecatedFunction Only for MW 1.39 or lower.
-		$globalBlock = $user->getGlobalBlock();
-		if ( $globalBlock ) {
-			throw new UserBlockedError( $globalBlock );
 		}
 	}
 
