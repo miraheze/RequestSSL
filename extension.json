@@ -117,7 +117,6 @@
 		"Main": {
 			"class": "Miraheze\\RequestSSL\\Hooks\\Handlers\\Main",
 			"services": [
-				"ConfigFactory",
 				"ConnectionProvider"
 			]
 		}
