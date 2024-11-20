@@ -18,8 +18,8 @@ use RepoGroup;
 use SpecialPage;
 use stdClass;
 use User;
-use Wikimedia\Rdbms\DBConnRef;
-use Wikimedia\Rdbms\ILBFactory;
+use Wikimedia\Rdbms\IConnectionProvider;
+use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\SelectQueryBuilder;
 
 class RequestSSLManager {
@@ -29,14 +29,13 @@ class RequestSSLManager {
 	];
 
 	public const CONSTRUCTOR_OPTIONS = [
-		'RequestSSLCentralWiki',
 		'RequestSSLScriptCommand',
 	];
 
 	/** @var Config */
 	private $config;
 
-	/** @var DBConnRef */
+	/** @var IDatabase */
 	private $dbw;
 
 	/** @var int */
@@ -45,8 +44,8 @@ class RequestSSLManager {
 	/** @var ActorStoreFactory */
 	private $actorStoreFactory;
 
-	/** @var ILBFactory */
-	private $dbLoadBalancerFactory;
+	/** @var IConnectionProvider */
+	private $connectionProvider;
 
 	/** @var MessageLocalizer */
 	private $messageLocalizer;
@@ -75,7 +74,7 @@ class RequestSSLManager {
 	/**
 	 * @param Config $config
 	 * @param ActorStoreFactory $actorStoreFactory
-	 * @param ILBFactory $dbLoadBalancerFactory
+	 * @param IConnectionProvider $connectionProvider
 	 * @param LinkRenderer $linkRenderer
 	 * @param RemoteWikiFactory $remoteWikiFactory
 	 * @param RepoGroup $repoGroup
@@ -87,7 +86,7 @@ class RequestSSLManager {
 	public function __construct(
 		Config $config,
 		ActorStoreFactory $actorStoreFactory,
-		ILBFactory $dbLoadBalancerFactory,
+		IConnectionProvider $connectionProvider,
 		LinkRenderer $linkRenderer,
 		RemoteWikiFactory $remoteWikiFactory,
 		RepoGroup $repoGroup,
@@ -100,7 +99,7 @@ class RequestSSLManager {
 
 		$this->config = $config;
 		$this->actorStoreFactory = $actorStoreFactory;
-		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
+		$this->connectionProvider = $connectionProvider;
 		$this->linkRenderer = $linkRenderer;
 		$this->messageLocalizer = $messageLocalizer;
 		$this->options = $options;
@@ -114,16 +113,8 @@ class RequestSSLManager {
 	 * @param int $requestID
 	 */
 	public function fromID( int $requestID ) {
+		$this->dbw = $this->connectionProvider->getPrimaryDatabase( 'virtual-requestssl' );
 		$this->ID = $requestID;
-
-		$centralWiki = $this->options->get( 'RequestSSLCentralWiki' );
-		if ( $centralWiki ) {
-			$this->dbw = $this->dbLoadBalancerFactory->getMainLB(
-				$centralWiki
-			)->getConnection( DB_PRIMARY, [], $centralWiki );
-		} else {
-			$this->dbw = $this->dbLoadBalancerFactory->getMainLB()->getConnection( DB_PRIMARY );
-		}
 
 		$this->row = $this->dbw->newSelectQueryBuilder()
 			->table( 'requestssl_requests' )
