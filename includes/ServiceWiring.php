@@ -9,7 +9,7 @@ return [
 		return new RequestSSLManager(
 			$services->getConfigFactory()->makeConfig( 'RequestSSL' ),
 			$services->getActorStoreFactory(),
-			$services->getDBLoadBalancerFactory(),
+			$services->getConnectionProvider(),
 			$services->getLinkRenderer(),
 			$services->get( 'RemoteWikiFactory' ),
 			$services->getRepoGroup(),
