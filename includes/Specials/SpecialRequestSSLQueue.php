@@ -28,7 +28,7 @@ class SpecialRequestSSLQueue extends SpecialPage {
 	private $userFactory;
 
 	/**
-	 * @param IConnectionProvider $connectionProvider 
+	 * @param IConnectionProvider $connectionProvider
 	 * @param RequestSSLManager $requestSslRequestManager
 	 * @param PermissionManager $permissionManager
 	 * @param UserFactory $userFactory
