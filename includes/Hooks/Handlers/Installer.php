@@ -14,6 +14,12 @@ class Installer implements LoadExtensionSchemaUpdatesHook {
 		$dbType = $updater->getDB()->getType();
 		$dir = __DIR__ . '/../../../sql';
 
-		$updater->addExtensionTable( 'requestssl_requests', "$dir/$dbType/tables-generated.sql" );
+		$updater->addExtensionUpdateOnVirtualDomain( [
+			'virtual-requestssl',
+			'addTable',
+			'requestssl_requests',
+			"$dir/$dbType/tables-generated.sql",
+			true,
+		] );
 	}
 }
