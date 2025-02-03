@@ -10,6 +10,8 @@ use IContextSource;
 use Linker;
 use MediaWiki\Permissions\PermissionManager;
 use Message;
+use OOUI\HtmlSnippet;
+use OOUI\MessageWidget;
 use User;
 use UserNotLoggedIn;
 use WikiMap;
@@ -83,6 +85,8 @@ class RequestSSLViewer {
 				)
 			);
 		}
+
+		$this->context->getOutput()->enableOOUI();
 
 		$formDescriptor = [
 			'customdomain' => [
@@ -223,41 +227,53 @@ class RequestSSLViewer {
 					],
 					$this->context->msg( 'requestssl-button-copy' )->text()
 				);
-				$info = Html::noticeBox( $fileInfo, '' );
+				$info = new MessageWidget( [
+					'label' => new HtmlSnippet($fileInfo),
+					'type' => 'notice',
+				] );
 
-			$info .= Html::noticeBox(
-				$this->context->msg( 'requestssl-info-groups',
-					$this->requestSslRequestManager->getRequester()->getName(),
-					$this->requestSslRequestManager->getTarget(),
-					$this->context->getLanguage()->commaList(
-						$this->requestSslRequestManager->getUserGroupsFromTarget()
-					)
-				)->escaped(),
-				''
-			);
+			$info .= new MessageWidget(
+				'label' => new HtmlSnippet(
+						$this->context->msg( 'requestssl-info-groups',
+							$this->requestSslRequestManager->getRequester()->getName(),
+							$this->requestSslRequestManager->getTarget(),
+							$this->context->getLanguage()->commaList(
+								$this->requestSslRequestManager->getUserGroupsFromTarget()
+							)
+						)->escaped(),
+					),
+				'type' => 'notice',
+			] );
 
 			if ( $this->requestSslRequestManager->isPrivate() ) {
-				$info .= Html::warningBox(
-					$this->context->msg( 'requestssl-info-request-private' )->escaped()
-				);
+				$info .= new MessageWidget( [
+					'label' => new HtmlSnippet($this->context->msg( 'requestssl-info-request-private' )->escaped()),
+					'type' => 'warning'.
+				] );
 			}
 
 			if ( $this->requestSslRequestManager->getRequester()->getBlock() ) {
-				$info .= Html::warningBox(
-					$this->context->msg( 'requestssl-info-requester-locally-blocked',
-						$this->requestSslRequestManager->getRequester()->getName(),
-						WikiMap::getCurrentWikiId()
-					)->escaped()
-				);
+				$info .= new MessageWidget( [
+					'label' => new HtmlSnippet(
+							$this->context->msg( 'requestssl-info-requester-locally-blocked',
+								$this->requestSslRequestManager->getRequester()->getName(),
+								WikiMap::getCurrentWikiId()
+							)->escaped()
+						),
+					'type' => 'warning',
+				] );
 			}
 
 			// @phan-suppress-next-line PhanDeprecatedFunction Only for MW 1.39 or lower.
 			if ( $this->requestSslRequestManager->getRequester()->getGlobalBlock() ) {
-				$info .= Html::errorBox(
-					$this->context->msg( 'requestssl-info-requester-globally-blocked',
-						$this->requestSslRequestManager->getRequester()->getName()
-					)->escaped()
-				);
+				$info .= new MessageWidget( [
+					'label' => new HtmlSnippet(
+								$this->context->msg( 'requestssl-info-requester-globally-blocked',
+								$this->requestSslRequestManager->getRequester()->getName()
+							)->escaped()
+						),
+					'type' => 'error',
+				] );
 
 				$validRequest = false;
 				if ( $status === 'pending' || $status === 'inprogress' ) {
@@ -266,11 +282,14 @@ class RequestSSLViewer {
 			}
 
 			if ( $this->requestSslRequestManager->getRequester()->isLocked() ) {
-				$info .= Html::errorBox(
-					$this->context->msg( 'requestssl-info-requester-locked',
-						$this->requestSslRequestManager->getRequester()->getName()
-					)->escaped()
-				);
+				$info .= new MessageWidget( [
+					'label' => new HtmlSnippet(
+								$this->context->msg( 'requestssl-info-requester-locked',
+								$this->requestSslRequestManager->getRequester()->getName()
+							)->escaped()
+						),
+					'type' => 'error',
+				] );
 
 				$validRequest = false;
 				if ( $status === 'pending' || $status === 'inprogress' ) {
