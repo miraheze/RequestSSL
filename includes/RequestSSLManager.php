@@ -227,7 +227,7 @@ class RequestSSLManager {
 			->caller( __METHOD__ )
 			->fetchResultSet();
 
-		if ( !$res ) {
+		if ( !$res->numRows() ) {
 			return [];
 		}
 
