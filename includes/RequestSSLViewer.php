@@ -232,7 +232,7 @@ class RequestSSLViewer {
 					'type' => 'notice',
 				] );
 
-			$info .= new MessageWidget(
+			$info .= new MessageWidget( [
 				'label' => new HtmlSnippet(
 						$this->context->msg( 'requestssl-info-groups',
 							$this->requestSslRequestManager->getRequester()->getName(),
