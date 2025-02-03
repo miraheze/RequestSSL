@@ -248,7 +248,7 @@ class RequestSSLViewer {
 			if ( $this->requestSslRequestManager->isPrivate() ) {
 				$info .= new MessageWidget( [
 					'label' => new HtmlSnippet($this->context->msg( 'requestssl-info-request-private' )->escaped()),
-					'type' => 'warning'.
+					'type' => 'warning',
 				] );
 			}
 
