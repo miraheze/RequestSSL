@@ -228,7 +228,7 @@ class RequestSSLViewer {
 					$this->context->msg( 'requestssl-button-copy' )->text()
 				);
 				$info = new MessageWidget( [
-					'label' => new HtmlSnippet($fileInfo),
+					'label' => new HtmlSnippet( $fileInfo ),
 					'type' => 'notice',
 				] );
 
@@ -247,7 +247,7 @@ class RequestSSLViewer {
 
 			if ( $this->requestSslRequestManager->isPrivate() ) {
 				$info .= new MessageWidget( [
-					'label' => new HtmlSnippet($this->context->msg( 'requestssl-info-request-private' )->escaped()),
+					'label' => new HtmlSnippet( $this->context->msg( 'requestssl-info-request-private' )->escaped() ),
 					'type' => 'warning',
 				] );
 			}
