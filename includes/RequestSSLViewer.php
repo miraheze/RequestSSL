@@ -223,7 +223,8 @@ class RequestSSLViewer {
 
 				$fileInfo .= Html::element( 'button', [
 						'type' => 'button',
-						'onclick' => 'navigator.clipboard.writeText( $( \'.oo-ui-flaggedElement-notice code\' ).text() );',
+						'onclick' => 'navigator.clipboard.writeText( 
+      								$( \'.oo-ui-flaggedElement-notice code\' ).text() );',
 					],
 					$this->context->msg( 'requestssl-button-copy' )->text()
 				);
