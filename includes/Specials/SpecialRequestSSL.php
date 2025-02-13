@@ -209,7 +209,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 			ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) &&
 			$this->getConfig()->get( 'RequestSSLUsersNotifiedOnAllRequests' )
 		) {
-			$this->sendNotifications( $data['reason'], $this->getUser()->getName(), $requestID, $data['target'] );
+			$this->sendNotifications( $data['reason'], $this->getUser()->getName(), $requestID, $data['target'], $data['customdomain'] );
 		}
 
 		return Status::newGood();
@@ -236,8 +236,9 @@ class SpecialRequestSSL extends FormSpecialPage {
 	 * @param string $requester
 	 * @param string $requestID
 	 * @param string $target
+	 * @param string $url
 	 */
-	public function sendNotifications( string $reason, string $requester, string $requestID, string $target ) {
+	public function sendNotifications( string $reason, string $requester, string $requestID, string $target, string $url ) {
 		$notifiedUsers = array_filter(
 			array_map(
 				function ( string $userName ): ?User {
@@ -267,6 +268,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 					'reason' => $reason,
 					'requester' => $requester,
 					'target' => $target,
+					'url' => $url,
 					'notifyAgent' => true,
 				],
 				'agent' => $receiver,
