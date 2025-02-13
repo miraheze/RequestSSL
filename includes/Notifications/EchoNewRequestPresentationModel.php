@@ -37,7 +37,7 @@ class EchoNewRequestPresentationModel extends EchoEventPresentationModel {
 		return $this->msg( 'requestssl-notification-body-new-request',
 			$reason,
 			$this->event->getExtraParam( 'requester' ),
-			$this->event->getExtraParam( 'target' )
+			$this->event->getExtraParam( 'target' ),
 			$this->event->getExtraParam( 'url' )
 		);
 	}
