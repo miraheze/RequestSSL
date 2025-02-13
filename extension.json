@@ -162,10 +162,6 @@
 		"echo-subscriptions-web-requestssl-request-comment": true,
 		"echo-subscriptions-web-requestssl-request-status-update": true
 	},
-	"HiddenPrefs": [
-		"echo-subscriptions-email-requestssl-new-request",
-		"echo-subscriptions-web-requestssl-new-request"
-	],
 	"RateLimits": {
 		"request-ssl": {
 			"user": [
