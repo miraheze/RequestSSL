@@ -60,7 +60,7 @@
 	"requestssl-no-changes": "No changes made.",
 	"requestssl-notcentral": "Disabled",
 	"requestssl-notcentral-text": "SSL certificate requests are disabled on this wiki. Please request an SSL certificate from the central wiki.",
-	"requestssl-notification-body-new-request": "A new SSL certificate request was received.<br />Reason given: $1<br />Requester: $2<br />Target Database Name: $3",
+	"requestssl-notification-body-new-request": "A new SSL certificate request was received.<br />Reason given: $1<br />Requester: $2<br />Target Database Name: $3<br />Custom domain URL: $4",
 	"requestssl-notification-header-comment": "SSL certificate request #$1 received a comment.",
 	"requestssl-notification-header-new-request": "New SSL certificate request #$1",
 	"requestssl-notification-header-status-update": "Status updated for SSL certificate request #$1",
