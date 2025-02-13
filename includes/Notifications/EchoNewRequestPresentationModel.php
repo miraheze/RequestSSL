@@ -38,6 +38,7 @@ class EchoNewRequestPresentationModel extends EchoEventPresentationModel {
 			$reason,
 			$this->event->getExtraParam( 'requester' ),
 			$this->event->getExtraParam( 'target' )
+			$this->event->getExtraParam( 'url' )
 		);
 	}
 
