@@ -180,7 +180,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 
 		$this->getOutput()->addHTML(
 			Html::successBox(
-				$this->msg( 'requestssl-success' )->rawParams( $requestLink )->text()
+				$this->msg( 'requestssl-success' )->rawParams( $requestLink )->escaped()
 			)
 		);
 
