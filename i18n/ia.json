@@ -59,7 +59,7 @@
 	"requestssl-no-changes": "Necun cambiamento facite.",
 	"requestssl-notcentral": "Disactivate",
 	"requestssl-notcentral-text": "Le requestas de certificato SSL es disactivate sur iste wiki. Per favor requesta un certificato SSL a partir del wiki central.",
-	"requestssl-notification-body-new-request": "Un nove requesta de certificato SSL ha essite recipite.<br />Motivo date: $1<br />Requestator: $2<br />Nomine del base de datos de destination: $3",
+	"requestssl-notification-body-new-request": "Un nove requesta de certificato SSL ha essite recipite.<br />Motivo date: $1<br />Requestator: $2<br />Nomine del base de datos de destination: $3<br />URL del dominio personalisate: $4",
 	"requestssl-notification-header-comment": "Le requesta de certificato SSL №$1 ha recipite un commento.",
 	"requestssl-notification-header-new-request": "Nove requesta de certificato SSL №$1",
 	"requestssl-notification-header-status-update": "Stato actualisate pro le requesta de certificato SSL №$1",

@@ -60,7 +60,7 @@
 	"requestssl-no-changes": "לא נעשו שינויים.",
 	"requestssl-notcentral": "כבוי",
 	"requestssl-notcentral-text": "בקשות אישורי SSL כבויות בוויקי הזה. נא לבקש אישור SSL מהוויקי המרכזי.",
-	"requestssl-notification-body-new-request": "התקבלה בקשת אישור SSL חדשה.<br />הסיבה שניתנה: $1<br />המבקש: $2<br />מסד הנתונים המיועד: $3",
+	"requestssl-notification-body-new-request": "התקבלה בקשת אישור SSL חדשה.<br />הסיבה שניתנה: $1<br />המבקש: $2<br />מסד הנתונים המיועד: $3<br />כתובת URL של התחום המותאם: $4",
 	"requestssl-notification-header-comment": "בקשת אישור SSL מס׳ $1 זכתה לתגובה.",
 	"requestssl-notification-header-new-request": "בקשת אישור SSL חדש מס׳ $1",
 	"requestssl-notification-header-status-update": "עודכן מצב בקשת אישור SSL מס׳ $1",
