@@ -61,7 +61,7 @@
 	"requestssl-no-changes": "Er zijn geen wijzigingen aangebracht.",
 	"requestssl-notcentral": "Uitgeschakeld",
 	"requestssl-notcentral-text": "Het aanvragen van SSL-certificaten is uitgeschakeld op deze wiki. Vraag een SSL-certificaat aan via de centrale wiki.",
-	"requestssl-notification-body-new-request": "Er is een nieuwe aanvraag voor een SSL-certificaat ontvangen.<br />Opgegeven reden: $1<br />Aanvrager: $2<br />Naam doeldatabase: $3",
+	"requestssl-notification-body-new-request": "Er is een nieuwe aanvraag voor een SSL-certificaat ontvangen.<br />Opgegeven reden: $1<br />Aanvrager: $2<br />Naam doeldatabase: $3<br />URL eigen domein: $4",
 	"requestssl-notification-header-comment": "Bij de aanvraag SSL-certificaat nummer $1 is een opmerking geplaatst.",
 	"requestssl-notification-header-new-request": "Nieuwe aanvraag SSL-certificaat nummer $1",
 	"requestssl-notification-header-status-update": "Status bijgewerkt voor aanvraag SSL-certificaat nummer $1",
