@@ -3,6 +3,7 @@
 		"authors": [
 			"Adriendelucca",
 			"Graineahumus",
+			"JLTRY",
 			"Mahabarata",
 			"McDutchie",
 			"Melimeli",
@@ -67,7 +68,7 @@
 	"requestssl-no-changes": "Aucune modification apportée.",
 	"requestssl-notcentral": "Désactivées",
 	"requestssl-notcentral-text": "Les demandes de certificat SSL sont désactivées sur ce wiki. Veuillez demander un certificat SSL auprès du wiki central.",
-	"requestssl-notification-body-new-request": "Une nouvelle demande de certificat SSL a été reçue.<br /> Motif donné : $1<br /> Demandeur : $2<br /> Nom de la base de données cible : $3",
+	"requestssl-notification-body-new-request": "Une nouvelle demande de certificat SSL a été reçue.<br /> Raison invoquée : $1<br /> Demandeur : $2<br /> Nom de la base de données cible : $3<br /> URL de domaine personnalisé : $4",
 	"requestssl-notification-header-comment": "Demande de certificat SSL # $1 a reçu un commentaire.",
 	"requestssl-notification-header-new-request": "Nouvelle demande de certificat SSL #$1",
 	"requestssl-notification-header-status-update": "Statut mis à jour pour la demande de certificat SSL #$1",
