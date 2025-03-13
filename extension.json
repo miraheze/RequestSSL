@@ -152,7 +152,7 @@
 		}
 	},
 	"ConfigRegistry": {
-		"RequestSSL": "GlobalVarConfig::newInstance"
+		"RequestSSL": "MediaWiki\\Config\\GlobalVarConfig::newInstance"
 	},
 	"DefaultUserOptions": {
 		"echo-subscriptions-email-requestssl-new-request": true,
