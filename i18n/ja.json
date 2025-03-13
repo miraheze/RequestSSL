@@ -62,7 +62,7 @@
 	"requestssl-no-changes": "変更はありませんでした。",
 	"requestssl-notcentral": "無効",
 	"requestssl-notcentral-text": "このウィキでは SSL 証明書のリクエストは無効になっています。中央ウィキから SSL 証明書をリクエストしてください。",
-	"requestssl-notification-body-new-request": "新しい SSL 証明書リクエストを受信しました。<br />理由: $1<br />依頼者: $2<br />ターゲットデータベース名: $3",
+	"requestssl-notification-body-new-request": "新しい SSL 証明書リクエストを受信しました。<br />理由: $1<br />依頼者: $2<br />ターゲットデータベース名: $3<br />カスタムドメイン URL: $4",
 	"requestssl-notification-header-comment": "SSL 証明書リクエスト #$1 にコメントが付けられました。",
 	"requestssl-notification-header-new-request": "新しい SSL 証明書リクエスト #$1",
 	"requestssl-notification-header-status-update": "SSL 証明書リクエスト #$1 のステータスが更新されました",
