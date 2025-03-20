@@ -2,22 +2,22 @@
 
 namespace Miraheze\RequestSSL;
 
-use Config;
-use EchoEvent;
-use ExtensionRegistry;
 use ManualLogEntry;
+use MediaWiki\Config\Config;
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\Message\Message;
+use MediaWiki\Registration\ExtensionRegistry;
+use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\ActorStoreFactory;
+use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserGroupManagerFactory;
-use Message;
 use MessageLocalizer;
 use Miraheze\CreateWiki\Services\RemoteWikiFactory;
 use RepoGroup;
-use SpecialPage;
 use stdClass;
-use User;
 use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\SelectQueryBuilder;
@@ -202,7 +202,7 @@ class RequestSSLManager {
 		) );
 
 		foreach ( $involvedUsers as $receiver ) {
-			EchoEvent::create( [
+			Event::create( [
 				'type' => $type,
 				'extra' => [
 					'request-id' => $this->ID,

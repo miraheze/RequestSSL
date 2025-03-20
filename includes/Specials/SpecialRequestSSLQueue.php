@@ -3,14 +3,14 @@
 namespace Miraheze\RequestSSL\Specials;
 
 use ErrorPageError;
-use HTMLForm;
+use MediaWiki\HTMLForm\HTMLForm;
 use MediaWiki\Permissions\PermissionManager;
+use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\UserFactory;
+use MediaWiki\WikiMap\WikiMap;
 use Miraheze\RequestSSL\RequestSSLManager;
 use Miraheze\RequestSSL\RequestSSLQueuePager;
 use Miraheze\RequestSSL\RequestSSLViewer;
-use SpecialPage;
-use WikiMap;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 class SpecialRequestSSLQueue extends SpecialPage {

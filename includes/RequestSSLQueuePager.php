@@ -2,12 +2,12 @@
 
 namespace Miraheze\RequestSSL;
 
-use Config;
-use IContextSource;
+use MediaWiki\Config\Config;
+use MediaWiki\Context\IContextSource;
 use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\Pager\TablePager;
+use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\UserFactory;
-use SpecialPage;
-use TablePager;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 class RequestSSLQueuePager extends TablePager {
