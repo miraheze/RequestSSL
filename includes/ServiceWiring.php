@@ -3,8 +3,8 @@
 namespace Miraheze\RequestSSL;
 
 use MediaWiki\Config\ServiceOptions;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Context\RequestContext;
+use MediaWiki\MediaWikiServices;
 
 return [
 	'RequestSSLManager' => static function ( MediaWikiServices $services ): RequestSSLManager {

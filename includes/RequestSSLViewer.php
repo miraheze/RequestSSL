@@ -3,18 +3,18 @@
 namespace Miraheze\RequestSSL;
 
 use MediaWiki\Config\Config;
-use MediaWiki\Registration\ExtensionRegistry;
+use MediaWiki\Context\IContextSource;
 use MediaWiki\Html\Html;
 use MediaWiki\HTMLForm\HTMLForm;
-use MediaWiki\Context\IContextSource;
 use MediaWiki\Linker\Linker;
-use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Message\Message;
+use MediaWiki\Permissions\PermissionManager;
+use MediaWiki\Registration\ExtensionRegistry;
+use MediaWiki\User\User;
+use MediaWiki\WikiMap\WikiMap;
 use OOUI\HtmlSnippet;
 use OOUI\MessageWidget;
-use MediaWiki\User\User;
 use UserNotLoggedIn;
-use MediaWiki\WikiMap\WikiMap;
 
 class RequestSSLViewer {
 

@@ -2,22 +2,22 @@
 
 namespace Miraheze\RequestSSL;
 
-use MediaWiki\Config\Config;
-use MediaWiki\Extension\Notifications\Model\Event;
-use MediaWiki\Registration\ExtensionRegistry;
 use ManualLogEntry;
+use MediaWiki\Config\Config;
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\Message\Message;
+use MediaWiki\Registration\ExtensionRegistry;
+use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\ActorStoreFactory;
+use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserGroupManagerFactory;
-use MediaWiki\Message\Message;
 use MessageLocalizer;
 use Miraheze\CreateWiki\Services\RemoteWikiFactory;
 use RepoGroup;
-use MediaWiki\SpecialPage\SpecialPage;
 use stdClass;
-use MediaWiki\User\User;
 use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\SelectQueryBuilder;

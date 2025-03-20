@@ -2,23 +2,23 @@
 
 namespace Miraheze\RequestSSL\Specials;
 
-use MediaWiki\Extension\Notifications\Model\Event;
 use ErrorPageError;
+use ManualLogEntry;
+use MediaWiki\Extension\Notifications\Model\Event;
+use MediaWiki\Html\Html;
+use MediaWiki\Message\Message;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\SpecialPage\FormSpecialPage;
-use MediaWiki\Html\Html;
-use ManualLogEntry;
-use MediaWiki\User\UserFactory;
-use MediaWiki\Message\Message;
-use Wikimedia\Mime\MimeAnalyzer;
-use Miraheze\CreateWiki\Services\RemoteWikiFactory;
-use RepoGroup;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Status\Status;
 use MediaWiki\User\User;
+use MediaWiki\User\UserFactory;
+use MediaWiki\WikiMap\WikiMap;
+use Miraheze\CreateWiki\Services\RemoteWikiFactory;
+use RepoGroup;
 use UserBlockedError;
 use UserNotLoggedIn;
-use MediaWiki\WikiMap\WikiMap;
+use Wikimedia\Mime\MimeAnalyzer;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 class SpecialRequestSSL extends FormSpecialPage {

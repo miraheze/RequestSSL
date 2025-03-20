@@ -2,14 +2,14 @@
 
 namespace Miraheze\RequestSSL\Hooks\Handlers;
 
+use MediaWiki\Block\Hook\GetAllBlockActionsHook;
 use MediaWiki\Extension\Notifications\AttributeManager;
 use MediaWiki\Extension\Notifications\UserLocator;
-use MediaWiki\Block\Hook\GetAllBlockActionsHook;
 use MediaWiki\User\Hook\UserGetReservedNamesHook;
+use MediaWiki\WikiMap\WikiMap;
 use Miraheze\RequestSSL\Notifications\EchoNewRequestPresentationModel;
 use Miraheze\RequestSSL\Notifications\EchoRequestCommentPresentationModel;
 use Miraheze\RequestSSL\Notifications\EchoRequestStatusUpdatePresentationModel;
-use MediaWiki\WikiMap\WikiMap;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 class Main implements
