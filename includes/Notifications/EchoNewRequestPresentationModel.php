@@ -2,9 +2,9 @@
 
 namespace Miraheze\RequestSSL\Notifications;
 
-use EchoDiscussionParser;
-use EchoEventPresentationModel;
-use Message;
+use MediaWiki\Extension\Notifications\DiscussionParser;
+use MediaWiki\Extension\Notifications\Formatters\EchoEventPresentationModel;
+use MediaWiki\Message\Message;
 
 class EchoNewRequestPresentationModel extends EchoEventPresentationModel {
 
@@ -29,7 +29,7 @@ class EchoNewRequestPresentationModel extends EchoEventPresentationModel {
 	 * @return Message
 	 */
 	public function getBodyMessage() {
-		$reason = EchoDiscussionParser::getTextSnippet(
+		$reason = DiscussionParser::getTextSnippet(
 			$this->event->getExtraParam( 'reason' ),
 			$this->language
 		);

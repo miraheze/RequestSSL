@@ -2,9 +2,9 @@
 
 namespace Miraheze\RequestSSL\Notifications;
 
-use EchoEventPresentationModel;
-use Message;
-use RawMessage;
+use MediaWiki\Extension\Notifications\Formatters\EchoEventPresentationModel;
+use MediaWiki\Message\Message;
+use MediaWiki\Language\RawMessage;
 
 class EchoRequestStatusUpdatePresentationModel extends EchoEventPresentationModel {
 

@@ -2,13 +2,14 @@
 
 namespace Miraheze\RequestSSL\Hooks\Handlers;
 
-use EchoAttributeManager;
+use MediaWiki\Extension\Notifications\AttributeManager;
+use MediaWiki\Extension\Notifications\UserLocator;
 use MediaWiki\Block\Hook\GetAllBlockActionsHook;
 use MediaWiki\User\Hook\UserGetReservedNamesHook;
 use Miraheze\RequestSSL\Notifications\EchoNewRequestPresentationModel;
 use Miraheze\RequestSSL\Notifications\EchoRequestCommentPresentationModel;
 use Miraheze\RequestSSL\Notifications\EchoRequestStatusUpdatePresentationModel;
-use WikiMap;
+use MediaWiki\WikiMap\WikiMap;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 class Main implements
@@ -73,8 +74,8 @@ class Main implements
 		];
 
 		$notifications['requestssl-new-request'] = [
-			EchoAttributeManager::ATTR_LOCATORS => [
-				'EchoUserLocator::locateEventAgent'
+			AttributeManager::ATTR_LOCATORS => [
+				[ [ UserLocator::class, 'locateEventAgent' ] ],
 			],
 			'category' => 'requestssl-new-request',
 			'group' => 'positive',
@@ -85,8 +86,8 @@ class Main implements
 		];
 
 		$notifications['requestssl-request-comment'] = [
-			EchoAttributeManager::ATTR_LOCATORS => [
-				'EchoUserLocator::locateEventAgent'
+			AttributeManager::ATTR_LOCATORS => [
+				[ [ UserLocator::class, 'locateEventAgent' ] ],
 			],
 			'category' => 'requestssl-request-comment',
 			'group' => 'positive',
@@ -97,8 +98,8 @@ class Main implements
 		];
 
 		$notifications['requestssl-request-status-update'] = [
-			EchoAttributeManager::ATTR_LOCATORS => [
-				'EchoUserLocator::locateEventAgent'
+			AttributeManager::ATTR_LOCATORS => [
+				[ [ UserLocator::class, 'locateEventAgent' ] ],
 			],
 			'category' => 'requestssl-request-status-update',
 			'group' => 'positive',

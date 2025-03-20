@@ -8,8 +8,8 @@ use OOUI\IndexLayout;
 use OOUI\PanelLayout;
 use OOUI\TabPanelLayout;
 use OOUI\Widget;
-use OOUIHTMLForm;
-use Xml;
+use MediaWiki\HTMLForm\OOUIHTMLForm;
+use MediaWiki\Xml\Xml;
 
 class RequestSSLOOUIForm extends OOUIHTMLForm {
 

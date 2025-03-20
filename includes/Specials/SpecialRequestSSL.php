@@ -2,23 +2,23 @@
 
 namespace Miraheze\RequestSSL\Specials;
 
-use EchoEvent;
+use MediaWiki\Extension\Notifications\Model\Event;
 use ErrorPageError;
-use ExtensionRegistry;
-use FormSpecialPage;
-use Html;
+use MediaWiki\Registration\ExtensionRegistry;
+use MediaWiki\SpecialPage\FormSpecialPage;
+use MediaWiki\Html\Html;
 use ManualLogEntry;
 use MediaWiki\User\UserFactory;
-use Message;
-use MimeAnalyzer;
+use MediaWiki\Message\Message;
+use Wikimedia\Mime\MimeAnalyzer;
 use Miraheze\CreateWiki\Services\RemoteWikiFactory;
 use RepoGroup;
-use SpecialPage;
-use Status;
-use User;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Status\Status;
+use MediaWiki\User\User;
 use UserBlockedError;
 use UserNotLoggedIn;
-use WikiMap;
+use MediaWiki\WikiMap\WikiMap;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 class SpecialRequestSSL extends FormSpecialPage {
@@ -234,8 +234,13 @@ class SpecialRequestSSL extends FormSpecialPage {
 	 * @param string $target
 	 * @param string $url
 	 */
-	public function sendNotifications( string $reason, string $requester,
-					  string $requestID, string $target, string $url ) {
+	public function sendNotifications(
+		string $reason,
+		string $requester,
+		string $requestID,
+		string $target,
+		string $url
+	) {
 		$notifiedUsers = array_filter(
 			array_map(
 				function ( string $userName ): ?User {
@@ -257,7 +262,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 				continue;
 			}
 
-			EchoEvent::create( [
+			Event::create( [
 				'type' => 'requestssl-new-request',
 				'extra' => [
 					'request-id' => $requestID,
