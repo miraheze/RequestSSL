@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"Robby",
+			"Volvox"
+		]
+	},
+	"action-request-ssl": "SSL-Certificaten unzefroen",
+	"requestssl-button-copy": "(An den Tëschespäicher kopéieren)",
+	"requestssl-comment-given": "Kommentar vum $1:",
+	"requestssl-label-add-comment": "Kommentar derbäisetzen",
+	"requestssl-label-comment": "Bemierkung:",
+	"requestssl-label-declined": "Refuséiert",
+	"requestssl-label-edit-request": "Ufro änneren",
+	"requestssl-label-inprogress": "Am Gaang",
+	"requestssl-label-private": "Dës Ufro als privat markéieren?",
+	"requestssl-label-reason": "Zousätzlech Bemierkungen:",
+	"requestssl-label-requested-date": "Gefroten Datum:",
+	"requestssl-label-status": "Status:",
+	"requestssl-no-changes": "Et goufe keng Ännerunge gemaach.",
+	"requestssl-notcentral": "Desaktivéiert",
+	"requestssl-status-updated": "Ufro $1.",
+	"requestssl-status-updated-success": "Status erfollegräich fir dës Ufro aktualiséiert.",
+	"requestssl-table-status": "Status",
+	"requestssl-table-target": "Zil",
+	"requestssl-unknown": "Onbekannt Ufro.",
+	"requestssl-usergroups-none": "keng",
+	"log-action-filter-requestssl": "Aktiounstyp:",
+	"log-action-filter-requestssl-request": "Nei Ufroen ofgeschéckt",
+	"log-action-filter-requestssl-statusupdate": "Status fir Ufroen aktualiséiert",
+	"log-action-filter-requestsslprivate": "Aktiounstyp:",
+	"log-action-filter-requestsslprivate-request": "Nei Ufroen ofgeschéckt",
+	"log-action-filter-requestsslprivate-statusupdate": "Status fir Ufroen aktualiséiert"
+}
