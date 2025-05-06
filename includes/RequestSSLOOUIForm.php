@@ -2,8 +2,8 @@
 
 namespace Miraheze\RequestSSL;
 
+use MediaWiki\Html\Html;
 use MediaWiki\HTMLForm\OOUIHTMLForm;
-use MediaWiki\Xml\Xml;
 use OOUI\FieldsetLayout;
 use OOUI\HtmlSnippet;
 use OOUI\IndexLayout;
@@ -21,8 +21,7 @@ class RequestSSLOOUIForm extends OOUIHTMLForm {
 	 * @return string
 	 */
 	public function wrapForm( $html ) {
-		$html = Xml::tags( 'div', [ 'id' => 'requestssl' ], $html );
-
+		$html = Html::rawElement( 'div', [ 'id' => 'requestssl' ], $html );
 		return parent::wrapForm( $html );
 	}
 
