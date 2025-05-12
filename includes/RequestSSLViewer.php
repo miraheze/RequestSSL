@@ -217,23 +217,8 @@ class RequestSSLViewer {
 		if ( $this->permissionManager->userHasRight( $user, 'handle-ssl-requests' ) ) {
 			$validRequest = true;
 			$status = $this->requestSslRequestManager->getStatus();
-			$fileInfo = $this->context->msg( 'requestssl-info-command' )->plaintextParams(
-					$this->requestSslRequestManager->getCommand()
-				)->parse();
 
-				$fileInfo .= Html::element( 'button', [
-						'type' => 'button',
-						'onclick' => 'navigator.clipboard.writeText( 
-      								$( \'.oo-ui-flaggedElement-notice code\' ).text() );',
-					],
-					$this->context->msg( 'requestssl-button-copy' )->text()
-				);
-				$info = new MessageWidget( [
-					'label' => new HtmlSnippet( $fileInfo ),
-					'type' => 'notice',
-				] );
-
-			$info .= new MessageWidget( [
+			$info = new MessageWidget( [
 				'label' => new HtmlSnippet(
 						$this->context->msg( 'requestssl-info-groups',
 							$this->requestSslRequestManager->getRequester()->getName(),
@@ -301,7 +286,7 @@ class RequestSSLViewer {
 			$formDescriptor += [
 				'handle-info' => [
 					'type' => 'info',
-					'default' => $info,
+					'default' => (string)$info,
 					'raw' => true,
 					'section' => 'handling',
 				],
