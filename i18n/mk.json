@@ -29,7 +29,6 @@
 	"requestssl-help-reason": "Додајте дополнителни коментари за кои мислите дека може да бидат релевантни на ова барање.",
 	"requestssl-help-customdomain": "Внесете ја целосната URL-адреса на саканиот прилагоден домен (т.е. https://example.org).",
 	"requestssl-help-target": "Ова мора да биде важечко име на баа (т.е. examplewiki).",
-	"requestssl-info-command": "'''Наредба за ова SSL-барање:''' <code>$1</code>",
 	"requestssl-info-groups": "Кориснички групи кои $1 ги има на $2: $3",
 	"requestssl-info-request-private": "Ова барање е означено како приватно. Не е јавно видливо.",
 	"requestssl-info-requester-globally-blocked": "Барателот ($1) е глобално блокиран. Ова барање треба да се одбие.",
