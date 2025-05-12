@@ -30,7 +30,6 @@
 	"requestssl-help-reason": "נא להוסיף הערות נוספות שלדעתך תהיינה מתאימות לבקשה הזאת.",
 	"requestssl-help-customdomain": "נא למלא את הכתובת המלאה של שם התחום הרצוי (למשל: https://example.org).",
 	"requestssl-help-target": "זה חייב להיות שם מסד נתונים תקין (למשל: examplewiki).",
-	"requestssl-info-command": "'''פקודה לבקשת ה־ssl הזאת:''' <code>$1</code>",
 	"requestssl-info-groups": "קבוצות משתמשים שהחשבון $1 שייך אליהן באתר $2‏: $3",
 	"requestssl-info-request-private": "הבקשה הזאת מסומנת כפרטית. היא לא מוצגת לציבור.",
 	"requestssl-info-requester-globally-blocked": "המבקש ($1) חסום גלובלית. כדאי לדחות את הבקשה הזאת.",
