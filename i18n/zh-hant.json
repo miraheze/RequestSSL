@@ -30,7 +30,6 @@
 	"requestssl-help-reason": "請新增您認為可能與此請求相關的任何額外意見。",
 	"requestssl-help-customdomain": "請輸入所需自訂網域的完整 URL（如 https://example.org）。",
 	"requestssl-help-target": "必須是有效的資料庫名稱（如：examplewiki）。",
-	"requestssl-info-command": "'''此 ssl 請求的指令：'''<code>$1</code>",
 	"requestssl-info-groups": "$1在$2的使用者群組：$3",
 	"requestssl-info-request-private": "此請求已被標記為非公開。不可公開可見。",
 	"requestssl-info-requester-globally-blocked": "請求者（$1）已被全域封鎖。應拒絕此份申請。",
