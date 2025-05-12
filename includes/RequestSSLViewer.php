@@ -286,7 +286,7 @@ class RequestSSLViewer {
 			$formDescriptor += [
 				'handle-info' => [
 					'type' => 'info',
-					'default' => (string) $info,
+					'default' => (string)$info,
 					'raw' => true,
 					'section' => 'handling',
 				],
