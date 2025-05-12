@@ -85,7 +85,6 @@ class RequestSSLManager {
 		UserFactory $userFactory,
 		UserGroupManagerFactory $userGroupManagerFactory
 	) {
-
 		$this->config = $config;
 		$this->actorStoreFactory = $actorStoreFactory;
 		$this->connectionProvider = $connectionProvider;
