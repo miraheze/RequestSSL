@@ -30,6 +30,7 @@
 	"requestssl-help-reason": "Please add any additional comments that you think may be relevant to this request.",
 	"requestssl-help-customdomain": "Enter the full URL for the desired custom domain (i.e. https://example.org).",
 	"requestssl-help-target": "This must be a valid database name (i.e. examplewiki).",
+	"requestssl-info-command": "'''Command for this ssl request:''' <code>$1</code>",
 	"requestssl-info-groups": "User groups that $1 has on $2: $3",
 	"requestssl-info-request-private": "This request is marked as private. It is not publicly viewable.",
 	"requestssl-info-requester-globally-blocked": "The requester ($1) has been globally blocked. This request should be declined.",

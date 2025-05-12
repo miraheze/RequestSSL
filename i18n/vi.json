@@ -30,6 +30,7 @@
 	"requestssl-help-reason": "Vui lòng thêm bất kỳ bình luận bổ sung nào mà bạn cho rằng có thể liên quan đến yêu cầu này.",
 	"requestssl-help-customdomain": "Nhập URL đầy đủ cho tên miền mong muốn (ví dụ: https://example.org).",
 	"requestssl-help-target": "Đây phải là tên cơ sở dữ liệu hợp lệ (ví dụ: examplewiki).",
+	"requestssl-info-command": "'''Lệnh cho yêu cầu SSL này:''' <code>$1</code>",
 	"requestssl-info-groups": "Nhóm người dùng $1 có trên $2: $3",
 	"requestssl-info-request-private": "Yêu cầu này được đánh dấu là riêng tư. Nó không thể được xem công khai.",
 	"requestssl-info-requester-globally-blocked": "Người yêu cầu ($1) đã bị chặn toàn cục. Yêu cầu này nên bị từ chối.",

@@ -29,6 +29,7 @@
 	"requestssl-help-reason": "Per favor adde omne commentos supplementari que, secundo te, pote esser pertinente a iste requesta.",
 	"requestssl-help-customdomain": "Insere le adresse URL complete pro le dominio personalisate desirate (p.ex. https://example.org).",
 	"requestssl-help-target": "Isto debe esser un nomine de base de datos valide (p.ex. wikideexemplo).",
+	"requestssl-info-command": "'''Commando pro iste requesta SSL:''' <code>$1</code>",
 	"requestssl-info-groups": "Gruppos de usatores del quales $1 es membro sur $2: $3",
 	"requestssl-info-request-private": "Iste requesta es marcate como private. Non es publicamente visibile.",
 	"requestssl-info-requester-globally-blocked": "Le requestator ($1) ha essite blocate globalmente. Iste requesta deberea esser refusate.",

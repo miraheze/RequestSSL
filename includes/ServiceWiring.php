@@ -2,6 +2,7 @@
 
 namespace Miraheze\RequestSSL;
 
+use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 
@@ -15,6 +16,10 @@ return [
 			$services->get( 'RemoteWikiFactory' ),
 			$services->getRepoGroup(),
 			RequestContext::getMain(),
+			new ServiceOptions(
+				RequestSSLManager::CONSTRUCTOR_OPTIONS,
+				$services->getConfigFactory()->makeConfig( 'RequestSSL' )
+			),
 			$services->getUserFactory(),
 			$services->getUserGroupManagerFactory()
 		);

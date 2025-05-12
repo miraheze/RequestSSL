@@ -31,6 +31,7 @@
 	"requestssl-help-reason": "Voeg eventueel aanvullende opmerkingen toe als u denkt dat deze voor deze aanvraag van belang kunnen zijn.",
 	"requestssl-help-customdomain": "Voer de volledige URL voor het gewenste eigen domein in (d.w.z. https://example.org).",
 	"requestssl-help-target": "Dit moet een geldige database-naam zijn (d.w.z. examplewiki).",
+	"requestssl-info-command": "'''Opdracht voor deze SSL-aanvraag:''' <code>$1</code>",
 	"requestssl-info-groups": "Gebruikersgroepen waarvan $1 op $2 lid is: $3",
 	"requestssl-info-request-private": "Dit verzoek is gemarkeerd als privé. Het is niet publiekelijk zichtbaar.",
 	"requestssl-info-requester-globally-blocked": "De aanvrager ($1) is wereldwijd geblokkeerd. Deze aanvraag dient te worden afgewezen.",
