@@ -38,6 +38,7 @@
 	"requestssl-help-reason": "Veuillez ajouter tout commentaire supplémentaire qui, selon vous, pourrait être pertinent à cette demande.",
 	"requestssl-help-customdomain": "Saisissez l’URL complète du domaine personnalisé souhaité (c’est-à-dire https://example.org).",
 	"requestssl-help-target": "Il doit s’agir d’un nom de base de données valide (par exemple, « exemplewiki »).",
+	"requestssl-info-command": "'''Commande pour cet import :''' <code>$1</code>",
 	"requestssl-info-groups": "Groupes d’utilisateurs dont $1 est membre sur $2 : $3",
 	"requestssl-info-request-private": "Cette demande est marquée comme privée. Elle n’est pas consultable par le public.",
 	"requestssl-info-requester-globally-blocked": "Le demandeur ($1) a été bloqué de façon globale. Cette demande devrait être refusée.",

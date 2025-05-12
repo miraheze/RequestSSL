@@ -32,6 +32,7 @@
 	"requestssl-help-reason": "请添加任何您认为与该申请有关的附加备注。",
 	"requestssl-help-customdomain": "输入所需自定义域名的完整URL（如：https://example.org）。",
 	"requestssl-help-target": "必须是有效的数据库名称（如：examplewiki）.",
+	"requestssl-info-command": "'''此SSL申请的命令：'''<code>$1</code>",
 	"requestssl-info-groups": "$1在$2所属的用户组：$3",
 	"requestssl-info-request-private": "该申请已标记为私密。它不会公开展示。",
 	"requestssl-info-requester-globally-blocked": "申请者（$1）已被全域封禁。此申请应被拒绝。",

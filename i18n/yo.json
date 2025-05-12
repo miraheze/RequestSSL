@@ -21,6 +21,7 @@
 	"requestssl-edit-success": "Aseyori Lori atunse",
 	"requestssl-header-comment-withtimestamp": "Oro ti $1 se ni $2",
 	"requestssl-help-reason": "Jowo fikun oro afikun kankan ti o ba ro po ye ibeere yi.",
+	"requestssl-info-command": "'''ase fun ibeere SSL yi:'''\n<code>$1</code>",
 	"requestssl-info-request-private": "Ami ipamo ti wa Lori ibeere yi. Ko se wo ni gbangba.",
 	"requestssl-info-requester-globally-blocked": "Won ti ti Oni beere ($1) ni agbaye. Oye ki won ko eyi",
 	"requestssl-info-requester-locally-blocked": "Onibeere yi ($1) ti Wani titi ni ibile wiki yi",

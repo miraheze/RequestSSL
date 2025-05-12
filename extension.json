@@ -4,8 +4,7 @@
 		"Universal Omega",
 		"Agent Isai",
 		"Reception123",
-		"Alex",
-		"MacFan4000"
+		"Alex"
 	],
 	"url": "https://github.com/miraheze/RequestSSL",
 	"descriptionmsg": "requestssl-desc",
@@ -142,6 +141,10 @@
 		"RequestSSLHelpUrl": {
 			"value": "",
 			"description": "Full URL. If set, adds a help URL to Special:RequestSSL."
+		},
+		"RequestSSLScriptCommand": {
+			"value": "",
+			"description": "Generated command to use for SSL generation."
 		},
 		"RequestSSLUsersNotifiedOnAllRequests": {
 			"value": [],

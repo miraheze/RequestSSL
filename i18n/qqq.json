@@ -35,6 +35,7 @@
 	"requestssl-help-reason": "Help for the 'reason' field.",
 	"requestssl-help-customdomain": "Help for the 'source' field.",
 	"requestssl-help-target": "Help for the 'target' field.",
+	"requestssl-info-command": "The generated command that is displayed on the 'handling' section of Special:RequestSSLQueue. $1 is the generated command.",
 	"requestssl-info-groups": "User groups that the requester has on the target wiki. Displayed on the 'handling' section of Special:RequestSSLQueue. $1 is the requester's username; $2 is the target wiki's database name; $3 is the comma-separated list of user groups.",
 	"requestssl-info-request-private": "Message that is displayed on the 'handling' section of Special:RequestSSLQueue when viewing a request that is private.",
 	"requestssl-info-requester-globally-blocked": "Message that is displayed on the 'handling' section of Special:RequestSSLQueue when the requester has been globally blocked. $1 is the requester's username.",

@@ -32,6 +32,7 @@
 	"requestssl-help-reason": "このリクエストに関連すると思われる追加のコメントがあれば追加してください。",
 	"requestssl-help-customdomain": "目的のカスタムドメインの完全なURL (例: https://example.org) を入力します。",
 	"requestssl-help-target": "これは有効なデータベース名である必要があります (例: examplewiki)。",
+	"requestssl-info-command": "'''SSLリクエストコマンド:''' <code>$1</code>",
 	"requestssl-info-groups": "$1が$2で持っている利用者グループ: $3",
 	"requestssl-info-request-private": "このリクエストは非公開としてマークされています。一般公開されていません。",
 	"requestssl-info-requester-globally-blocked": "申請者 ($1) はグローバルにブロックされています。このリクエストは拒否される必要があります。",

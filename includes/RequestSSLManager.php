@@ -4,6 +4,7 @@ namespace Miraheze\RequestSSL;
 
 use ManualLogEntry;
 use MediaWiki\Config\Config;
+use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Message\Message;
@@ -27,6 +28,10 @@ class RequestSSLManager {
 		'RequestSSL Extension',
 	];
 
+	public const CONSTRUCTOR_OPTIONS = [
+		'RequestSSLScriptCommand',
+	];
+
 	/** @var Config */
 	private $config;
 
@@ -47,6 +52,9 @@ class RequestSSLManager {
 
 	/** @var LinkRenderer */
 	private $linkRenderer;
+
+	/** @var ServiceOptions */
+	private $options;
 
 	/** @var RemoteWikiFactory */
 	private $remoteWikiFactory;
@@ -71,6 +79,7 @@ class RequestSSLManager {
 	 * @param RemoteWikiFactory $remoteWikiFactory
 	 * @param RepoGroup $repoGroup
 	 * @param MessageLocalizer $messageLocalizer
+	 * @param ServiceOptions $options
 	 * @param UserFactory $userFactory
 	 * @param UserGroupManagerFactory $userGroupManagerFactory
 	 */
@@ -82,14 +91,18 @@ class RequestSSLManager {
 		RemoteWikiFactory $remoteWikiFactory,
 		RepoGroup $repoGroup,
 		MessageLocalizer $messageLocalizer,
+		ServiceOptions $options,
 		UserFactory $userFactory,
 		UserGroupManagerFactory $userGroupManagerFactory
 	) {
+		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
+
 		$this->config = $config;
 		$this->actorStoreFactory = $actorStoreFactory;
 		$this->connectionProvider = $connectionProvider;
 		$this->linkRenderer = $linkRenderer;
 		$this->messageLocalizer = $messageLocalizer;
+		$this->options = $options;
 		$this->remoteWikiFactory = $remoteWikiFactory;
 		$this->repoGroup = $repoGroup;
 		$this->userFactory = $userFactory;
@@ -237,6 +250,24 @@ class RequestSSLManager {
 	 */
 	public function getInvolvedUsers(): array {
 		return array_unique( array_merge( array_column( $this->getComments(), 'user' ), [ $this->getRequester() ] ) );
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCommand(): string {
+		$command = $this->options->get( 'RequestSSLScriptCommand' );
+		$customDomain = str_replace( 'https://', '', $this->getCustomDomain() );
+
+		return str_replace( [
+			'{IP}',
+			'{wiki}',
+			'{customdomain}',
+		], [
+			MW_INSTALL_PATH,
+			$this->getTarget(),
+			$customDomain,
+		], $command );
 	}
 
 	/**
