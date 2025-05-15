@@ -58,7 +58,7 @@
 	"requestssl-no-changes": "Нема направено промени.",
 	"requestssl-notcentral": "Оневозможено",
 	"requestssl-notcentral-text": "Барањата за SSL-уверенија е оневозможени на ова вики. Побарате уверение од централното вики.",
-	"requestssl-notification-body-new-request": "Добиено ново барање за SSL-уверение.<br />Наведена причина: $1<br />Барател: $2<br />Име на целната база: $3",
+	"requestssl-notification-body-new-request": "Добиено ново барање за SSL-уверение.<br />Наведена причина: $1<br />Барател: $2<br />Име на целната база: $3<br />Прилагодена доменска URL: $4",
 	"requestssl-notification-header-comment": "Барањето за SSL-уверение бр. $1 го доби коментарот.",
 	"requestssl-notification-header-new-request": "Ново барање за SSL-уверение бр. $1",
 	"requestssl-notification-header-status-update": "Изменет статусот на барањето за SSL-уверението бр. $1",
