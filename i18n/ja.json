@@ -24,7 +24,7 @@
 	"requestssl-customdomain-protocol-not-https": "プロトコルが無効です。プロトコルを<code>https://</code>に設定してください。",
 	"requestssl-customdomain-unneeded-component": "URL に不要なコンポーネントがあります。<code>https://</code>プロトコルのドメインのみを設定してください。",
 	"requestssl-desc": "利用者のSSL証明書リクエストを自動化するように設計された拡張機能。",
-	"requestssl-duplicate-request": "このリクエストを送信できません。すでに提出しているリクエストに似すぎています。",
+	"requestssl-duplicate-request": "このリクエストを送信できません。既に提出しているリクエストに似すぎています。",
 	"requestssl-edit-success": "リクエストの編集が完了しました。",
 	"requestsslqueue-header": "カスタムドメインリクエストを検索する",
 	"requestsslqueue-header-info": "このフォームを使用してカスタムドメインリクエストを検索することができます。以下のパラメータを使用して検索を絞り込むことができます。",
