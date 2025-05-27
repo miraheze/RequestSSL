@@ -10,7 +10,7 @@ use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\MainConfigNames;
 use MediaWiki\User\User;
 use MessageLocalizer;
-use Miraheze\RequestSSL\Services\RequestSSLManager;
+use Miraheze\RequestSSL\RequestSSLManager;
 use Psr\Log\LoggerInterface;
 
 class RequestSSLCFAddJob extends Job {
@@ -45,9 +45,13 @@ class RequestSSLCFAddJob extends Job {
 		if ( !$this->config->get( 'RequestSSLCloudFlareConfig' )['apikey'] ) {
 			$this->logger->debug( 'CloudFlare API key is missing! The addition job cannot start.' );
 			$this->setLastError( 'CloudFlare API key is missing! Cannot query API without it!' );
+
+			return true;
 		} elseif ( !$this->config->get( 'RequestSSLCloudFlareConfig' )['zoneid'] ) {
 			$this->logger->debug( 'CloudFlare Zone ID is missing! The addition job cannot start.' );
 			$this->setLastError( 'CloudFlare Zone ID is missing! Cannot query the API without a zone!' );
+
+			return true;
 		}
 
 		$this->requestSSLManager->fromID( $this->id );
@@ -86,7 +90,7 @@ class RequestSSLCFAddJob extends Job {
 			return true;
 		}
 
-		if ( $apiResponse['result']['status'] == 'pending' && !empty( $apiResponse['result']['verification_errors'] ) ) {
+		if ( $apiResponse['result']['status'] == 'pending' && $apiResponse['result']['verification_errors'] ) {
 			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-error-verification' )
 				->params( $apiResponse['result']['verification_errors'] )
 				->inContentLanguage()
@@ -193,7 +197,7 @@ class RequestSSLCFAddJob extends Job {
 			$response = $this->createRequest( '/zones/' . $this->zoneId . '/custom_hostnames', 'POST', [
 				'hostname' => $customDomain,
 				'ssl' => [
-					'method' => $vertificationType,
+					'method' => $verificationType,
 					'type' => 'dv',
 					'settings' => [
 						'http2' => 'on',
@@ -246,7 +250,7 @@ class RequestSSLCFAddJob extends Job {
 					'id' => $hostnameId,
 				] );
 
-				if ( $status === 'pending' && !empty( $verificationErrors ) ) {
+				if ( $status === 'pending' && $verificationErrors ) {
 					$this->logger->error( 'Verification failed for hostname {id}', [
 						'id' => $hostnameId,
 						'errors' => json_encode( $verificationErrors ),

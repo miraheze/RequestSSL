@@ -59,7 +59,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		parent::__construct( 'RequestSSL', 'request-ssl' );
 
 		$this->connectionProvider = $connectionProvider;
-		$this->jobQueueGroupFactory = $jobQueueGroupFactory
+		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
 		$this->mimeAnalyzer = $mimeAnalyzer;
 		$this->remoteWikiFactory = $remoteWikiFactory;
 		$this->repoGroup = $repoGroup;
