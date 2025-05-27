@@ -6,6 +6,7 @@ use ErrorPageError;
 use ManualLogEntry;
 use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\Html\Html;
+use MediaWiki\JobQueue\JobQueueGroupFactory
 use MediaWiki\Message\Message;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\SpecialPage\FormSpecialPage;
@@ -47,6 +48,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	 */
 	public function __construct(
 		IConnectionProvider $connectionProvider,
+		JobQueueGroupFactory $jobQueueGroupFactory,
 		MimeAnalyzer $mimeAnalyzer,
 		RemoteWikiFactory $remoteWikiFactory,
 		RepoGroup $repoGroup,
@@ -197,6 +199,13 @@ class SpecialRequestSSL extends FormSpecialPage {
 			]
 		);
 
+		if (
+			$this->getConfig()->get( 'RequestSSLCloudFlareConfig' )['apikey'] &&
+			$this->getConfig()->get( 'RequestSSLCloudFlareConfig' )['zoneid']
+			) {
+			$this->queryCloudFlare( $requestID );
+		}
+
 		$logID = $logEntry->insert( $dbw );
 		$logEntry->publish( $logID );
 
@@ -276,6 +285,16 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'agent' => $receiver,
 			] );
 		}
+	}
+
+	private function queryCloudFlare( int $requestID ): void {
+		$jobQueueGroup = $this->jobQueueGroupFactory->makeJobQueueGroup();
+		$jobQueueGroup->push(
+			new JobSpecification(
+				RequestSSLCFAddJob::JOB_NAME,
+				[ 'id' => $requestID ]
+			)
+		);
 	}
 
 	/**
