@@ -29,6 +29,9 @@ class SpecialRequestSSL extends FormSpecialPage {
 	/** @var IConnectionProvider */
 	private $connectionProvider;
 
+	/** @var JobQueueGroupFactory */
+	private $jobQueueGroupFactory;
+
 	/** @var MimeAnalyzer */
 	private $mimeAnalyzer;
 
@@ -43,6 +46,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 
 	/**
 	 * @param IConnectionProvider $connectionProvider
+	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param MimeAnalyzer $mimeAnalyzer
 	 * @param RemoteWikiFactory $remoteWikiFactory
 	 * @param RepoGroup $repoGroup
@@ -290,7 +294,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		}
 	}
 
-	private function queryCloudFlare( int $requestID ): void {
+	private function queryCloudFlare( string $requestID ): void {
 		$jobQueueGroup = $this->jobQueueGroupFactory->makeJobQueueGroup();
 		$jobQueueGroup->push(
 			new JobSpecification(

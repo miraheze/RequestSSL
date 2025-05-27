@@ -275,6 +275,8 @@ class RequestSSLCFAddJob extends Job {
 				] );
 			}
 
+			// It's used, I promise!
+			// @phan-suppress-next-line PhanPossiblyUndeclaredVariable
 			return $statusResponse;
 		} catch ( Exception $e ) {
 			$this->logger->error( 'Cloudflare request failed: ' . $e->getMessage() );
