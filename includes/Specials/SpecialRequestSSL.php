@@ -3,12 +3,14 @@
 namespace Miraheze\RequestSSL\Specials;
 
 use ErrorPageError;
+use JobSpecification;
 use ManualLogEntry;
 use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\Html\Html;
-use MediaWiki\JobQueue\JobQueueGroupFactory
+use MediaWiki\JobQueue\JobQueueGroupFactory;
 use MediaWiki\Message\Message;
 use MediaWiki\Registration\ExtensionRegistry;
+use Miraheze\RequestSSL\Jobs\RequestSSLCFAddJob;
 use MediaWiki\SpecialPage\FormSpecialPage;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Status\Status;
@@ -57,6 +59,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		parent::__construct( 'RequestSSL', 'request-ssl' );
 
 		$this->connectionProvider = $connectionProvider;
+		$this->jobQueueGroupFactory = $jobQueueGroupFactory
 		$this->mimeAnalyzer = $mimeAnalyzer;
 		$this->remoteWikiFactory = $remoteWikiFactory;
 		$this->repoGroup = $repoGroup;

@@ -22,6 +22,7 @@ class RequestSSLCFAddJob extends Job {
 	private readonly string $apiKey;
 	private readonly string $baseApiUrl;
 	private readonly int $id;
+	private readonly string $zoneId;
 
 	public function __construct(
 		array $params,
@@ -46,7 +47,7 @@ class RequestSSLCFAddJob extends Job {
 			$this->setLastError( 'CloudFlare API key is missing! Cannot query API without it!' );
 		} elseif ( !$this->config->get( 'RequestSSLCloudFlareConfig' )['zoneid'] ) {
 			$this->logger->debug( 'CloudFlare Zone ID is missing! The addition job cannot start.' );
-			$this->setLastError( 'CloudFLare Zone ID is missing! Cannot query the API without a zone!' );
+			$this->setLastError( 'CloudFlare Zone ID is missing! Cannot query the API without a zone!' );
 		}
 
 		$this->requestSSLManager->fromID( $this->id );
@@ -130,12 +131,12 @@ class RequestSSLCFAddJob extends Job {
 		switch ( $status ) {
 			case 'active':
 				// The custom domain is now active, we can proceed
-				$this - requestSSLManager->updateServerName();
+				$this->requestSSLManager->updateServerName();
 
 				$this->requestSSLManager->setStatus( 'complete' );
 				$this->requestSSLManager->addComment(
+					$activeCommentText,
 					$systemUser,
-					$activeCommentText
 				);
 
 				$this->logger->debug(
@@ -147,9 +148,9 @@ class RequestSSLCFAddJob extends Job {
 				break;
 
 			case 'blocked':
-				$this->requestSSLManager->setStatus(
+				$this->requestSSLManager->addComment(
+					$unknownCommentText,
 					$systemUser,
-					$comment
 				);
 
 				$this->logger->debug(
