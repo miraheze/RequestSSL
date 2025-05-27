@@ -233,7 +233,7 @@ class RequestSSLCFAddJob extends Job {
 				sleep( 10 );
 
 				$statusResponse = $this->createRequest( '/zones/' . $this->zoneId .
-				'/custom_hostnames/' .$hostnameId, 'GET' );
+				'/custom_hostnames/' . $hostnameId, 'GET' );
 
 				if ( !$statusResponse || !isset( $statusResponse['result'] ) ) {
 					$this->logger->error( 'Failed to retrieve hostname status for {id}', [
