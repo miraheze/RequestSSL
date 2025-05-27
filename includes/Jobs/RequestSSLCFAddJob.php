@@ -232,8 +232,8 @@ class RequestSSLCFAddJob extends Job {
 			while ( $status === 'pending' ) {
 				sleep( 10 );
 
-				$statusResponse = $this->createRequest( '/zones/' . $this->zoneId . 
-				'/custom_hostnames/' . $hostnameId, 'GET' );
+				$statusResponse = $this->createRequest( '/zones/' . $this->zoneId .
+				 '/custom_hostnames/' . $hostnameId, 'GET' );
 
 				if ( !$statusResponse || !isset( $statusResponse['result'] ) ) {
 					$this->logger->error( 'Failed to retrieve hostname status for {id}', [
