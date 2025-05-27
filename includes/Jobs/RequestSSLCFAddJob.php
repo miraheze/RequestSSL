@@ -8,10 +8,8 @@ use MediaWiki\Config\Config;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\MainConfigNames;
-use MediaWiki\Permissions\UltimateAuthority;
 use MediaWiki\User\User;
 use MessageLocalizer;
-use Miraheze\RequestSSL\ConfigNames;
 use Miraheze\RequestSSL\Services\RequestSSLManager;
 use Psr\Log\LoggerInterface;
 
@@ -132,7 +130,7 @@ class RequestSSLCFAddJob extends Job {
 		switch ( $status ) {
 			case 'active':
 				// The custom domain is now active, we can proceed
-				$this-requestSSLManager->updateServerName();
+				$this - requestSSLManager->updateServerName();
 
 				$this->requestSSLManager->setStatus( 'complete' );
 				$this->requestSSLManager->addComment(
@@ -280,46 +278,46 @@ class RequestSSLCFAddJob extends Job {
 		}
 	}
 
-		private function createRequest(
+	private function createRequest(
 			string $endpoint,
 			string $method,
 			array $data = []
 		): ?array {
-			$url = $this->baseApiUrl . $endpoint;
+		$url = $this->baseApiUrl . $endpoint;
 
-			$this->logger->debug( 'Creating HTTP request to Cloudflare...' );
+		$this->logger->debug( 'Creating HTTP request to Cloudflare...' );
 
-			$requestOptions = [
-				'url' => $url,
-				'method' => $method,
-				'headers' => [
-					'Authorization' => 'Bearer ' . $this->apiKey,
-					'Content-Type' => 'application/json',
-				],
-			];
+		$requestOptions = [
+			'url' => $url,
+			'method' => $method,
+			'headers' => [
+				'Authorization' => 'Bearer ' . $this->apiKey,
+				'Content-Type' => 'application/json',
+			],
+		];
 
-			if ( $method === 'POST' || $method === 'PATCH' ) {
-				$requestOptions['body'] = json_encode( $data );
-				$this->logger->debug( 'Sending JSON body for POST/PATCH to Cloudflare...' );
-			}
-
-			$request = $this->httpRequestFactory->createMultiClient(
-				[ 'proxy' => $this->config->get( MainConfigNames::HTTPProxy ) ]
-			)->run( $requestOptions, [ 'reqTimeout' => 15 ] );
-
-			$this->logger->debug( 'Cloudflare API response for {id}: {response}', [
-				'id' => $this->id,
-				'response' => json_encode( $request ),
-			] );
-
-			if ( $request['code'] !== 200 ) {
-				$this->logger->error( 'Request to Cloudflare failed: {code}', [
-					'code' => $request['code'],
-					'url' => $url,
-				] );
-				return null;
-			}
-
-			return json_decode( $request['body'], true );
+		if ( $method === 'POST' || $method === 'PATCH' ) {
+			$requestOptions['body'] = json_encode( $data );
+			$this->logger->debug( 'Sending JSON body for POST/PATCH to Cloudflare...' );
 		}
+
+		$request = $this->httpRequestFactory->createMultiClient(
+			[ 'proxy' => $this->config->get( MainConfigNames::HTTPProxy ) ]
+		)->run( $requestOptions, [ 'reqTimeout' => 15 ] );
+
+		$this->logger->debug( 'Cloudflare API response for {id}: {response}', [
+			'id' => $this->id,
+			'response' => json_encode( $request ),
+		] );
+
+		if ( $request['code'] !== 200 ) {
+			$this->logger->error( 'Request to Cloudflare failed: {code}', [
+				'code' => $request['code'],
+				'url' => $url,
+			] );
+			return null;
+		}
+
+		return json_decode( $request['body'], true );
+	}
 }
