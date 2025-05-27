@@ -232,7 +232,7 @@ class RequestSSLCFAddJob extends Job {
 			while ( $status === 'pending' ) {
 				sleep( 10 );
 
-				$statusResponse = $this->createRequest( '/zones/' . $this->zoneId .
+				$statusResponse = $this->createRequest( '/zones/' . $this->zoneId . 
 				'/custom_hostnames/' . $hostnameId, 'GET' );
 
 				if ( !$statusResponse || !isset( $statusResponse['result'] ) ) {
