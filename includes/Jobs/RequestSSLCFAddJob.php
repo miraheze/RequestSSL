@@ -17,6 +17,8 @@ class RequestSSLCFAddJob extends Job {
 
 	public const JOB_NAME = 'RequestSSLCFAddJob';
 
+	private readonly ConfigFactory $config;
+	private readonly LoggerFactor $logger;
 	private readonly MessageLocalizer $messageLocalizer;
 
 	private readonly string $apiKey;
