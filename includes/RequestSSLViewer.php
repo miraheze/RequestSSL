@@ -340,8 +340,8 @@ class RequestSSLViewer {
 		}
 
 		if (
-			$this->getConfig()->get( 'RequestSSLCloudFlareConfig' )['apikey'] &&
-			$this->getConfig()->get( 'RequestSSLCloudFlareConfig' )['zoneid'] &&
+			$this->config->get( 'RequestSSLCloudFlareConfig' )['apikey'] &&
+			$this->config->get( 'RequestSSLCloudFlareConfig' )['zoneid'] &&
 			$this->requestSslRequestManager->getStatus() === 'pending'
 		) {
 			$formDescriptor['handle-cf'] = [
