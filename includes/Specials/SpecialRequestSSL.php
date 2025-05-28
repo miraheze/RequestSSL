@@ -16,7 +16,6 @@ use MediaWiki\User\UserFactory;
 use MediaWiki\WikiMap\WikiMap;
 use Miraheze\CreateWiki\Services\RemoteWikiFactory;
 use Miraheze\RequestSSL\RequestSSLManager;
-use Miraheze\RequestSSL\Jobs\RequestSSLCFAddJob;
 use RepoGroup;
 use UserBlockedError;
 use UserNotLoggedIn;

@@ -99,7 +99,7 @@ class RequestSSLCFAddJob extends Job {
 		);
 
 		$customDomain = $this->requestSSLManager->getCustomDomain();
-		$cleanDomain = str_starts_with($customDomain, 'https://') ? substr($customDomain, 8) : $customDomain;
+		$cleanDomain = str_starts_with( $customDomain, 'https://' ) ? substr( $customDomain, 8 ) : $customDomain;
 
 		$apiResponse = $this->queryCloudFlare(
 			$cleanDomain,
