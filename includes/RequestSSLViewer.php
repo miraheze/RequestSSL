@@ -455,7 +455,7 @@ class RequestSSLViewer {
 					Html::element(
 						'p',
 						[],
-						$this->context->msg( 'requestssl-cloudflare-comment-success' )->text()
+						$this->context->msg( 'requestssl-cloudflare-label-success' )->text()
 					),
 					'mw-notify-success'
 				)
