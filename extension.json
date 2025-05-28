@@ -93,6 +93,7 @@
 				"ConnectionProvider",
 				"MimeAnalyzer",
 				"RemoteWikiFactory",
+				"RequestSSLManager",
 				"RepoGroup",
 				"UserFactory"
 			]
