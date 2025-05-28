@@ -342,7 +342,7 @@ class RequestSSLViewer {
 		if (
 			$this->getConfig()->get( 'RequestSSLCloudFlareConfig' )['apikey'] &&
 			$this->getConfig()->get( 'RequestSSLCloudFlareConfig' )['zoneid'] &&
-			$status === 'pending'
+			$this->requestSslRequestManager->getStatus() === 'pending'
 		) {
 			$formDescriptor['handle-cf'] = [
 				'type' => 'submit',
@@ -447,7 +447,7 @@ class RequestSSLViewer {
 
 		$out = $form->getContext()->getOutput();
 
-		if ( isset( $data['handle-cf'] ) ) {
+		if ( isset( $formData['handle-cf'] ) ) {
 			$this->requestSslRequestManager->queryCloudFlare();
 
 			$out->addHTML(

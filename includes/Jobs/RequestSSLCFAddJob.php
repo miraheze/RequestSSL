@@ -4,7 +4,7 @@ namespace Miraheze\RequestSSL\Jobs;
 
 use Exception;
 use Job;
-use MediaWiki\Config\ConfigFactory;
+use MediaWiki\Config\Config;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\Logger\LoggerFactory;
@@ -13,13 +13,14 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
 use MessageLocalizer;
 use Miraheze\RequestSSL\RequestSSLManager;
+use Psr\Log\LoggerInterface;
 
 class RequestSSLCFAddJob extends Job {
 
 	public const JOB_NAME = 'RequestSSLCFAddJob';
 
-	private readonly ConfigFactory $config;
-	private readonly LoggerFactory $logger;
+	private readonly Config $config;
+	private readonly LoggerInterface $logger;
 	private readonly MessageLocalizer $messageLocalizer;
 
 	private readonly string $apiKey;
@@ -34,7 +35,7 @@ class RequestSSLCFAddJob extends Job {
 	) {
 		parent::__construct( self::JOB_NAME, $params );
 		$this->config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RequestSSL' );
-		$this->logger = $logger->getInstance( 'RequestSSL' );
+		$this->logger = LoggerFactory::getInstance( 'RequestSSL' );
 		$this->messageLocalizer = RequestContext::getMain();
 		$this->requestSSLManager = $requestSSLManager;
 
