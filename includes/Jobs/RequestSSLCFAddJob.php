@@ -31,7 +31,7 @@ class RequestSSLCFAddJob extends Job {
 	public function __construct(
 		array $params,
 		private readonly HttpRequestFactory $httpRequestFactory,
-		private readonly RequestSSLManager $requestSSLManager
+		private RequestSSLManager $requestSSLManager
 	) {
 		parent::__construct( self::JOB_NAME, $params );
 		$this->config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RequestSSL' );

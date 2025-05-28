@@ -91,7 +91,6 @@
 			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestSSL",
 			"services": [
 				"ConnectionProvider",
-				"JobQueueGroupFactory",
 				"MimeAnalyzer",
 				"RemoteWikiFactory",
 				"RepoGroup",

@@ -346,7 +346,7 @@ class RequestSSLViewer {
 		) {
 			$formDescriptor['handle-cf'] = [
 				'type' => 'submit',
-				'flags' => [ 'constructive', 'primary' ],
+				'flags' => [ 'progressive', 'primary' ],
 				'buttonlabel-message' => 'requestssl-label-cloudflare-handle',
 				'section' => 'handling',
 			];
