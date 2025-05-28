@@ -448,7 +448,7 @@ class RequestSSLViewer {
 		$out = $form->getContext()->getOutput();
 
 		if ( isset( $data['handle-cf'] ) ) {
-			$this->requestSslRequestManager->queryCloudFlare( $requestID );
+			$this->requestSslRequestManager->queryCloudFlare();
 
 			$out->addHTML(
 				Html::successBox(

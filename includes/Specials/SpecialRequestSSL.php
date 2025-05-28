@@ -219,7 +219,8 @@ class SpecialRequestSSL extends FormSpecialPage {
 			$this->getConfig()->get( 'RequestSSLCloudFlareConfig' )['apikey'] &&
 			$this->getConfig()->get( 'RequestSSLCloudFlareConfig' )['zoneid']
 			) {
-			$this->requestSslRequestManager->queryCloudFlare( $requestID );
+			$this->requestSslRequestManager->fromID( $requestID );
+			$this->requestSslRequestManager->queryCloudFlare();
 		}
 
 		return Status::newGood();

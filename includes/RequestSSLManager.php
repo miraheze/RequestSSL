@@ -17,6 +17,7 @@ use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserGroupManagerFactory;
 use MessageLocalizer;
 use Miraheze\CreateWiki\Services\RemoteWikiFactory;
+use Miraheze\RequestSSL\Jobs\RequestSSLCFAddJob;
 use RepoGroup;
 use stdClass;
 use Wikimedia\Rdbms\IConnectionProvider;
@@ -469,12 +470,12 @@ class RequestSSLManager {
 	/**
 	 * @return void
 	 */
-	public function queryCloudFlare( string $requestID ): void {
+	public function queryCloudFlare(): void {
 		$jobQueueGroup = $this->jobQueueGroupFactory->makeJobQueueGroup();
 		$jobQueueGroup->push(
 			new JobSpecification(
 				RequestSSLCFAddJob::JOB_NAME,
-				[ 'id' => $requestID ]
+				[ 'id' => $this->ID ]
 			)
 		);
 	}
