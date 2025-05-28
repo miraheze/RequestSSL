@@ -8,6 +8,8 @@ use MediaWiki\Config\Config;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\User\User;
 use MessageLocalizer;
 use Miraheze\RequestSSL\RequestSSLManager;
@@ -26,13 +28,14 @@ class RequestSSLCFAddJob extends Job {
 
 	public function __construct(
 		array $params,
-		private readonly Config $config,
-		private readonly LoggerInterface $logger,
 		private readonly HttpRequestFactory $httpRequestFactory,
 		private readonly RequestSSLManager $requestSSLManager
 	) {
 		parent::__construct( self::JOB_NAME, $params );
+		$this->config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RequestSSL' );
+		$this->logger = LoggerFactory::getInstance( 'RequestSSL' );
 		$this->messageLocalizer = RequestContext::getMain();
+		$this->requestSSLManager = $requestSSLManager;
 
 		$this->apiKey = $this->config->get( 'RequestSSLCloudFlareConfig' )['apikey'] ?? '';
 		$this->zoneId = $this->config->get( 'RequestSSLCloudFlareConfig' )['zoneid'] ?? '';
@@ -42,12 +45,12 @@ class RequestSSLCFAddJob extends Job {
 	}
 
 	public function run(): bool {
-		if ( !$this->config->get( 'RequestSSLCloudFlareConfig' )['apikey'] ) {
+		if ( !$this->apiKey ) {
 			$this->logger->debug( 'CloudFlare API key is missing! The addition job cannot start.' );
 			$this->setLastError( 'CloudFlare API key is missing! Cannot query API without it!' );
 
 			return true;
-		} elseif ( !$this->config->get( 'RequestSSLCloudFlareConfig' )['zoneid'] ) {
+		} elseif ( !$this->zoneId ) {
 			$this->logger->debug( 'CloudFlare Zone ID is missing! The addition job cannot start.' );
 			$this->setLastError( 'CloudFlare Zone ID is missing! Cannot query the API without a zone!' );
 
@@ -260,7 +263,7 @@ class RequestSSLCFAddJob extends Job {
 					return $statusResponse;
 				}
 
-				if ( $status != 'active' || $status != 'pending' ) {
+				if ( $status != 'active' && $status != 'pending' ) {
 					$this->logger->debug( 'Something went wrong. Status is {status}. Aborting!', [
 						'id' => $hostnameId,
 						'status' => $status,
