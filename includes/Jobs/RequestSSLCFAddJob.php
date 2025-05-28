@@ -4,16 +4,14 @@ namespace Miraheze\RequestSSL\Jobs;
 
 use Exception;
 use Job;
-use MediaWiki\Config\Config;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Http\HttpRequestFactory;
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\User\User;
 use MessageLocalizer;
 use Miraheze\RequestSSL\RequestSSLManager;
-use Psr\Log\LoggerInterface;
 
 class RequestSSLCFAddJob extends Job {
 
