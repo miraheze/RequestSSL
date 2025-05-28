@@ -18,7 +18,7 @@ class RequestSSLCFAddJob extends Job {
 	public const JOB_NAME = 'RequestSSLCFAddJob';
 
 	private readonly ConfigFactory $config;
-	private readonly LoggerFactor $logger;
+	private readonly LoggerFactory $logger;
 	private readonly MessageLocalizer $messageLocalizer;
 
 	private readonly string $apiKey;
@@ -40,7 +40,7 @@ class RequestSSLCFAddJob extends Job {
 		$this->apiKey = $this->config->get( 'RequestSSLCloudFlareConfig' )['apikey'] ?? '';
 		$this->zoneId = $this->config->get( 'RequestSSLCloudFlareConfig' )['zoneid'] ?? '';
 
-		$this->baseApiUrl = 'https://api.cloudflare.com/client/v4/zones';
+		$this->baseApiUrl = 'https://api.cloudflare.com/client/v4';
 		$this->id = $params['id'];
 	}
 
@@ -60,11 +60,35 @@ class RequestSSLCFAddJob extends Job {
 		$this->requestSSLManager->fromID( $this->id );
 
 		$this->logger->debug(
-			'Request {id} loaded, ready for RequestSSL processing via CloudFlare API.',
+			'Request {id} loaded, ready for RequestSSL processing...',
 			[
 				'id' => $this->id,
 			]
 		);
+
+		$this->requestSSLManager->setStatus( 'inprogress' );
+
+		$remoteGroups = $this->requestSSLManager->getUserGroupsFromTarget();
+		if ( !in_array( 'bureaucrat', $remoteGroups, true ) ) {
+			$this->logger->debug(
+				'User is not a bureaucrat, cannot proceed with CloudFlare addition!',
+				[
+					'id' => $this->id,
+				]
+			);
+
+			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-permissions' )
+				->inContentLanguage()
+				->parse();
+
+			$this->requestSSLManager->addComment(
+				$commentText,
+				User::newSystemUser( 'RequestSSL Extension' )
+			);
+
+			$this->setLastError( 'User is not a bureaucrat! Aborting!' );
+			return true;
+		}
 
 		// Initiate CloudFlare query
 		$this->logger->debug(
@@ -74,8 +98,11 @@ class RequestSSLCFAddJob extends Job {
 			]
 		);
 
+		$customDomain = $this->requestSSLManager->getCustomDomain();
+		$cleanDomain = str_starts_with($customDomain, 'https://') ? substr($customDomain, 8) : $customDomain;
+
 		$apiResponse = $this->queryCloudFlare(
-			$this->requestSSLManager->getCustomDomain(),
+			$cleanDomain,
 			'http',
 			'1.3'
 		);
@@ -90,6 +117,8 @@ class RequestSSLCFAddJob extends Job {
 				User::newSystemUser( 'RequestSSL Extension' )
 			);
 
+			$this->requestSSLManager->setStatus( 'pending' );
+
 			return true;
 		}
 
@@ -103,6 +132,8 @@ class RequestSSLCFAddJob extends Job {
 				$commentText,
 				User::newSystemUser( 'RequestSSL Extension' )
 			);
+
+			$this->requestSSLManager->setStatus( 'pending' );
 
 			return true;
 		}
@@ -140,6 +171,8 @@ class RequestSSLCFAddJob extends Job {
 				// The custom domain is now active, we can proceed
 				$this->requestSSLManager->updateServerName();
 
+				$this->requestSSLManager->logToManageWiki( $systemUser );
+
 				$this->requestSSLManager->setStatus( 'complete' );
 				$this->requestSSLManager->addComment(
 					$activeCommentText,
@@ -160,6 +193,8 @@ class RequestSSLCFAddJob extends Job {
 					$systemUser,
 				);
 
+				$this->requestSSLManager->setStatus( 'pending' );
+
 				$this->logger->debug(
 					'Wiki request {id} requires more details. Rationale given: {comment}',
 					[
@@ -174,6 +209,9 @@ class RequestSSLCFAddJob extends Job {
 					$unknownCommentText,
 					$systemUser
 				);
+
+				$this->requestSSLManager->setStatus( 'pending' );
+
 				$this->logger->debug(
 					'SSL requests {id} recieved an unknown outcome with comment: {comment}',
 					[
@@ -321,7 +359,7 @@ class RequestSSLCFAddJob extends Job {
 			'response' => json_encode( $request ),
 		] );
 
-		if ( $request['code'] !== 200 ) {
+		if ( $request['code'] !== 200 && $request['code'] !== 201 ) {
 			$this->logger->error( 'Request to Cloudflare failed: {code}', [
 				'code' => $request['code'],
 				'url' => $url,

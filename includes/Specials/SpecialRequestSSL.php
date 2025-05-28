@@ -3,11 +3,9 @@
 namespace Miraheze\RequestSSL\Specials;
 
 use ErrorPageError;
-use JobSpecification;
 use ManualLogEntry;
 use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\Html\Html;
-use MediaWiki\JobQueue\JobQueueGroupFactory;
 use MediaWiki\Message\Message;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\SpecialPage\FormSpecialPage;
@@ -17,6 +15,7 @@ use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
 use MediaWiki\WikiMap\WikiMap;
 use Miraheze\CreateWiki\Services\RemoteWikiFactory;
+use Miraheze\RequestSSL\RequestSSLManager;
 use Miraheze\RequestSSL\Jobs\RequestSSLCFAddJob;
 use RepoGroup;
 use UserBlockedError;
@@ -29,14 +28,14 @@ class SpecialRequestSSL extends FormSpecialPage {
 	/** @var IConnectionProvider */
 	private $connectionProvider;
 
-	/** @var JobQueueGroupFactory */
-	private $jobQueueGroupFactory;
-
 	/** @var MimeAnalyzer */
 	private $mimeAnalyzer;
 
 	/** @var RemoteWikiFactory */
 	private $remoteWikiFactory;
+
+	/** @var RequestSSLManager */
+	private $requestSslRequestManager;
 
 	/** @var RepoGroup */
 	private $repoGroup;
@@ -46,26 +45,26 @@ class SpecialRequestSSL extends FormSpecialPage {
 
 	/**
 	 * @param IConnectionProvider $connectionProvider
-	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param MimeAnalyzer $mimeAnalyzer
 	 * @param RemoteWikiFactory $remoteWikiFactory
+	 * @param RequestSSLManager $requestSslRequestManager
 	 * @param RepoGroup $repoGroup
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct(
 		IConnectionProvider $connectionProvider,
-		JobQueueGroupFactory $jobQueueGroupFactory,
 		MimeAnalyzer $mimeAnalyzer,
 		RemoteWikiFactory $remoteWikiFactory,
+		RequestSSLManager $requestSslRequestManager,
 		RepoGroup $repoGroup,
 		UserFactory $userFactory
 	) {
 		parent::__construct( 'RequestSSL', 'request-ssl' );
 
 		$this->connectionProvider = $connectionProvider;
-		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
 		$this->mimeAnalyzer = $mimeAnalyzer;
 		$this->remoteWikiFactory = $remoteWikiFactory;
+		$this->requestSslRequestManager = $requestSslRequestManager;
 		$this->repoGroup = $repoGroup;
 		$this->userFactory = $userFactory;
 	}
@@ -206,13 +205,6 @@ class SpecialRequestSSL extends FormSpecialPage {
 			]
 		);
 
-		if (
-			$this->getConfig()->get( 'RequestSSLCloudFlareConfig' )['apikey'] &&
-			$this->getConfig()->get( 'RequestSSLCloudFlareConfig' )['zoneid']
-			) {
-			$this->queryCloudFlare( $requestID );
-		}
-
 		$logID = $logEntry->insert( $dbw );
 		$logEntry->publish( $logID );
 
@@ -222,6 +214,13 @@ class SpecialRequestSSL extends FormSpecialPage {
 		) {
 			$this->sendNotifications( $data['reason'], $this->getUser()->getName(),
 						 $requestID, $data['target'], $data['customdomain'] );
+		}
+
+		if (
+			$this->getConfig()->get( 'RequestSSLCloudFlareConfig' )['apikey'] &&
+			$this->getConfig()->get( 'RequestSSLCloudFlareConfig' )['zoneid']
+			) {
+			$this->requestSslRequestManager->queryCloudFlare( $requestID );
 		}
 
 		return Status::newGood();
@@ -292,16 +291,6 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'agent' => $receiver,
 			] );
 		}
-	}
-
-	private function queryCloudFlare( string $requestID ): void {
-		$jobQueueGroup = $this->jobQueueGroupFactory->makeJobQueueGroup();
-		$jobQueueGroup->push(
-			new JobSpecification(
-				RequestSSLCFAddJob::JOB_NAME,
-				[ 'id' => $requestID ]
-			)
-		);
 	}
 
 	/**
