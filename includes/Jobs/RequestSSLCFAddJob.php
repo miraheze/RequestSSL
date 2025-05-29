@@ -39,6 +39,7 @@ class RequestSSLCFAddJob extends Job {
 		$this->messageLocalizer = RequestContext::getMain();
 		$this->requestSSLManager = $requestSSLManager;
 
+		$this->systemUser = User::newSystemUser( 'RequestSSL Extension', [ 'steal' => true ]  );
 		$this->apiKey = $this->config->get( 'RequestSSLCloudFlareConfig' )['apikey'] ?? '';
 		$this->zoneId = $this->config->get( 'RequestSSLCloudFlareConfig' )['zoneid'] ?? '';
 
@@ -51,12 +52,12 @@ class RequestSSLCFAddJob extends Job {
 			$this->logger->debug( 'CloudFlare API key is missing! The addition job cannot start.' );
 			$this->setLastError( 'CloudFlare API key is missing! Cannot query API without it!' );
 
-			return true;
+			return false;
 		} elseif ( !$this->zoneId ) {
 			$this->logger->debug( 'CloudFlare Zone ID is missing! The addition job cannot start.' );
 			$this->setLastError( 'CloudFlare Zone ID is missing! Cannot query the API without a zone!' );
 
-			return true;
+			return false;
 		}
 
 		$this->requestSSLManager->fromID( $this->id );
@@ -85,11 +86,11 @@ class RequestSSLCFAddJob extends Job {
 
 			$this->requestSSLManager->addComment(
 				$commentText,
-				User::newSystemUser( 'RequestSSL Extension' )
+				$this->systemUser
 			);
 
 			$this->setLastError( 'User is not a bureaucrat! Aborting!' );
-			return true;
+			return false;
 		}
 
 		// Initiate CloudFlare query
@@ -105,8 +106,7 @@ class RequestSSLCFAddJob extends Job {
 
 		$apiResponse = $this->queryCloudFlare(
 			$cleanDomain,
-			'http',
-			'1.3'
+			$this->config->get( 'RequestSSLCloudFlareConfig' )['tlsversion'] ?? '1.3';
 		);
 
 		if ( !$apiResponse ) {
@@ -116,12 +116,12 @@ class RequestSSLCFAddJob extends Job {
 
 			$this->requestSSLManager->addComment(
 				$commentText,
-				User::newSystemUser( 'RequestSSL Extension' )
+				$this->systemUser
 			);
 
 			$this->requestSSLManager->setStatus( 'pending' );
 
-			return true;
+			return false;
 		}
 
 		if ( $apiResponse['result']['status'] == 'pending' && $apiResponse['result']['verification_errors'] ) {
@@ -132,16 +132,31 @@ class RequestSSLCFAddJob extends Job {
 
 			$this->requestSSLManager->addComment(
 				$commentText,
-				User::newSystemUser( 'RequestSSL Extension' )
+				$this->systemUser
 			);
 
 			$this->requestSSLManager->setStatus( 'pending' );
 
-			return true;
+			return false;
+		} elseif ( $apiResponse['errors']['message'] ) {
+			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-error-other' )
+				->params( $apiResponse['errors']['message'] )
+				->inContentLanguage()
+				->parse();
+
+			$this->requestSSLManager->addComment(
+				$commentText,
+				$this->systemUser
+			);
+
+			$this->requestSSLManager->setStatus( 'pending' );
+
+			return false;
 		}
 
 		$status = $apiResponse['result']['status'] ?? 'unknown';
-		$comment = $apiResponse['result']['verification_errors'] ?? 'No comment provided';
+		$comment = $apiResponse['errors']['message'] ?? $apiResponse['result']['verification_errors'] ?? 'No comment provided';
+
 
 		$this->logger->debug(
 			'The CloudFlare API has responded. The custom domain for request {id} is {status} with reason: {comment}',
@@ -159,7 +174,6 @@ class RequestSSLCFAddJob extends Job {
 		string $status,
 		string $comment
 	): bool {
-		$systemUser = User::newSystemUser( 'RequestSSL Extension' );
 		$activeCommentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-active' )
 			->inContentLanguage()
 			->parse();
@@ -173,12 +187,12 @@ class RequestSSLCFAddJob extends Job {
 				// The custom domain is now active, we can proceed
 				$this->requestSSLManager->updateServerName();
 
-				$this->requestSSLManager->logToManageWiki( $systemUser );
+				$this->requestSSLManager->logToManageWiki( $this->systemUser );
 
 				$this->requestSSLManager->setStatus( 'complete' );
 				$this->requestSSLManager->addComment(
 					$activeCommentText,
-					$systemUser,
+					$this->systemUser,
 				);
 
 				$this->logger->debug(
@@ -192,15 +206,14 @@ class RequestSSLCFAddJob extends Job {
 			case 'blocked':
 				$this->requestSSLManager->addComment(
 					$unknownCommentText,
-					$systemUser,
+					$this->systemUser,
 				);
 
 				$this->requestSSLManager->setStatus( 'pending' );
 
 				$this->logger->debug(
-					'Wiki request {id} requires more details. Rationale given: {comment}',
+					'SSL request {id} returned a blocked status.',
 					[
-						'comment' => $comment,
 						'id' => $this->id,
 					]
 				);
@@ -209,13 +222,13 @@ class RequestSSLCFAddJob extends Job {
 			default:
 				$this->requestSSLManager->addComment(
 					$unknownCommentText,
-					$systemUser
+					$this->systemUser
 				);
 
 				$this->requestSSLManager->setStatus( 'pending' );
 
 				$this->logger->debug(
-					'SSL requests {id} recieved an unknown outcome with comment: {comment}',
+					'SSL request {id} recieved an unknown outcome with comment: {comment}',
 					[
 						'comment' => $comment,
 						'id' => $this->id,
@@ -228,7 +241,6 @@ class RequestSSLCFAddJob extends Job {
 
 	private function queryCloudFlare(
 		string $customDomain,
-		string $verificationType = 'http',
 		string $tlsVersion = '1.3',
 	): ?array {
 		try {
@@ -240,7 +252,7 @@ class RequestSSLCFAddJob extends Job {
 			$response = $this->createRequest( '/zones/' . $this->zoneId . '/custom_hostnames', 'POST', [
 				'hostname' => $customDomain,
 				'ssl' => [
-					'method' => $verificationType,
+					'method' => 'http',
 					'type' => 'dv',
 					'settings' => [
 						'http2' => 'on',
@@ -287,12 +299,21 @@ class RequestSSLCFAddJob extends Job {
 				}
 
 				$status = $statusResponse['result']['status'] ?? 'unknown';
+				$errors = $statusResponse['errors'] ?? [];
 				$verificationErrors = $statusResponse['result']['verification_errors'] ?? [];
 
 				$this->logger->debug( 'Hostname status is {status} for {id}', [
 					'status' => $status,
 					'id' => $hostnameId,
 				] );
+
+				if ( $errors ) {
+					$this->logger->error( 'Error encountered while checking hostname status: {errors}', [
+						'errors' => json_encode( $errors ),
+					] );
+					$this->setLastError( 'Error encountered while checking hostname status: ' . json_encode( $errors ) );
+					return $statusResponse;
+				}
 
 				if ( $status === 'pending' && $verificationErrors ) {
 					$this->logger->error( 'Verification failed for hostname {id}', [
@@ -361,9 +382,23 @@ class RequestSSLCFAddJob extends Job {
 			'response' => json_encode( $request ),
 		] );
 
-		if ( $request['code'] !== 200 && $request['code'] !== 201 ) {
-			$this->logger->error( 'Request to Cloudflare failed: {code}', [
+		if ( ( $request['code'] === 400 || $request['code'] === 401 || $request['code'] === 403
+			|| $request['code'] === 404 || $request['code'] === 429 || $request['code'] === 500 )
+			&& $request['body']['errors'] ) {
+			$this->logger->error( 'Request to Cloudflare failed with code {code}: {response}', [
 				'code' => $request['code'],
+				'response' => $request['body'] ?? 'No response body',
+				'url' => $url,
+			] );
+			$this->setLastError( 'Cloudflare API request failed with code ' . $request['code'] );
+
+			// We still want to return the response body for debugging
+			return json_decode( $request['body'], true );
+		}
+		if ( $request['code'] !== 200 && $request['code'] !== 201 ) {
+			$this->logger->error( 'Request to Cloudflare failed with code {code}', [
+				'code' => $request['code'],
+				'response' => $request['body'] ?? 'No response body',
 				'url' => $url,
 			] );
 			return null;

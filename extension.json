@@ -154,6 +154,7 @@
 			"description": "Array. CloudFlare configuration array, including API Key and Zone ID.",
 			"value": {
 				"apikey": null,
+				"tlsversion": "1.3",
 				"zoneid": null
 			}
 		},
