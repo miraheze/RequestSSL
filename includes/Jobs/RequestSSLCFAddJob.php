@@ -106,7 +106,7 @@ class RequestSSLCFAddJob extends Job {
 
 		$apiResponse = $this->queryCloudFlare(
 			$cleanDomain,
-			$this->config->get( 'RequestSSLCloudFlareConfig' )['tlsversion'] ?? '1.3';
+			$this->config->get( 'RequestSSLCloudFlareConfig' )['tlsversion'] ?? '1.3'
 		);
 
 		if ( !$apiResponse ) {
