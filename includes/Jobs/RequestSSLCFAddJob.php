@@ -39,7 +39,7 @@ class RequestSSLCFAddJob extends Job {
 		$this->messageLocalizer = RequestContext::getMain();
 		$this->requestSSLManager = $requestSSLManager;
 
-		$this->systemUser = User::newSystemUser( 'RequestSSL Extension', [ 'steal' => true ]  );
+		$this->systemUser = User::newSystemUser( 'RequestSSL Extension', [ 'steal' => true ] );
 		$this->apiKey = $this->config->get( 'RequestSSLCloudFlareConfig' )['apikey'] ?? '';
 		$this->zoneId = $this->config->get( 'RequestSSLCloudFlareConfig' )['zoneid'] ?? '';
 
@@ -156,7 +156,6 @@ class RequestSSLCFAddJob extends Job {
 
 		$status = $apiResponse['result']['status'] ?? 'unknown';
 		$comment = $apiResponse['errors']['message'] ?? $apiResponse['result']['verification_errors'] ?? 'No comment provided';
-
 
 		$this->logger->debug(
 			'The CloudFlare API has responded. The custom domain for request {id} is {status} with reason: {comment}',
