@@ -17,7 +17,7 @@
 	"requestssl-cloudflare-comment-active": "This custom domain has been successfully activated and applied to this wiki.",
 	"requestssl-cloudflare-comment-permissions": "An error occurred while processing this custom domain request. The requester is not a bureaucrat so a system administrator will now manually review this request.",
 	"requestssl-cloudflare-comment-error": "An error occurred while processing your custom domain request with Cloudflare. A system administrator will now manually review your request.",
-	"requestssl-cloudflare-error-other": "An error occurred while processing your request with Cloudflare. Cloudflare reported the following error: $1",
+	"requestssl-cloudflare-comment-error-other": "An error occurred while processing your request with Cloudflare. Cloudflare reported the following error: $1",
 	"requestssl-cloudflare-comment-error-verification": "An error occurred while verifying your custom domain is pointed correctly to Cloudflare. Cloudflare reported the following error: $1",
 	"requestssl-cloudflare-label-success": "This request has been queued for automatic processing via CloudFlare. Check back in a few minutes.",
 	"requestssl-comment-given": "Comment given by $1:",

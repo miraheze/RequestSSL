@@ -110,7 +110,7 @@ class RequestSSLCFAddJob extends Job {
 		);
 
 		if ( !$apiResponse ) {
-			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-error' )
+			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error' )
 				->inContentLanguage()
 				->parse();
 
@@ -125,7 +125,7 @@ class RequestSSLCFAddJob extends Job {
 		}
 
 		if ( $apiResponse['result']['status'] == 'pending' && $apiResponse['result']['verification_errors'] ) {
-			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-error-verification' )
+			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error-verification' )
 				->params( $apiResponse['result']['verification_errors'] )
 				->inContentLanguage()
 				->parse();
@@ -138,9 +138,9 @@ class RequestSSLCFAddJob extends Job {
 			$this->requestSSLManager->setStatus( 'pending' );
 
 			return false;
-		} elseif ( $apiResponse['errors']['message'] ) {
-			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-error-other' )
-				->params( $apiResponse['errors']['message'] )
+		} elseif ( $apiResponse['errors'][0]['message'] ) {
+			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error-other' )
+				->params( $apiResponse['errors'][0]['message'] )
 				->inContentLanguage()
 				->parse();
 
@@ -177,7 +177,7 @@ class RequestSSLCFAddJob extends Job {
 			->inContentLanguage()
 			->parse();
 
-		$unknownCommentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-error' )
+		$unknownCommentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error' )
 			->inContentLanguage()
 			->parse();
 
