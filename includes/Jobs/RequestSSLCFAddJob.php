@@ -26,6 +26,7 @@ class RequestSSLCFAddJob extends Job {
 	private readonly string $apiKey;
 	private readonly string $baseApiUrl;
 	private readonly int $id;
+	private readonly User $systemUser;
 	private readonly string $zoneId;
 
 	public function __construct(
