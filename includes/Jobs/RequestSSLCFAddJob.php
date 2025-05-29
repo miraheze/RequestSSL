@@ -156,7 +156,9 @@ class RequestSSLCFAddJob extends Job {
 		}
 
 		$status = $apiResponse['result']['status'] ?? 'unknown';
-		$comment = $apiResponse['errors']['message'] ?? $apiResponse['result']['verification_errors'] ?? 'No comment provided';
+		$comment = $apiResponse['errors']['message']
+			?? $apiResponse['result']['verification_errors']
+			?? 'No comment provided';
 
 		$this->logger->debug(
 			'The Cloudflare API has responded. The custom domain for request {id} is {status} with reason: {comment}',
@@ -311,7 +313,8 @@ class RequestSSLCFAddJob extends Job {
 					$this->logger->error( 'Error encountered while checking hostname status: {errors}', [
 						'errors' => json_encode( $errors ),
 					] );
-					$this->setLastError( 'Error encountered while checking hostname status: ' . json_encode( $errors ) );
+					$this->setLastError( 'Error encountered while checking hostname status: ' .
+					json_encode( $errors ) );
 					return $statusResponse;
 				}
 
