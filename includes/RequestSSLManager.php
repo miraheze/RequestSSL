@@ -470,7 +470,7 @@ class RequestSSLManager {
 	/**
 	 * @return void
 	 */
-	public function queryCloudFlare(): void {
+	public function queryCloudflare(): void {
 		$jobQueueGroup = $this->jobQueueGroupFactory->makeJobQueueGroup();
 		$jobQueueGroup->push(
 			new JobSpecification(

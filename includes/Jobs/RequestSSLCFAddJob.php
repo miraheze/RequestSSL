@@ -40,8 +40,8 @@ class RequestSSLCFAddJob extends Job {
 		$this->requestSSLManager = $requestSSLManager;
 
 		$this->systemUser = User::newSystemUser( 'RequestSSL Extension', [ 'steal' => true ] );
-		$this->apiKey = $this->config->get( 'RequestSSLCloudFlareConfig' )['apikey'] ?? '';
-		$this->zoneId = $this->config->get( 'RequestSSLCloudFlareConfig' )['zoneid'] ?? '';
+		$this->apiKey = $this->config->get( 'RequestSSLCloudflareConfig' )['apikey'] ?? '';
+		$this->zoneId = $this->config->get( 'RequestSSLCloudflareConfig' )['zoneid'] ?? '';
 
 		$this->baseApiUrl = 'https://api.cloudflare.com/client/v4';
 		$this->id = $params['id'];
@@ -49,13 +49,13 @@ class RequestSSLCFAddJob extends Job {
 
 	public function run(): bool {
 		if ( !$this->apiKey ) {
-			$this->logger->debug( 'CloudFlare API key is missing! The addition job cannot start.' );
-			$this->setLastError( 'CloudFlare API key is missing! Cannot query API without it!' );
+			$this->logger->debug( 'Cloudflare API key is missing! The addition job cannot start.' );
+			$this->setLastError( 'Cloudflare API key is missing! Cannot query API without it!' );
 
 			return false;
 		} elseif ( !$this->zoneId ) {
-			$this->logger->debug( 'CloudFlare Zone ID is missing! The addition job cannot start.' );
-			$this->setLastError( 'CloudFlare Zone ID is missing! Cannot query the API without a zone!' );
+			$this->logger->debug( 'Cloudflare Zone ID is missing! The addition job cannot start.' );
+			$this->setLastError( 'Cloudflare Zone ID is missing! Cannot query the API without a zone!' );
 
 			return false;
 		}
@@ -74,7 +74,7 @@ class RequestSSLCFAddJob extends Job {
 		$remoteGroups = $this->requestSSLManager->getUserGroupsFromTarget();
 		if ( !in_array( 'bureaucrat', $remoteGroups, true ) ) {
 			$this->logger->debug(
-				'User is not a bureaucrat, cannot proceed with CloudFlare addition!',
+				'User is not a bureaucrat, cannot proceed with Cloudflare addition!',
 				[
 					'id' => $this->id,
 				]
@@ -93,9 +93,9 @@ class RequestSSLCFAddJob extends Job {
 			return false;
 		}
 
-		// Initiate CloudFlare query
+		// Initiate Cloudflare query
 		$this->logger->debug(
-			'Querying CloudFlare to add custom domain for request {id}...',
+			'Querying Cloudflare to add custom domain for request {id}...',
 			[
 				'id' => $this->id,
 			]
@@ -104,9 +104,9 @@ class RequestSSLCFAddJob extends Job {
 		$customDomain = $this->requestSSLManager->getCustomDomain();
 		$cleanDomain = str_starts_with( $customDomain, 'https://' ) ? substr( $customDomain, 8 ) : $customDomain;
 
-		$apiResponse = $this->queryCloudFlare(
+		$apiResponse = $this->queryCloudflare(
 			$cleanDomain,
-			$this->config->get( 'RequestSSLCloudFlareConfig' )['tlsversion'] ?? '1.3'
+			$this->config->get( 'RequestSSLCloudflareConfig' )['tlsversion'] ?? '1.3'
 		);
 
 		if ( !$apiResponse ) {
@@ -158,7 +158,7 @@ class RequestSSLCFAddJob extends Job {
 		$comment = $apiResponse['errors']['message'] ?? $apiResponse['result']['verification_errors'] ?? 'No comment provided';
 
 		$this->logger->debug(
-			'The CloudFlare API has responded. The custom domain for request {id} is {status} with reason: {comment}',
+			'The Cloudflare API has responded. The custom domain for request {id} is {status} with reason: {comment}',
 			[
 				'comment' => $comment,
 				'id' => $this->id,
@@ -238,7 +238,7 @@ class RequestSSLCFAddJob extends Job {
 		return true;
 	}
 
-	private function queryCloudFlare(
+	private function queryCloudflare(
 		string $customDomain,
 		string $tlsVersion = '1.3',
 	): ?array {

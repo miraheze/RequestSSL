@@ -340,8 +340,8 @@ class RequestSSLViewer {
 		}
 
 		if (
-			$this->config->get( 'RequestSSLCloudFlareConfig' )['apikey'] &&
-			$this->config->get( 'RequestSSLCloudFlareConfig' )['zoneid'] &&
+			$this->config->get( 'RequestSSLCloudflareConfig' )['apikey'] &&
+			$this->config->get( 'RequestSSLCloudflareConfig' )['zoneid'] &&
 			$this->requestSslRequestManager->getStatus() === 'pending'
 		) {
 			$formDescriptor['handle-cf'] = [
@@ -448,7 +448,7 @@ class RequestSSLViewer {
 		$out = $form->getContext()->getOutput();
 
 		if ( isset( $formData['handle-cf'] ) ) {
-			$this->requestSslRequestManager->queryCloudFlare();
+			$this->requestSslRequestManager->queryCloudflare();
 
 			$out->addHTML(
 				Html::successBox(

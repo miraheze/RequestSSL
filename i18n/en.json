@@ -19,7 +19,7 @@
 	"requestssl-cloudflare-comment-error": "An error occurred while processing your custom domain request with Cloudflare. A system administrator will now manually review your request.",
 	"requestssl-cloudflare-comment-error-other": "An error occurred while processing your request with Cloudflare. Cloudflare reported the following error: $1",
 	"requestssl-cloudflare-comment-error-verification": "An error occurred while verifying your custom domain is pointed correctly to Cloudflare. Cloudflare reported the following error: $1",
-	"requestssl-cloudflare-label-success": "This request has been queued for automatic processing via CloudFlare. Check back in a few minutes.",
+	"requestssl-cloudflare-label-success": "This request has been queued for automatic processing via Cloudflare. Check back in a few minutes.",
 	"requestssl-comment-given": "Comment given by $1:",
 	"requestssl-comment-success": "Comment successfully added to this request.",
 	"requestssl-customdomain-no-hostname": "You have not inputted a hostname.",
