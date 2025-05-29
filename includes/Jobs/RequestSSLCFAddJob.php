@@ -382,8 +382,9 @@ class RequestSSLCFAddJob extends Job {
 		] );
 
 		if ( ( $request['code'] === 400 || $request['code'] === 401 || $request['code'] === 403
-			|| $request['code'] === 404 || $request['code'] === 429 || $request['code'] === 500 )
-			&& $request['body']['errors'] ) {
+			|| $request['code'] === 404 || $request['code'] === 409 || $request['code'] === 429
+			|| $request['code'] === 500 ) && $request['body']['errors']
+			) {
 			$this->logger->error( 'Request to Cloudflare failed with code {code}: {response}', [
 				'code' => $request['code'],
 				'response' => $request['body'] ?? 'No response body',
