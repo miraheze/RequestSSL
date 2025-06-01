@@ -47,6 +47,7 @@ class RequestSSLCFAddJob extends Job {
 
 	/** @inheritDoc */
 	public function run(): bool {
+		// If the API key or zone ID is missing, we cannot proceed
 		if ( !$this->apiKey ) {
 			$this->logger->debug( 'Cloudflare API key is missing! The addition job cannot start.' );
 			return true;
@@ -64,7 +65,10 @@ class RequestSSLCFAddJob extends Job {
 
 		$this->requestSSLManager->setStatus( 'inprogress' );
 
+		// Retrieve the user groups from the target wiki to verify the user has the necessary permissions
 		$remoteGroups = $this->requestSSLManager->getUserGroupsFromTarget();
+
+		// If the user is not a bureaucrat, we cannot proceed
 		if ( !in_array( 'bureaucrat', $remoteGroups, true ) ) {
 			$this->logger->debug(
 				'User is not a bureaucrat, cannot proceed with Cloudflare addition!',
@@ -80,7 +84,7 @@ class RequestSSLCFAddJob extends Job {
 				$this->systemUser
 			);
 
-			return false;
+			return true;
 		}
 
 		// Initiate Cloudflare query
@@ -91,14 +95,16 @@ class RequestSSLCFAddJob extends Job {
 			]
 		);
 
+		// Retrive the custom domain and sanitize it for the API request
 		$customDomain = $this->requestSSLManager->getCustomDomain();
-		$cleanDomain = preg_replace( '/^https?:\/\//', '', $customDomain );
+		$sanitizedDomain = preg_replace( '/^https?:\/\//', '', $customDomain );
 
 		$apiResponse = $this->queryCloudflare(
-			$cleanDomain,
+			$sanitizedDomain,
 			$this->config->get( 'RequestSSLCloudflareConfig' )['tlsversion'] ?? '1.3'
 		);
 
+		// If the API response is empty or invalid, we cannot proceed
 		if ( !$apiResponse ) {
 			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error' )
 				->inContentLanguage()
@@ -111,9 +117,10 @@ class RequestSSLCFAddJob extends Job {
 
 			$this->requestSSLManager->setStatus( 'pending' );
 
-			return false;
+			return true;
 		}
 
+		// If the domain is not setup, halt early and comment on the request
 		if ( $apiResponse['result']['status'] == 'pending' && $apiResponse['result']['verification_errors'] ) {
 			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error-verification' )
 				->params( $apiResponse['result']['verification_errors'] )
@@ -127,7 +134,8 @@ class RequestSSLCFAddJob extends Job {
 
 			$this->requestSSLManager->setStatus( 'pending' );
 
-			return false;
+			return true;
+		// If the API response contains an error, halt early and comment on the request
 		} elseif ( $apiResponse['errors'][0]['message'] ) {
 			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error-other' )
 				->params( $apiResponse['errors'][0]['message'] )
@@ -141,7 +149,7 @@ class RequestSSLCFAddJob extends Job {
 
 			$this->requestSSLManager->setStatus( 'pending' );
 
-			return false;
+			return true;
 		}
 
 		$status = $apiResponse['result']['status'] ?? 'unknown';
@@ -178,6 +186,7 @@ class RequestSSLCFAddJob extends Job {
 				// The custom domain is now active, we can proceed
 				$this->requestSSLManager->updateServerName();
 
+				// Log the request to the ManageWiki log
 				$this->requestSSLManager->logToManageWiki( $this->systemUser );
 
 				$this->requestSSLManager->setStatus( 'complete' );
@@ -344,7 +353,7 @@ class RequestSSLCFAddJob extends Job {
 
 			return $statusResponse;
 		} catch ( Exception $e ) {
-			*
+			// Log the exception and return an empty array
 			$this->logger->error( 'Cloudflare request failed: ' . $e->getMessage() );
 			return [];
 		}
