@@ -19,8 +19,6 @@ class RequestSSLCFAddJob extends Job {
 
 	public const JOB_NAME = 'RequestSSLCFAddJob';
 
-	private readonly Config $config;
-	private readonly LoggerInterface $logger;
 	private readonly MessageLocalizer $messageLocalizer;
 
 	private readonly string $apiKey;
@@ -31,14 +29,15 @@ class RequestSSLCFAddJob extends Job {
 
 	public function __construct(
 		array $params,
+		private readonly Config $config,
 		private readonly HttpRequestFactory $httpRequestFactory,
-		private RequestSSLManager $requestSSLManager
+		private readonly LoggerInterface $loggerFactory,
+		private readonly RequestSSLManager $requestManager
 	) {
 		parent::__construct( self::JOB_NAME, $params );
 		$this->config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'RequestSSL' );
-		$this->logger = LoggerFactory::getInstance( 'RequestSSL' );
+		$this->logger = $loggerFactory;
 		$this->messageLocalizer = RequestContext::getMain();
-		$this->requestSSLManager = $requestSSLManager;
 
 		$this->systemUser = User::newSystemUser( 'RequestSSL Extension', [ 'steal' => true ] );
 		$this->apiKey = $this->config->get( 'RequestSSLCloudflareConfig' )['apikey'] ?? '';
@@ -48,26 +47,21 @@ class RequestSSLCFAddJob extends Job {
 		$this->id = $params['id'];
 	}
 
+	/** @inheritDoc */
 	public function run(): bool {
 		if ( !$this->apiKey ) {
 			$this->logger->debug( 'Cloudflare API key is missing! The addition job cannot start.' );
-			$this->setLastError( 'Cloudflare API key is missing! Cannot query API without it!' );
-
-			return false;
+			return true;
 		} elseif ( !$this->zoneId ) {
 			$this->logger->debug( 'Cloudflare Zone ID is missing! The addition job cannot start.' );
-			$this->setLastError( 'Cloudflare Zone ID is missing! Cannot query the API without a zone!' );
-
-			return false;
+			return true;
 		}
 
 		$this->requestSSLManager->fromID( $this->id );
 
 		$this->logger->debug(
 			'Request {id} loaded, ready for RequestSSL processing...',
-			[
-				'id' => $this->id,
-			]
+			[ 'id' => $this->id ]
 		);
 
 		$this->requestSSLManager->setStatus( 'inprogress' );
@@ -76,9 +70,7 @@ class RequestSSLCFAddJob extends Job {
 		if ( !in_array( 'bureaucrat', $remoteGroups, true ) ) {
 			$this->logger->debug(
 				'User is not a bureaucrat, cannot proceed with Cloudflare addition!',
-				[
-					'id' => $this->id,
-				]
+				[ 'id' => $this->id ]
 			);
 
 			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-permissions' )
@@ -90,7 +82,6 @@ class RequestSSLCFAddJob extends Job {
 				$this->systemUser
 			);
 
-			$this->setLastError( 'User is not a bureaucrat! Aborting!' );
 			return false;
 		}
 
@@ -103,7 +94,7 @@ class RequestSSLCFAddJob extends Job {
 		);
 
 		$customDomain = $this->requestSSLManager->getCustomDomain();
-		$cleanDomain = str_starts_with( $customDomain, 'https://' ) ? substr( $customDomain, 8 ) : $customDomain;
+		$cleanDomain = preg_replace( '/^https?:\/\//', '', $customDomain );
 
 		$apiResponse = $this->queryCloudflare(
 			$cleanDomain,
@@ -199,9 +190,7 @@ class RequestSSLCFAddJob extends Job {
 
 				$this->logger->debug(
 					'SSL request {id} has been approved and completed successfully.',
-					[
-						'id' => $this->id,
-					]
+					['id' => $this->id ]
 				);
 				break;
 
@@ -215,9 +204,7 @@ class RequestSSLCFAddJob extends Job {
 
 				$this->logger->debug(
 					'SSL request {id} returned a blocked status.',
-					[
-						'id' => $this->id,
-					]
+					[ 'id' => $this->id ]
 				);
 				break;
 
@@ -243,15 +230,15 @@ class RequestSSLCFAddJob extends Job {
 
 	private function queryCloudflare(
 		string $customDomain,
-		string $tlsVersion = '1.3',
-	): ?array {
+		string $tlsVersion,
+	): array {
 		try {
 			// Step 1: Create a custom hostname
 			$this->logger->debug( 'Requesting Cloudflare to create custom hostname for {domain}', [
 				'domain' => $customDomain,
 			] );
 
-			$response = $this->createRequest( '/zones/' . $this->zoneId . '/custom_hostnames', 'POST', [
+			$response = $this->createRequest( "/zones/{$this->zoneId}/custom_hostnames", 'POST', [
 				'hostname' => $customDomain,
 				'ssl' => [
 					'method' => 'http',
@@ -266,13 +253,12 @@ class RequestSSLCFAddJob extends Job {
 
 			$hostnameId = $response['result']['id'] ?? null;
 
+			// No hostname ID means the request failed
 			if ( !$hostnameId ) {
 				$this->logger->error( 'Failed to create custom hostname for {domain}', [
 					'domain' => $customDomain,
 					'response' => json_encode( $response ),
 				] );
-
-				$this->setLastError( 'Failed to create custom hostname for ' . $customDomain );
 
 				return $response;
 			}
@@ -289,14 +275,16 @@ class RequestSSLCFAddJob extends Job {
 			while ( $status === 'pending' ) {
 				sleep( 10 );
 
+				// Check the status of the custom hostname
 				$statusResponse = $this->createRequest( '/zones/' . $this->zoneId .
 				 '/custom_hostnames/' . $hostnameId, 'GET' );
 
+				 // No response means the request failed
 				if ( !$statusResponse || !isset( $statusResponse['result'] ) ) {
 					$this->logger->error( 'Failed to retrieve hostname status for {id}', [
 						'id' => $hostnameId,
 					] );
-					$this->setLastError( 'Failed to retrieve status for hostname ID ' . $hostnameId );
+
 					return $statusResponse;
 				}
 
@@ -309,59 +297,70 @@ class RequestSSLCFAddJob extends Job {
 					'id' => $hostnameId,
 				] );
 
+				// Log any errors encountered during the status check
 				if ( $errors ) {
 					$this->logger->error( 'Error encountered while checking hostname status: {errors}', [
 						'errors' => json_encode( $errors ),
 					] );
-					$this->setLastError( 'Error encountered while checking hostname status: ' .
-					json_encode( $errors ) );
+
+					// Return the status response for debugging purposes
 					return $statusResponse;
 				}
 
+				// Verification errors mean that the hostname likely isn't pointed correctly
 				if ( $status === 'pending' && $verificationErrors ) {
 					$this->logger->error( 'Verification failed for hostname {id}', [
 						'id' => $hostnameId,
 						'errors' => json_encode( $verificationErrors ),
 					] );
-					$this->setLastError( 'Verification errors encountered for ' . $customDomain );
+
+					// Return the status response for debugging purposes
 					return $statusResponse;
 				}
 
-				if ( $status != 'active' && $status != 'pending' ) {
+				// If the status is neither 'active' nor 'pending', we have an unexpected status
+				if ( $status !== 'active' && $status !== 'pending' ) {
 					$this->logger->debug( 'Something went wrong. Status is {status}. Aborting!', [
 						'id' => $hostnameId,
 						'status' => $status,
 					] );
-					$this->setLastError( 'Unexpected status for hostname ID ' . $hostnameId . ': ' . $status );
+
+					// Return the status response for debugging purposes
 					return $statusResponse;
 				}
 			}
 
+			// An invalud response was returned
+			if ( !isset( $response['result'] ) && !isset( $response['errors'] ) ) {
+				$this->logger->error( 'Invalid response from Cloudflare API' );
+				// Return an empty array to indicate failure
+				return [];
+			}
+
+			// Log successful activation
 			if ( $status === 'active' ) {
 				$this->logger->info( 'Custom hostname {id} is now active.', [
 					'id' => $hostnameId,
 				] );
 			}
 
-			// It's used, I promise!
-			// @phan-suppress-next-line PhanPossiblyUndeclaredVariable
 			return $statusResponse;
-		} catch ( Exception $e ) {
+		} catch ( Exception $e ) {*
 			$this->logger->error( 'Cloudflare request failed: ' . $e->getMessage() );
-			$this->setLastError( 'An exception occurred: ' . $e->getMessage() );
-			return null;
+			return [];
 		}
 	}
 
 	private function createRequest(
 			string $endpoint,
 			string $method,
-			array $data = []
-		): ?array {
+			array $data
+	): array {
 		$url = $this->baseApiUrl . $endpoint;
 
 		$this->logger->debug( 'Creating HTTP request to Cloudflare...' );
 
+		// Declare the proper options and headers
 		$requestOptions = [
 			'url' => $url,
 			'method' => $method,
@@ -371,11 +370,13 @@ class RequestSSLCFAddJob extends Job {
 			],
 		];
 
+		// If the method is GET, we don't need a body
 		if ( $method === 'POST' || $method === 'PATCH' ) {
 			$requestOptions['body'] = json_encode( $data );
 			$this->logger->debug( 'Sending JSON body for POST/PATCH to Cloudflare...' );
 		}
 
+		// Create the HTTP request. We use a multi-client in order to support proxying
 		$request = $this->httpRequestFactory->createMultiClient(
 			[ 'proxy' => $this->config->get( MainConfigNames::HTTPProxy ) ]
 		)->run( $requestOptions, [ 'reqTimeout' => 15 ] );
@@ -385,26 +386,26 @@ class RequestSSLCFAddJob extends Job {
 			'response' => json_encode( $request ),
 		] );
 
-		if ( ( $request['code'] === 400 || $request['code'] === 401 || $request['code'] === 403
-			|| $request['code'] === 404 || $request['code'] === 409 || $request['code'] === 429
-			|| $request['code'] === 500 ) && $request['body'] ) {
+		// If the request failed, we log the error
+		if ( in_array( $request['code'], [400, 401, 403, 404, 409, 429, 500], true ) && $request['body'] ) {
 			$this->logger->error( 'Request to Cloudflare failed with code {code}: {response}', [
 				'code' => $request['code'],
-				'response' => $request['body'] ?? 'No response body',
+				'response' => $request['body'],
 				'url' => $url,
 			] );
-			$this->setLastError( 'Cloudflare API request failed with code ' . $request['code'] );
 
 			// We still want to return the response body for debugging
 			return json_decode( $request['body'], true );
 		}
+
+		// If the response code is not 200 or 201, we log an error
 		if ( $request['code'] !== 200 && $request['code'] !== 201 ) {
 			$this->logger->error( 'Request to Cloudflare failed with code {code}', [
 				'code' => $request['code'],
 				'response' => $request['body'] ?? 'No response body',
 				'url' => $url,
 			] );
-			return null;
+			return [];
 		}
 
 		return json_decode( $request['body'], true );
