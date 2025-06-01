@@ -7,9 +7,7 @@ use Job;
 use MediaWiki\Config\Config;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Http\HttpRequestFactory;
-use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MainConfigNames;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
 use MessageLocalizer;
 use Miraheze\RequestSSL\RequestSSLManager;
@@ -190,7 +188,7 @@ class RequestSSLCFAddJob extends Job {
 
 				$this->logger->debug(
 					'SSL request {id} has been approved and completed successfully.',
-					['id' => $this->id ]
+					[ 'id' => $this->id ]
 				);
 				break;
 
@@ -345,7 +343,8 @@ class RequestSSLCFAddJob extends Job {
 			}
 
 			return $statusResponse;
-		} catch ( Exception $e ) {*
+		} catch ( Exception $e ) {
+			*
 			$this->logger->error( 'Cloudflare request failed: ' . $e->getMessage() );
 			return [];
 		}
@@ -387,7 +386,7 @@ class RequestSSLCFAddJob extends Job {
 		] );
 
 		// If the request failed, we log the error
-		if ( in_array( $request['code'], [400, 401, 403, 404, 409, 429, 500], true ) && $request['body'] ) {
+		if ( in_array( $request['code'], [ 400, 401, 403, 404, 409, 429, 500 ], true ) && $request['body'] ) {
 			$this->logger->error( 'Request to Cloudflare failed with code {code}: {response}', [
 				'code' => $request['code'],
 				'response' => $request['body'],
