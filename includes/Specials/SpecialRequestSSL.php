@@ -215,7 +215,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	 * @param string $target
 	 * @return string
 	 */
-	public function getLogType( string $target ): string {
+	public function getLogType( string $target = 'test' ): string {
 		if (
 			!ExtensionRegistry::getInstance()->isLoaded( 'CreateWiki' ) ||
 			!$this->getConfig()->get( 'CreateWikiUsePrivateWikis' )
