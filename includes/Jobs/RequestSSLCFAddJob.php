@@ -25,6 +25,12 @@ class RequestSSLCFAddJob extends Job {
 	private readonly User $systemUser;
 	private readonly string $zoneId;
 
+	/**
+	 * @param Config $config
+	 * @param HttpRequestFactory $httpRequestFactory
+	 * @param LoggerInterface $loggerFactory
+	 * @param RequestSSLManager $requestManager
+	 */
 	public function __construct(
 		array $params,
 		private readonly Config $config,
@@ -36,6 +42,7 @@ class RequestSSLCFAddJob extends Job {
 		$this->config = $config;
 		$this->logger = $loggerFactory;
 		$this->messageLocalizer = RequestContext::getMain();
+		$this->requestSSLManager = $requestManager;
 
 		$this->systemUser = User::newSystemUser( 'RequestSSL Extension', [ 'steal' => true ] );
 		$this->apiKey = $this->config->get( 'RequestSSLCloudflareConfig' )['apikey'] ?? '';
@@ -284,7 +291,7 @@ class RequestSSLCFAddJob extends Job {
 
 				// Check the status of the custom hostname
 				$statusResponse = $this->createRequest( '/zones/' . $this->zoneId .
-				 '/custom_hostnames/' . $hostnameId, 'GET' );
+				 '/custom_hostnames/' . $hostnameId, 'GET', [] );
 
 				 // No response means the request failed
 				if ( !$statusResponse || !isset( $statusResponse['result'] ) ) {
@@ -351,7 +358,7 @@ class RequestSSLCFAddJob extends Job {
 				] );
 			}
 
-			return $statusResponse;
+			return $statusResponse ?? [];
 		} catch ( Exception $e ) {
 			// Log the exception and return an empty array
 			$this->logger->error( 'Cloudflare request failed: ' . $e->getMessage() );
