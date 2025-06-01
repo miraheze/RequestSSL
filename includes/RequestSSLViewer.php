@@ -55,7 +55,7 @@ class RequestSSLViewer {
 		$user = $this->context->getUser();
 
 		if (
-			$this->requestSslRequestManager->isPrivate() &&
+			$this->requestSslRequestManager->isPrivate( forced: false ) &&
 			$user->getName() !== $this->requestSslRequestManager->getRequester()->getName() &&
 			!$this->permissionManager->userHasRight( $user, 'view-private-ssl-requests' )
 		) {
@@ -231,7 +231,7 @@ class RequestSSLViewer {
 				'type' => 'notice',
 			] );
 
-			if ( $this->requestSslRequestManager->isPrivate() ) {
+			if ( $this->requestSslRequestManager->isPrivate( forced: false ) ) {
 				$info .= new MessageWidget( [
 					'label' => new HtmlSnippet( $this->context->msg( 'requestssl-info-request-private' )->escaped() ),
 					'type' => 'warning',
@@ -303,8 +303,8 @@ class RequestSSLViewer {
 					'handle-private' => [
 						'type' => 'check',
 						'label-message' => 'requestssl-label-private',
-						'default' => $this->requestSslRequestManager->isPrivate(),
-						'disabled' => $this->requestSslRequestManager->isPrivate( true ),
+						'default' => $this->requestSslRequestManager->isPrivate( forced: false ),
+						'disabled' => $this->requestSslRequestManager->isPrivate( forced: true ),
 						'section' => 'handling',
 					],
 				];
@@ -581,9 +581,9 @@ class RequestSSLViewer {
 
 			if (
 				isset( $formData['handle-private'] ) &&
-				$this->requestSslRequestManager->isPrivate() !== (bool)$formData['handle-private']
+				$this->requestSslRequestManager->isPrivate( forced: false ) !== (bool)$formData['handle-private']
 			) {
-				$changes[] = $this->requestSslRequestManager->isPrivate() ?
+				$changes[] = $this->requestSslRequestManager->isPrivate( forced: false ) ?
 					'public' : 'private';
 
 				$this->requestSslRequestManager->setPrivate( (int)$formData['handle-private'] );

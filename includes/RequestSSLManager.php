@@ -161,7 +161,7 @@ class RequestSSLManager {
 		$requestLink = $this->linkRenderer->makeLink( $requestQueueLink, "#{$this->ID}" );
 
 		$logEntry = new ManualLogEntry(
-			$this->isPrivate() ? 'requestsslprivate' : 'requestssl',
+			$this->isPrivate( forced: false ) ? 'requestsslprivate' : 'requestssl',
 			'statusupdate'
 		);
 
@@ -319,7 +319,7 @@ class RequestSSLManager {
 	 * @param bool $forced
 	 * @return bool
 	 */
-	public function isPrivate( bool $forced = false ): bool {
+	public function isPrivate( bool $forced ): bool {
 		if ( !$forced && $this->row->request_private ) {
 			return true;
 		}

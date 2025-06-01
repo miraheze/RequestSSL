@@ -20,8 +20,8 @@ $cfg['exclude_analysis_directory_list'] = array_merge(
 
 $cfg['suppress_issue_types'] = [
 	'PhanAccessMethodInternal',
-	// Different versions of MediaWiki will need different suppressions.
-	'UnusedPluginSuppression',
 ];
+
+$cfg['plugins'][] = __DIR__ . '/plugins/NoOptionalParamPlugin.php';
 
 return $cfg;
