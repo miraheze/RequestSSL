@@ -26,7 +26,7 @@ final class NoOptionalParamPlugin extends PluginV3 implements
 					$code_base,
 					$function->getContext(),
 					'PhanOptionalFunctionParameterFound',
-					'Function {FUNCTION} has an optional parameter ${PARAMETER}',
+					'Function {FUNCTION} has an optional parameter ${PARAMETER}. Consider using named arguments.',
 					[ $function->getName(), $parameter->getName() ]
 				);
 			}
@@ -48,7 +48,7 @@ final class NoOptionalParamPlugin extends PluginV3 implements
 					$code_base,
 					$method->getContext(),
 					'PhanOptionalMethodParameterFound',
-					'Method {METHOD} has an optional parameter ${PARAMETER}',
+					'Method {METHOD} has an optional parameter ${PARAMETER}. Consider using named arguments.',
 					[ $method->getName(), $parameter->getName() ]
 				);
 			}
