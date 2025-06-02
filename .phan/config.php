@@ -22,6 +22,6 @@ $cfg['suppress_issue_types'] = [
 	'PhanAccessMethodInternal',
 ];
 
-$cfg['plugins'][] = __DIR__ . '/plugins/NoOptionalParamPlugin.php';
+$cfg['plugins'][] = __DIR__ . '/../vendor/miraheze/phan-plugins/NoOptionalParamPlugin.php';
 
 return $cfg;
