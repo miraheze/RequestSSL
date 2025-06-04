@@ -11,6 +11,7 @@ return [
 			$services->getConfigFactory()->makeConfig( 'RequestSSL' ),
 			$services->getActorStoreFactory(),
 			$services->getConnectionProvider(),
+			$services->getJobQueueGroupFactory(),
 			$services->getLinkRenderer(),
 			$services->get( 'RemoteWikiFactory' ),
 			$services->getRepoGroup(),
