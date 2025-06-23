@@ -27,7 +27,7 @@
 	"requestssl-duplicate-request": "このリクエストを送信できません。既に提出しているリクエストに似すぎています。",
 	"requestssl-edit-success": "リクエストの編集が完了しました。",
 	"requestsslqueue-header": "カスタムドメインリクエストを検索する",
-	"requestsslqueue-header-info": "このフォームを使用してカスタムドメインリクエストを検索することができます。以下のパラメータを使用して検索を絞り込むことができます。",
+	"requestsslqueue-header-info": "このフォームを使用してカスタムドメインリクエストを検索できます。以下のパラメーターを使用して検索条件を絞り込めます。",
 	"requestssl-header-comment-withtimestamp": "$2での$1によるコメント",
 	"requestssl-help-reason": "このリクエストに関連すると思われる追加のコメントがあれば追加してください。",
 	"requestssl-help-customdomain": "目的のカスタムドメインの完全なURL (例: https://example.org) を入力します。",
