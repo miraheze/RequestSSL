@@ -59,7 +59,7 @@
 	"requestssl-no-changes": "沒有做出變動。",
 	"requestssl-notcentral": "已停用",
 	"requestssl-notcentral-text": "SSL 憑證請求在此 wiki 上已停用。請從中央 wiki 請求 SSL 憑證。",
-	"requestssl-notification-body-new-request": "收到了新的 SSL 憑證請求。<br />給出的原因：$1<br />請求者：$2<br />目標資料庫名稱：$3",
+	"requestssl-notification-body-new-request": "收到了新的 SSL 憑證請求。<br />給出的原因：$1<br />請求者：$2<br />目標資料庫名稱：$3<br />自訂網域 URL：$4",
 	"requestssl-notification-header-comment": "SSL 憑證請求 #$1 收到意見。",
 	"requestssl-notification-header-new-request": "新的 SSL 憑證請求 #$1",
 	"requestssl-notification-header-status-update": "已更新 SSL 憑證請求 #$1 的狀態",

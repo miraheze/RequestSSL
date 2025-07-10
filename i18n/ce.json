@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"Умар"
+		]
+	},
+	"requestssl-edit-success": "Дехар кхиамца хийцина.",
+	"requestssl-header-comment-withtimestamp": "Комментари $1 - $2",
+	"requestssl-label-add-comment": "ТӀетоха коммент",
+	"requestssl-label-all": "Массо",
+	"requestssl-label-comment": "Комментари:",
+	"requestssl-label-complete": "Йуьззина",
+	"requestssl-label-customdomain": "Доменан URL-адрес:",
+	"requestssl-label-declined": "Йухатоьхна",
+	"requestssl-label-edit-request": "Дехар хийца",
+	"requestssl-label-inprogress": "Процессехь",
+	"requestssl-label-pending": "Хьежар",
+	"requestssl-label-reason": "Кхин а комментареш:",
+	"requestssl-label-requested-date": "Дехар дина хан:",
+	"requestssl-label-requester": "Дехнарг:",
+	"requestssl-label-status": "Статус:",
+	"requestssl-notcentral": "ДӀайайина",
+	"requestssl-section-editing": "Дехар хийца",
+	"requestssl-status-updated": "Дехар $1.",
+	"requestssl-table-requested-date": "Дехар дина хан",
+	"requestssl-table-requester": "Дехнарг",
+	"requestssl-table-status": "Статус",
+	"requestssl-table-target": "Ӏалашо",
+	"requestssl-unknown": "Ца девза дехар.",
+	"requestssl-usergroups-none": "хӀан-хӀа",
+	"log-action-filter-requestssl": "Ардаман тайпа:",
+	"log-action-filter-requestsslprivate": "Ардаман тайпа:",
+	"requestssl": "SSL дехар"
+}
