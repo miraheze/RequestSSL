@@ -28,8 +28,8 @@ class RequestSSLCFAddJob extends Job {
 
 	public function __construct(
 		array $params,
-		private readonly Config $config,
 		private readonly HttpRequestFactory $httpRequestFactory,
+		private readonly Config $config,
 		private readonly LoggerInterface $logger,
 		private readonly RequestSSLManager $requestManager
 	) {
