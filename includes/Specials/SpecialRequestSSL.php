@@ -15,6 +15,7 @@ use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
 use MediaWiki\WikiMap\WikiMap;
 use Miraheze\CreateWiki\Services\RemoteWikiFactory;
+use Miraheze\RequestSSL\RequestSSLManager;
 use RepoGroup;
 use UserBlockedError;
 use UserNotLoggedIn;
@@ -32,6 +33,9 @@ class SpecialRequestSSL extends FormSpecialPage {
 	/** @var RemoteWikiFactory */
 	private $remoteWikiFactory;
 
+	/** @var RequestSSLManager */
+	private $requestSslRequestManager;
+
 	/** @var RepoGroup */
 	private $repoGroup;
 
@@ -42,6 +46,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	 * @param IConnectionProvider $connectionProvider
 	 * @param MimeAnalyzer $mimeAnalyzer
 	 * @param RemoteWikiFactory $remoteWikiFactory
+	 * @param RequestSSLManager $requestSslRequestManager
 	 * @param RepoGroup $repoGroup
 	 * @param UserFactory $userFactory
 	 */
@@ -49,6 +54,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		IConnectionProvider $connectionProvider,
 		MimeAnalyzer $mimeAnalyzer,
 		RemoteWikiFactory $remoteWikiFactory,
+		RequestSSLManager $requestSslRequestManager,
 		RepoGroup $repoGroup,
 		UserFactory $userFactory
 	) {
@@ -57,6 +63,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		$this->connectionProvider = $connectionProvider;
 		$this->mimeAnalyzer = $mimeAnalyzer;
 		$this->remoteWikiFactory = $remoteWikiFactory;
+		$this->requestSslRequestManager = $requestSslRequestManager;
 		$this->repoGroup = $repoGroup;
 		$this->userFactory = $userFactory;
 	}
@@ -206,6 +213,14 @@ class SpecialRequestSSL extends FormSpecialPage {
 		) {
 			$this->sendNotifications( $data['reason'], $this->getUser()->getName(),
 						 $requestID, $data['target'], $data['customdomain'] );
+		}
+
+		if (
+			$this->getConfig()->get( 'RequestSSLCloudflareConfig' )['apikey'] &&
+			$this->getConfig()->get( 'RequestSSLCloudflareConfig' )['zoneid']
+			) {
+			$this->requestSslRequestManager->fromID( (int)$requestID );
+			$this->requestSslRequestManager->queryCloudflare();
 		}
 
 		return Status::newGood();

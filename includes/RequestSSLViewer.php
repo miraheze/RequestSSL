@@ -339,6 +339,19 @@ class RequestSSLViewer {
 			];
 		}
 
+		if (
+			$this->config->get( 'RequestSSLCloudflareConfig' )['apikey'] &&
+			$this->config->get( 'RequestSSLCloudflareConfig' )['zoneid'] &&
+			$this->requestSslRequestManager->getStatus() === 'pending'
+		) {
+			$formDescriptor['handle-cf'] = [
+				'type' => 'submit',
+				'flags' => [ 'progressive', 'primary' ],
+				'buttonlabel-message' => 'requestssl-label-cloudflare-handle',
+				'section' => 'handling',
+			];
+		}
+
 		return $formDescriptor;
 	}
 
@@ -433,6 +446,23 @@ class RequestSSLViewer {
 		}
 
 		$out = $form->getContext()->getOutput();
+
+		if ( isset( $formData['handle-cf'] ) ) {
+			$this->requestSslRequestManager->queryCloudflare();
+
+			$out->addHTML(
+				Html::successBox(
+					Html::element(
+						'p',
+						[],
+						$this->context->msg( 'requestssl-cloudflare-label-success' )->text()
+					),
+					'mw-notify-success'
+				)
+			);
+
+			return;
+		}
 
 		if ( isset( $formData['submit-comment'] ) ) {
 			$this->requestSslRequestManager->addComment( $formData['comment'], $user );
