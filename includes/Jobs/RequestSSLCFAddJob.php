@@ -18,35 +18,28 @@ class RequestSSLCFAddJob extends Job {
 	public const JOB_NAME = 'RequestSSLCFAddJob';
 
 	private readonly MessageLocalizer $messageLocalizer;
+	private readonly User $systemUser;
 
 	private readonly string $apiKey;
 	private readonly string $baseApiUrl;
-	private readonly int $id;
-	private readonly User $systemUser;
 	private readonly string $zoneId;
 
-	/**
-	 * @param Config $config
-	 * @param HttpRequestFactory $httpRequestFactory
-	 * @param LoggerInterface $loggerFactory
-	 * @param RequestSSLManager $requestManager
-	 */
+	private readonly int $id;
+
 	public function __construct(
 		array $params,
 		private readonly Config $config,
 		private readonly HttpRequestFactory $httpRequestFactory,
-		private readonly LoggerInterface $loggerFactory,
+		private readonly LoggerInterface $logger,
 		private readonly RequestSSLManager $requestManager
 	) {
 		parent::__construct( self::JOB_NAME, $params );
-		$this->config = $config;
-		$this->logger = $loggerFactory;
-		$this->messageLocalizer = RequestContext::getMain();
-		$this->requestSSLManager = $requestManager;
 
-		$this->systemUser = User::newSystemUser( 'RequestSSL Extension', [ 'steal' => true ] );
 		$this->apiKey = $this->config->get( 'RequestSSLCloudflareConfig' )['apikey'] ?? '';
 		$this->zoneId = $this->config->get( 'RequestSSLCloudflareConfig' )['zoneid'] ?? '';
+
+		$this->messageLocalizer = RequestContext::getMain();
+		$this->systemUser = User::newSystemUser( 'RequestSSL Extension', [ 'steal' => true ] );
 
 		$this->baseApiUrl = 'https://api.cloudflare.com/client/v4';
 		$this->id = $params['id'];
@@ -58,22 +51,23 @@ class RequestSSLCFAddJob extends Job {
 		if ( !$this->apiKey ) {
 			$this->logger->debug( 'Cloudflare API key is missing! The addition job cannot start.' );
 			return true;
-		} elseif ( !$this->zoneId ) {
+		}
+
+		if ( !$this->zoneId ) {
 			$this->logger->debug( 'Cloudflare Zone ID is missing! The addition job cannot start.' );
 			return true;
 		}
 
-		$this->requestSSLManager->fromID( $this->id );
-
+		$this->requestManager->fromID( $this->id );
 		$this->logger->debug(
 			'Request {id} loaded, ready for RequestSSL processing...',
 			[ 'id' => $this->id ]
 		);
 
-		$this->requestSSLManager->setStatus( 'inprogress' );
+		$this->requestManager->setStatus( 'inprogress' );
 
 		// Retrieve the user groups from the target wiki to verify the user has the necessary permissions
-		$remoteGroups = $this->requestSSLManager->getUserGroupsFromTarget();
+		$remoteGroups = $this->requestManager->getUserGroupsFromTarget();
 
 		// If the user is not a bureaucrat, we cannot proceed
 		if ( !in_array( 'bureaucrat', $remoteGroups, true ) ) {
@@ -84,26 +78,20 @@ class RequestSSLCFAddJob extends Job {
 
 			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-permissions' )
 				->inContentLanguage()
-				->parse();
+				->escaped();
 
-			$this->requestSSLManager->addComment(
-				$commentText,
-				$this->systemUser
-			);
-
+			$this->requestManager->addComment( $commentText, $this->systemUser );
 			return true;
 		}
 
 		// Initiate Cloudflare query
 		$this->logger->debug(
 			'Querying Cloudflare to add custom domain for request {id}...',
-			[
-				'id' => $this->id,
-			]
+			[ 'id' => $this->id ]
 		);
 
 		// Retrive the custom domain and sanitize it for the API request
-		$customDomain = $this->requestSSLManager->getCustomDomain();
+		$customDomain = $this->requestManager->getCustomDomain();
 		$sanitizedDomain = preg_replace( '/^https?:\/\//', '', $customDomain );
 
 		$apiResponse = $this->queryCloudflare(
@@ -115,46 +103,34 @@ class RequestSSLCFAddJob extends Job {
 		if ( !$apiResponse ) {
 			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error' )
 				->inContentLanguage()
-				->parse();
+				->escaped();
 
-			$this->requestSSLManager->addComment(
-				$commentText,
-				$this->systemUser
-			);
-
-			$this->requestSSLManager->setStatus( 'pending' );
+			$this->requestManager->addComment( $commentText, $this->systemUser );
+			$this->requestManager->setStatus( 'pending' );
 
 			return true;
 		}
 
 		// If the domain is not setup, halt early and comment on the request
 		if ( $apiResponse['result']['status'] == 'pending' && $apiResponse['result']['verification_errors'] ) {
-			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error-verification' )
-				->params( $apiResponse['result']['verification_errors'] )
-				->inContentLanguage()
-				->parse();
+			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error-verification',
+				$apiResponse['result']['verification_errors']
+			)->inContentLanguage()->escaped();
 
-			$this->requestSSLManager->addComment(
-				$commentText,
-				$this->systemUser
-			);
-
-			$this->requestSSLManager->setStatus( 'pending' );
+			$this->requestManager->addComment( $commentText, $this->systemUser );
+			$this->requestManager->setStatus( 'pending' );
 
 			return true;
-		// If the API response contains an error, halt early and comment on the request
-		} elseif ( $apiResponse['errors'][0]['message'] ) {
-			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error-other' )
-				->params( $apiResponse['errors'][0]['message'] )
-				->inContentLanguage()
-				->parse();
+		}
 
-			$this->requestSSLManager->addComment(
-				$commentText,
-				$this->systemUser
-			);
+		if ( $apiResponse['errors'][0]['message'] ) {
+			// If the API response contains an error, halt early and comment on the request
+			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error-other',
+				$apiResponse['errors'][0]['message']
+			)->inContentLanguage()->escaped();
 
-			$this->requestSSLManager->setStatus( 'pending' );
+			$this->requestManager->addComment( $commentText, $this->systemUser );
+			$this->requestManager->setStatus( 'pending' );
 
 			return true;
 		}
@@ -176,60 +152,41 @@ class RequestSSLCFAddJob extends Job {
 		return $this->handleOutcome( $status, $comment );
 	}
 
-	private function handleOutcome(
-		string $status,
-		string $comment
-	): bool {
+	private function handleOutcome( string $status, string $comment ): bool {
 		$activeCommentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-active' )
 			->inContentLanguage()
-			->parse();
+			->escaped();
 
 		$unknownCommentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error' )
 			->inContentLanguage()
-			->parse();
+			->escaped();
 
 		switch ( $status ) {
 			case 'active':
 				// The custom domain is now active, we can proceed
-				$this->requestSSLManager->updateServerName();
+				$this->requestManager->updateServerName();
 
 				// Log the request to the ManageWiki log
-				$this->requestSSLManager->logToManageWiki( $this->systemUser );
+				$this->requestManager->logToManageWiki( $this->systemUser );
 
-				$this->requestSSLManager->setStatus( 'complete' );
-				$this->requestSSLManager->addComment(
-					$activeCommentText,
-					$this->systemUser,
-				);
-
+				$this->requestManager->setStatus( 'complete' );
+				$this->requestManager->addComment( $activeCommentText, $this->systemUser );
 				$this->logger->debug(
 					'SSL request {id} has been approved and completed successfully.',
 					[ 'id' => $this->id ]
 				);
 				break;
-
 			case 'blocked':
-				$this->requestSSLManager->addComment(
-					$unknownCommentText,
-					$this->systemUser,
-				);
-
-				$this->requestSSLManager->setStatus( 'pending' );
-
+				$this->requestManager->addComment( $unknownCommentText, $this->systemUser );
+				$this->requestManager->setStatus( 'pending' );
 				$this->logger->debug(
 					'SSL request {id} returned a blocked status.',
 					[ 'id' => $this->id ]
 				);
 				break;
-
 			default:
-				$this->requestSSLManager->addComment(
-					$unknownCommentText,
-					$this->systemUser
-				);
-
-				$this->requestSSLManager->setStatus( 'pending' );
-
+				$this->requestManager->addComment( $unknownCommentText, $this->systemUser );
+				$this->requestManager->setStatus( 'pending' );
 				$this->logger->debug(
 					'SSL request {id} recieved an unknown outcome with comment: {comment}',
 					[
@@ -242,10 +199,7 @@ class RequestSSLCFAddJob extends Job {
 		return true;
 	}
 
-	private function queryCloudflare(
-		string $customDomain,
-		string $tlsVersion,
-	): array {
+	private function queryCloudflare( string $customDomain, string $tlsVersion ): array {
 		try {
 			// Step 1: Create a custom hostname
 			$this->logger->debug( 'Requesting Cloudflare to create custom hostname for {domain}', [
@@ -261,12 +215,11 @@ class RequestSSLCFAddJob extends Job {
 						'http2' => 'on',
 						'tls_1_3' => 'on',
 						'min_tls_version' => $tlsVersion,
-					]
-				]
+					],
+				],
 			] );
 
 			$hostnameId = $response['result']['id'] ?? null;
-
 			// No hostname ID means the request failed
 			if ( !$hostnameId ) {
 				$this->logger->error( 'Failed to create custom hostname for {domain}', [
@@ -285,15 +238,16 @@ class RequestSSLCFAddJob extends Job {
 			// Step 2: Poll the hostname status
 			$status = 'pending';
 			$this->logger->debug( 'Polling custom hostname status until active...' );
-
 			while ( $status === 'pending' ) {
 				sleep( 10 );
 
 				// Check the status of the custom hostname
-				$statusResponse = $this->createRequest( '/zones/' . $this->zoneId .
-				 '/custom_hostnames/' . $hostnameId, 'GET', [] );
+				$statusResponse = $this->createRequest(
+					"/zones/{$this->zoneId}/custom_hostnames/$hostnameId",
+					'GET', []
+				);
 
-				 // No response means the request failed
+				// No response means the request failed
 				if ( !$statusResponse || !isset( $statusResponse['result'] ) ) {
 					$this->logger->error( 'Failed to retrieve hostname status for {id}', [
 						'id' => $hostnameId,
@@ -361,18 +315,20 @@ class RequestSSLCFAddJob extends Job {
 			return $statusResponse ?? [];
 		} catch ( Exception $e ) {
 			// Log the exception and return an empty array
-			$this->logger->error( 'Cloudflare request failed: ' . $e->getMessage() );
+			$this->logger->error( 'Cloudflare request failed: {error}', [
+				'error' => $e->getMessage(),
+			] );
+
 			return [];
 		}
 	}
 
 	private function createRequest(
-			string $endpoint,
-			string $method,
-			array $data
+		string $endpoint,
+		string $method,
+		array $data
 	): array {
 		$url = $this->baseApiUrl . $endpoint;
-
 		$this->logger->debug( 'Creating HTTP request to Cloudflare...' );
 
 		// Declare the proper options and headers
@@ -380,7 +336,7 @@ class RequestSSLCFAddJob extends Job {
 			'url' => $url,
 			'method' => $method,
 			'headers' => [
-				'Authorization' => 'Bearer ' . $this->apiKey,
+				'Authorization' => "Bearer {$this->apiKey}",
 				'Content-Type' => 'application/json',
 			],
 		];
