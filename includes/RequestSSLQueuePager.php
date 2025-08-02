@@ -2,7 +2,6 @@
 
 namespace Miraheze\RequestSSL;
 
-use MediaWiki\Config\Config;
 use MediaWiki\Context\IContextSource;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Pager\TablePager;
@@ -12,57 +11,21 @@ use Wikimedia\Rdbms\IConnectionProvider;
 
 class RequestSSLQueuePager extends TablePager {
 
-	/** @var LinkRenderer */
-	private $linkRenderer;
-
-	/** @var UserFactory */
-	private $userFactory;
-
-	/** @var string */
-	private $requester;
-
-	/** @var string */
-	private $status;
-
-	/** @var string */
-	private $target;
-
-	/**
-	 * @param Config $config
-	 * @param IContextSource $context
-	 * @param IConnectionProvider $connectionProvider
-	 * @param LinkRenderer $linkRenderer
-	 * @param UserFactory $userFactory
-	 * @param string $requester
-	 * @param string $status
-	 * @param string $target
-	 */
 	public function __construct(
-		Config $config,
 		IContextSource $context,
 		IConnectionProvider $connectionProvider,
 		LinkRenderer $linkRenderer,
-		UserFactory $userFactory,
-		string $requester,
-		string $status,
-		string $target
+		private readonly UserFactory $userFactory,
+		private readonly string $requester,
+		private readonly string $status,
+		private readonly string $target
 	) {
-		$this->mDb = $connectionProvider->getReplicaDatabase( 'virtual-requestssl' );
-
 		parent::__construct( $context, $linkRenderer );
-
-		$this->linkRenderer = $linkRenderer;
-		$this->userFactory = $userFactory;
-
-		$this->requester = $requester;
-		$this->status = $status;
-		$this->target = $target;
+		$this->mDb = $connectionProvider->getReplicaDatabase( 'virtual-requestssl' );
 	}
 
-	/**
-	 * @return array
-	 */
-	protected function getFieldNames() {
+	/** @inheritDoc */
+	protected function getFieldNames(): array {
 		return [
 			'request_timestamp' => $this->msg( 'requestssl-table-requested-date' )->text(),
 			'request_actor' => $this->msg( 'requestssl-table-requester' )->text(),
@@ -71,58 +34,48 @@ class RequestSSLQueuePager extends TablePager {
 		];
 	}
 
-	/**
-	 * Safely HTML-escapes $value
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	private static function escape( $value ) {
-		return htmlspecialchars( $value, ENT_QUOTES );
-	}
+	/** @inheritDoc */
+	public function formatValue( $field, $value ): string {
+		if ( $value === null ) {
+			return '';
+		}
 
-	/**
-	 * @param string $name
-	 * @param string $value
-	 * @return string
-	 */
-	public function formatValue( $name, $value ) {
-		$row = $this->mCurrentRow;
-
-		switch ( $name ) {
+		switch ( $field ) {
 			case 'request_timestamp':
-				$language = $this->getLanguage();
-				$formatted = $this->escape( $language->timeanddate( $row->request_timestamp ) );
-
+				$formatted = $this->escape( $this->getLanguage()->userTimeAndDate(
+					$value, $this->getUser()
+				) );
 				break;
 			case 'request_target':
-				// @todo This function escapes unsafe output with RequestSSLQueuePager::escape(),
-				// but unfortunately, I can't get phan to shut up with comments outside and inside
-				// of that function. Therefore, I must place this here:
-				// @phan-suppress-next-line SecurityCheck-LikelyFalsePositive
-				$formatted = $this->escape( $row->request_target );
+				$formatted = $this->escape( $value );
 				break;
 			case 'request_status':
-				$formatted = $this->linkRenderer->makeLink(
+				$row = $this->getCurrentRow();
+				$formatted = $this->getLinkRenderer()->makeLink(
 					SpecialPage::getTitleValueFor( 'RequestSSLQueue', $row->request_id ),
-					$this->msg( 'requestssl-label-' . $row->request_status )->text()
+					$this->msg( "requestssl-label-$value" )->text()
 				);
 				break;
 			case 'request_actor':
-				$user = $this->userFactory->newFromActorId( $row->request_actor );
+				$user = $this->userFactory->newFromActorId( (int)$value );
 				$formatted = $this->escape( $user->getName() );
 				break;
 			default:
-				$formatted = $this->escape( "Unable to format $name" );
+				$formatted = $this->escape( "Unable to format $field" );
 		}
 
 		return $formatted;
 	}
 
 	/**
-	 * @return array
+	 * Safely HTML-escapes $value
 	 */
-	public function getQueryInfo() {
+	private function escape( string $value ): string {
+		return htmlspecialchars( $value, ENT_QUOTES );
+	}
+
+	/** @inheritDoc */
+	public function getQueryInfo(): array {
 		$info = [
 			'tables' => [
 				'requestssl_requests',
@@ -147,7 +100,7 @@ class RequestSSLQueuePager extends TablePager {
 			$info['conds']['request_actor'] = $user->getActorId();
 		}
 
-		if ( $this->status && $this->status != '*' ) {
+		if ( $this->status && $this->status !== '*' ) {
 			$info['conds']['request_status'] = $this->status;
 		} elseif ( !$this->status ) {
 			$info['conds']['request_status'] = 'pending';
@@ -156,18 +109,13 @@ class RequestSSLQueuePager extends TablePager {
 		return $info;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getDefaultSort() {
+	/** @inheritDoc */
+	public function getDefaultSort(): string {
 		return 'request_id';
 	}
 
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
-	protected function isFieldSortable( $name ) {
-		return $name !== 'request_actor';
+	/** @inheritDoc */
+	protected function isFieldSortable( $field ): bool {
+		return $field !== 'request_actor';
 	}
 }

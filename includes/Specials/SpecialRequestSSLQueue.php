@@ -114,7 +114,6 @@ class SpecialRequestSSLQueue extends SpecialPage {
 			->displayForm( false );
 
 		$pager = new RequestSSLQueuePager(
-			$this->getConfig(),
 			$this->getContext(),
 			$this->connectionProvider,
 			$this->getLinkRenderer(),
