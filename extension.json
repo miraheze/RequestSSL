@@ -43,9 +43,9 @@
 		"RequestSSLCFAddJob": {
 			"class": "Miraheze\\RequestSSL\\Jobs\\RequestSSLCFAddJob",
 			"services": [
-				"ConfigFactory",
 				"HttpRequestFactory",
-				"LoggerFactory",
+				"RequestSSLConfig",
+				"RequestSSLLogger",
 				"RequestSSLManager"
 			],
 			"needsPage": false
