@@ -59,6 +59,7 @@ class SpecialRequestSSLQueue extends SpecialPage {
 		}
 
 		if ( $par ) {
+			$this->getOutput()->addBacklinkSubtitle( $this->getPageTitle() );
 			$this->lookupRequest( $par );
 			return;
 		}

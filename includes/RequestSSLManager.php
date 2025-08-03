@@ -2,9 +2,11 @@
 
 namespace Miraheze\RequestSSL;
 
+use JobSpecification;
 use ManualLogEntry;
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\Notifications\Model\Event;
+use MediaWiki\JobQueue\JobQueueGroupFactory;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Message\Message;
 use MediaWiki\Registration\ExtensionRegistry;
@@ -15,6 +17,7 @@ use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserGroupManagerFactory;
 use MessageLocalizer;
 use Miraheze\CreateWiki\Services\RemoteWikiFactory;
+use Miraheze\RequestSSL\Jobs\RequestSSLCFAddJob;
 use RepoGroup;
 use stdClass;
 use Wikimedia\Rdbms\IConnectionProvider;
@@ -45,6 +48,9 @@ class RequestSSLManager {
 	/** @var MessageLocalizer */
 	private $messageLocalizer;
 
+	/** @var JobQueueGroupFactory */
+	private $jobQueueGroupFactory;
+
 	/** @var LinkRenderer */
 	private $linkRenderer;
 
@@ -67,6 +73,7 @@ class RequestSSLManager {
 	 * @param Config $config
 	 * @param ActorStoreFactory $actorStoreFactory
 	 * @param IConnectionProvider $connectionProvider
+	 * @param JobQueueGroupFactory $jobQueueGroupFactory
 	 * @param LinkRenderer $linkRenderer
 	 * @param RemoteWikiFactory $remoteWikiFactory
 	 * @param RepoGroup $repoGroup
@@ -78,6 +85,7 @@ class RequestSSLManager {
 		Config $config,
 		ActorStoreFactory $actorStoreFactory,
 		IConnectionProvider $connectionProvider,
+		JobQueueGroupFactory $jobQueueGroupFactory,
 		LinkRenderer $linkRenderer,
 		RemoteWikiFactory $remoteWikiFactory,
 		RepoGroup $repoGroup,
@@ -88,6 +96,7 @@ class RequestSSLManager {
 		$this->config = $config;
 		$this->actorStoreFactory = $actorStoreFactory;
 		$this->connectionProvider = $connectionProvider;
+		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
 		$this->linkRenderer = $linkRenderer;
 		$this->messageLocalizer = $messageLocalizer;
 		$this->remoteWikiFactory = $remoteWikiFactory;
@@ -456,6 +465,19 @@ class RequestSSLManager {
 		$remoteWiki->setServerName( 'https://' . $newServerName );
 		$remoteWiki->commit();
 		return true;
+	}
+
+	/**
+	 * @return void
+	 */
+	public function queryCloudflare(): void {
+		$jobQueueGroup = $this->jobQueueGroupFactory->makeJobQueueGroup();
+		$jobQueueGroup->push(
+			new JobSpecification(
+				RequestSSLCFAddJob::JOB_NAME,
+				[ 'id' => $this->ID ]
+			)
+		);
 	}
 
 	/**

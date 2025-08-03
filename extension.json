@@ -39,6 +39,18 @@
 		"request-ssl",
 		"view-private-ssl-requests"
 	],
+	"JobClasses": {
+		"RequestSSLCFAddJob": {
+			"class": "Miraheze\\RequestSSL\\Jobs\\RequestSSLCFAddJob",
+			"services": [
+				"HttpRequestFactory",
+				"RequestSSLConfig",
+				"RequestSSLLogger",
+				"RequestSSLManager"
+			],
+			"needsPage": false
+		}
+	},
 	"LogActionsHandlers": {
 		"requestssl/*": "LogFormatter",
 		"requestsslprivate/*": "LogFormatter"
@@ -83,6 +95,7 @@
 				"ConnectionProvider",
 				"MimeAnalyzer",
 				"RemoteWikiFactory",
+				"RequestSSLManager",
 				"RepoGroup",
 				"UserFactory"
 			]
@@ -139,6 +152,14 @@
 		"remoteExtPath": "RequestSSL/modules"
 	},
 	"config": {
+		"RequestSSLCloudflareConfig": {
+			"description": "Array. Cloudflare configuration array, including API Key and Zone ID.",
+			"value": {
+				"apikey": null,
+				"tlsversion": "1.3",
+				"zoneid": null
+			}
+		},
 		"RequestSSLHelpUrl": {
 			"value": "",
 			"description": "Full URL. If set, adds a help URL to Special:RequestSSL."
