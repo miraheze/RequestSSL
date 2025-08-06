@@ -4,6 +4,7 @@ namespace Miraheze\RequestSSL\Specials;
 
 use ErrorPageError;
 use ManualLogEntry;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\Html\Html;
 use MediaWiki\Message\Message;
@@ -367,7 +368,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 	 */
 	public function isValidDatabase( ?string $target ) {
 		$targetDatabase = $target . $this->getConfig()->get( 'CreateWikiDatabaseSuffix' );
-		if ( !in_array( $targetDatabase, $this->getConfig()->get( 'LocalDatabases' ) ) ) {
+		if ( !in_array( $targetDatabase, $this->getConfig()->get( MainConfigNames::LocalDatabases ), true ) ) {
 			return $this->msg( 'requestssl-invalid-target' );
 		}
 
