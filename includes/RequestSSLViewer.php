@@ -337,19 +337,19 @@ class RequestSSLViewer {
 					'section' => 'handling',
 				],
 			];
-		}
 
-		if (
-			$this->config->get( 'RequestSSLCloudflareConfig' )['apikey'] &&
-			$this->config->get( 'RequestSSLCloudflareConfig' )['zoneid'] &&
-			$this->requestSslRequestManager->getStatus() === 'pending'
-		) {
-			$formDescriptor['handle-cf'] = [
-				'type' => 'submit',
-				'flags' => [ 'progressive', 'primary' ],
-				'buttonlabel-message' => 'requestssl-label-cloudflare-handle',
-				'section' => 'handling',
-			];
+			if (
+				$this->config->get( 'RequestSSLCloudflareConfig' )['apikey'] &&
+				$this->config->get( 'RequestSSLCloudflareConfig' )['zoneid'] &&
+				$this->requestSslRequestManager->getStatus() === 'pending'
+			) {
+				$formDescriptor['handle-cf'] = [
+					'type' => 'submit',
+					'flags' => [ 'progressive', 'primary' ],
+					'buttonlabel-message' => 'requestssl-label-cloudflare-handle',
+					'section' => 'handling',
+				];
+			}
 		}
 
 		return $formDescriptor;
