@@ -108,12 +108,14 @@ class SpecialRequestSSL extends FormSpecialPage {
 	 * @return array
 	 */
 	protected function getFormFields() {
-		$formDescriptor['customdomain'] = [
-			'type' => 'url',
-			'label-message' => 'requestssl-label-customdomain',
-			'help-message' => 'requestssl-help-customdomain',
-			'required' => true,
-			'validation-callback' => [ $this, 'isValidCustomDomain' ]
+		$formDescriptor = [
+			'customdomain' => [
+				'type' => 'url',
+				'label-message' => 'requestssl-label-customdomain',
+				'help-message' => 'requestssl-help-customdomain',
+				'required' => true,
+				'validation-callback' => [ $this, 'isValidCustomDomain' ]
+			],
 		];
 
 		if ( $this->getConfig()->get( 'CreateWikiSubdomain' ) ) {
