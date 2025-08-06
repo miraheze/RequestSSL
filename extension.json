@@ -160,6 +160,10 @@
 				"zoneid": null
 			}
 		},
+		"RequestSSLDisallowedDomains": {
+			"value": [],
+			"description": "Array. Domains that are not allowed to be requested via RequestSSL."
+		},
 		"RequestSSLHelpUrl": {
 			"value": "",
 			"description": "Full URL. If set, adds a help URL to Special:RequestSSL."

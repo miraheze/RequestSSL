@@ -4,6 +4,7 @@ namespace Miraheze\RequestSSL\Specials;
 
 use ErrorPageError;
 use ManualLogEntry;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\Html\Html;
 use MediaWiki\Message\Message;
@@ -98,7 +99,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 			$this->getOutput()->addHelpLink( $this->getConfig()->get( 'RequestSSLHelpUrl' ), true );
 		}
 
-		$form = $this->getForm();
+		$form = $this->getForm()->setWrapperLegendMsg( 'requestssl-header' );
 		if ( $form->show() ) {
 			$this->onSuccess();
 		}
@@ -116,21 +117,38 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'required' => true,
 				'validation-callback' => [ $this, 'isValidCustomDomain' ]
 			],
-			'target' => [
+		];
+
+		if ( $this->getConfig()->get( 'CreateWikiSubdomain' ) ) {
+			$formDescriptor['target'] = [
+				'type' => 'textwithbutton',
+				'buttontype' => 'button',
+				'buttonflags' => [],
+				'buttonid' => 'inline-target',
+				'buttondefault' => '.' . $this->getConfig()->get( 'CreateWikiSubdomain' ),
+				'label-message' => 'requestssl-label-target-subdomain',
+				'help-message' => 'requestssl-help-target',
+				'required' => true,
+				'validation-callback' => [ $this, 'isValidDatabase' ],
+				'maxlength' => 64,
+			];
+		} else {
+			$formDescriptor['target'] = [
 				'type' => 'text',
 				'label-message' => 'requestssl-label-target',
 				'help-message' => 'requestssl-help-target',
 				'required' => true,
 				'validation-callback' => [ $this, 'isValidDatabase' ],
-			],
-			'reason' => [
-				'type' => 'textarea',
-				'rows' => 4,
-				'label-message' => 'requestssl-label-reason',
-				'help-message' => 'requestssl-help-reason',
-				'required' => true,
-				'validation-callback' => [ $this, 'isValidReason' ],
-			],
+			];
+		}
+
+		$formDescriptor['reason'] = [
+			'type' => 'textarea',
+			'rows' => 4,
+			'label-message' => 'requestssl-label-reason',
+			'help-message' => 'requestssl-help-reason',
+			'required' => true,
+			'validation-callback' => [ $this, 'isValidReason' ],
 		];
 
 		return $formDescriptor;
@@ -170,7 +188,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 			'requestssl_requests',
 			[
 				'request_customdomain' => $data['customdomain'],
-				'request_target' => $data['target'],
+				'request_target' => $data['target'] . ( $this->getConfig()->get( 'CreateWikiDatabaseSuffix' ) ?? '' ),
 				'request_reason' => $data['reason'],
 				'request_status' => 'pending',
 				'request_actor' => $this->getUser()->getActorId(),
@@ -332,6 +350,15 @@ class SpecialRequestSSL extends FormSpecialPage {
 				return $this->msg( 'requestssl-customdomain-unneeded-component' );
 			}
 		}
+
+		$disallowedDomains = $this->getConfig()->get( 'RequestSSLDisallowedDomains' );
+		if ( $disallowedDomains ) {
+			foreach ( $disallowedDomains as $disallowed ) {
+				if ( str_ends_with( $customDomain, $disallowed ) ) {
+					return $this->msg( 'requestssl-customdomain-disallowed' );
+				}
+			}
+		}
 		return true;
 	}
 
@@ -340,7 +367,8 @@ class SpecialRequestSSL extends FormSpecialPage {
 	 * @return string|bool|Message
 	 */
 	public function isValidDatabase( ?string $target ) {
-		if ( !in_array( $target, $this->getConfig()->get( 'LocalDatabases' ) ) ) {
+		$targetDatabase = $target . $this->getConfig()->get( 'CreateWikiDatabaseSuffix' );
+		if ( !in_array( $targetDatabase, $this->getConfig()->get( MainConfigNames::LocalDatabases ), true ) ) {
 			return $this->msg( 'requestssl-invalid-target' );
 		}
 
