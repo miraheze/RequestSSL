@@ -127,7 +127,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'buttonid' => 'inline-target',
 				'buttondefault' => '.' . $this->getConfig()->get( 'CreateWikiSubdomain' ),
 				'label-message' => 'requestssl-label-target-subdomain',
-				'help-message' => 'requestssl-help-target',
+				'help-message' => 'requestssl-help-target-subdomain',
 				'required' => true,
 				'validation-callback' => [ $this, 'isValidDatabase' ],
 				'maxlength' => 64,
