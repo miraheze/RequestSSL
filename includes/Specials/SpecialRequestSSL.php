@@ -129,7 +129,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 				'validation-callback' => [ $this, 'isValidDatabase' ],
 				'maxlength' => 64,
 			];
-	 	} else {
+		} else {
 			$formDescriptor['target'] = [
 				'type' => 'text',
 				'label-message' => 'requestssl-label-target',
