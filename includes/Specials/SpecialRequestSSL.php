@@ -350,13 +350,11 @@ class SpecialRequestSSL extends FormSpecialPage {
 			}
 		}
 
-		if ( $this->getConfig()->get( 'RequestSSLDisallowedDomains' ) ) {
-			$disallowedDomains = $this->getConfig()->get( 'RequestSSLDisallowedDomains' );
-			if ( $disallowedDomains ) {
-				foreach ( $disallowedDomains as $disallowed ) {
-					if ( str_ends_with( $customDomain, $disallowed ) ) {
-						return $this->msg( 'requestssl-customdomain-disallowed-domain' );
-					}
+		$disallowedDomains = $this->getConfig()->get( 'RequestSSLDisallowedDomains' );
+		if ( $disallowedDomains ) {
+			foreach ( $disallowedDomains as $disallowed ) {
+				if ( str_ends_with( $customDomain, $disallowed ) ) {
+					return $this->msg( 'requestssl-customdomain-disallowed' );
 				}
 			}
 		}

@@ -22,6 +22,7 @@
 	"requestssl-cloudflare-label-success": "This request has been queued for automatic Cloudflare processing. Please check back in a few minutes.",
 	"requestssl-comment-given": "Comment given by $1:",
 	"requestssl-comment-success": "Comment successfully added to this request.",
+	"requestssl-customdomain-disallowed": "The requested custom domain is not allowed. Please make sure to use a valid custom domain. If you think this is an error, please contact us.",
 	"requestssl-customdomain-no-hostname": "You have not inputted a hostname.",
 	"requestssl-customdomain-not-a-url": "You have not inputted a valid URL.",
 	"requestssl-customdomain-protocol-not-https": "Invalid protocol. Please make sure to set the protocol to <code>https://</code>.",

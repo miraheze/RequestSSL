@@ -27,6 +27,7 @@
 	"requestssl-cloudflare-label-success": "Message displayed when an administrator successfully requeues a request for Cloudflare automation.",
 	"requestssl-comment-given": "Displayed if a custom comment is given. $1 is the handler's username.",
 	"requestssl-comment-success": "Message displayed when a comment is successfully added to the request.",
+	"requestssl-customdomain-disallowed": "Message displayed when the inputted custom domain input is not allowed.",
 	"requestssl-customdomain-no-hostname": "Message displayed when no hostname has been inputted.",
 	"requestssl-customdomain-not-a-url": "Message displayed when the custom domain input in the Special:RequestSSL form does not resemble a URL.",
 	"requestssl-customdomain-protocol-not-https": "Message displayed when the protocol in the inputted URL is not HTTPS.",
