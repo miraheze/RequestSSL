@@ -4,9 +4,9 @@ namespace Miraheze\RequestSSL\Specials;
 
 use ErrorPageError;
 use ManualLogEntry;
-use MediaWiki\MainConfigNames;
 use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\Html\Html;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Message\Message;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\SpecialPage\FormSpecialPage;
