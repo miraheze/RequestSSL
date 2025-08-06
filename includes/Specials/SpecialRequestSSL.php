@@ -168,11 +168,13 @@ class SpecialRequestSSL extends FormSpecialPage {
 
 		$dbw = $this->connectionProvider->getPrimaryDatabase( 'virtual-requestssl' );
 
+		$targetDatabaseName = $data['target'] . ( $this->getConfig()->get( 'CreateWikiDatabaseSuffix' ) ?? '' );
+
 		$duplicate = $dbw->newSelectQueryBuilder()
 			->table( 'requestssl_requests' )
 			->field( '*' )
 			->where( [
-				'request_target' => $data['target'],
+				'request_target' => $targetDatabaseName,
 				'request_status' => 'pending',
 			] )
 			->caller( __METHOD__ )
@@ -188,7 +190,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 			'requestssl_requests',
 			[
 				'request_customdomain' => $data['customdomain'],
-				'request_target' => $data['target'] . ( $this->getConfig()->get( 'CreateWikiDatabaseSuffix' ) ?? '' ),
+				'request_target' => $targetDatabaseName,
 				'request_reason' => $data['reason'],
 				'request_status' => 'pending',
 				'request_actor' => $this->getUser()->getActorId(),
@@ -209,7 +211,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 			)
 		);
 
-		$logEntry = new ManualLogEntry( $this->getLogType( $data['target'] ), 'request' );
+		$logEntry = new ManualLogEntry( $this->getLogType( $targetDatabaseName ), 'request' );
 
 		$logEntry->setPerformer( $this->getUser() );
 		$logEntry->setTarget( $requestQueueLink );
@@ -217,7 +219,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 
 		$logEntry->setParameters(
 			[
-				'4::requestTarget' => $data['target'],
+				'4::requestTarget' => $targetDatabaseName,
 				'5::requestLink' => Message::rawParam( $requestLink ),
 			]
 		);
@@ -230,7 +232,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 			$this->getConfig()->get( 'RequestSSLUsersNotifiedOnAllRequests' )
 		) {
 			$this->sendNotifications( $data['reason'], $this->getUser()->getName(),
-						 $requestID, $data['target'], $data['customdomain'] );
+						 $requestID, $targetDatabaseName, $data['customdomain'] );
 		}
 
 		if (
