@@ -13,7 +13,7 @@ use Miraheze\RequestSSL\RequestSSLQueuePager;
 use Miraheze\RequestSSL\RequestSSLViewer;
 use Wikimedia\Rdbms\IConnectionProvider;
 
-class SpecialRequestSSLQueue extends SpecialPage {
+class SpecialRequestCustomDomainQueue extends SpecialPage {
 
 	/** @var IConnectionProvider */
 	private $connectionProvider;
@@ -39,7 +39,7 @@ class SpecialRequestSSLQueue extends SpecialPage {
 		PermissionManager $permissionManager,
 		UserFactory $userFactory
 	) {
-		parent::__construct( 'RequestSSLQueue' );
+		parent::__construct( 'RequestCustomDomainQueue' );
 
 		$this->connectionProvider = $connectionProvider;
 		$this->requestSslRequestManager = $requestSslRequestManager;
