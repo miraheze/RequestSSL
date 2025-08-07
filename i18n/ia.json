@@ -14,6 +14,7 @@
 	"echo-pref-tooltip-requestssl-request-comment": "Notificar me si il ha un commento sur un requesta de certificato SSL al qual io ha participate.",
 	"echo-pref-tooltip-requestssl-request-status-update": "Notificar me quando le stato es actualisate pro un requesta de certificato SSL al qual io ha participate.",
 	"requestssl-button-copy": "(Copiar al area de transferentia)",
+	"requestssl-cloudflare-comment-active": "Iste dominio personalisate ha essite activate e ora se applica a iste wiki.",
 	"requestssl-comment-given": "Commento lassate per $1:",
 	"requestssl-comment-success": "Le commento ha essite addite a iste requesta.",
 	"requestssl-customdomain-no-hostname": "Tu non ha inserite un nomine de servitor.",
