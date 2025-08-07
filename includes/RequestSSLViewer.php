@@ -241,30 +241,13 @@ class RequestSSLViewer {
 			if ( $this->requestSslRequestManager->getRequester()->getBlock() ) {
 				$info .= new MessageWidget( [
 					'label' => new HtmlSnippet(
-							$this->context->msg( 'requestssl-info-requester-locally-blocked',
+							$this->context->msg( 'requestssl-info-requester-blocked',
 								$this->requestSslRequestManager->getRequester()->getName(),
 								WikiMap::getCurrentWikiId()
 							)->escaped()
 						),
 					'type' => 'warning',
 				] );
-			}
-
-			// @phan-suppress-next-line PhanDeprecatedFunction Only for MW 1.39 or lower.
-			if ( $this->requestSslRequestManager->getRequester()->getGlobalBlock() ) {
-				$info .= new MessageWidget( [
-					'label' => new HtmlSnippet(
-								$this->context->msg( 'requestssl-info-requester-globally-blocked',
-								$this->requestSslRequestManager->getRequester()->getName()
-							)->escaped()
-						),
-					'type' => 'error',
-				] );
-
-				$validRequest = false;
-				if ( $status === 'pending' || $status === 'inprogress' ) {
-					$status = 'declined';
-				}
 			}
 
 			if ( $this->requestSslRequestManager->getRequester()->isLocked() ) {
@@ -373,7 +356,7 @@ class RequestSSLViewer {
 	 * @return string|bool|Message
 	 */
 	public function isValidDatabase( ?string $target ) {
-		if ( !in_array( $target, $this->config->get( 'LocalDatabases' ) ) ) {
+		if ( !in_array( $target, $this->config->get( MainConfigNames::LocalDatabases ), true ) ) {
 			return $this->context->msg( 'requestssl-invalid-target' );
 		}
 
