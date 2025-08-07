@@ -23,7 +23,7 @@ use UserNotLoggedIn;
 use Wikimedia\Mime\MimeAnalyzer;
 use Wikimedia\Rdbms\IConnectionProvider;
 
-class SpecialRequestSSL extends FormSpecialPage {
+class SpecialRequestCustomDomain extends FormSpecialPage {
 
 	/** @var IConnectionProvider */
 	private $connectionProvider;
@@ -59,7 +59,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		RepoGroup $repoGroup,
 		UserFactory $userFactory
 	) {
-		parent::__construct( 'RequestSSL', 'request-ssl' );
+		parent::__construct( 'RequestCustomDomain', 'request-custom-domain' );
 
 		$this->connectionProvider = $connectionProvider;
 		$this->mimeAnalyzer = $mimeAnalyzer;
@@ -284,14 +284,14 @@ class SpecialRequestSSL extends FormSpecialPage {
 			)
 		);
 
-		$requestLink = SpecialPage::getTitleFor( 'RequestSSLQueue', $requestID )->getFullURL();
+		$requestLink = SpecialPage::getTitleFor( 'RequestCustomDomainQueue', $requestID )->getFullURL();
 
 		foreach ( $notifiedUsers as $receiver ) {
 			if (
-				!$receiver->isAllowed( 'handle-ssl-requests' ) ||
+				!$receiver->isAllowed( 'handle-custom-domain-requests' ) ||
 				(
 					$this->getLogType( $target ) === 'requestsslprivate' &&
-					!$receiver->isAllowed( 'view-private-ssl-requests' )
+					!$receiver->isAllowed( 'view-private-custom-domain-requests' )
 				)
 			) {
 				continue;
@@ -398,7 +398,7 @@ class SpecialRequestSSL extends FormSpecialPage {
 		if (
 			$block && (
 				$user->isBlockedFromUpload() ||
-				$block->appliesToRight( 'request-ssl' )
+				$block->appliesToRight( 'request-custom-domain' )
 			)
 		) {
 			throw new UserBlockedError( $block );
