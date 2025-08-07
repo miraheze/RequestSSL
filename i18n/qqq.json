@@ -107,7 +107,7 @@
 	"requestssl-usergroups-none": "Displayed value if the requester has no user groups on the target wiki.",
 	"requestsslprivate-log-header": "Header for the requestssl private log.",
 	"requestsslprivate-log-name": "{{doc-logpage}}",
-	"ipb-action-request-request-ssl": "The label for the action select option on [[Special:Block]] to block a user from requesting SSL certificates.",
+	"ipb-action-request-custom-domain": "The label for the action select option on [[Special:Block]] to block a user from requesting custom domains.",
 	"log-action-filter-requestssl": "{{doc-log-action-filter-type|requestssl}}\n{{identical|Type of action}}\n{{related|Log-action-filter}}",
 	"log-action-filter-requestssl-request": "{{doc-log-action-filter-action|requestssl|request}}",
 	"log-action-filter-requestssl-statusupdate": "{{doc-log-action-filter-action|requestssl|statusupdate}}",
