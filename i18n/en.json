@@ -102,7 +102,7 @@
 	"requestssl-usergroups-none": "none",
 	"requestsslprivate-log-header": "This is a log of all custom domain requests and status updates for requests with targets that are private wikis.",
 	"requestsslprivate-log-name": "Custom domain requests private log",
-	"ipb-action-request-request-ssl": "Requesting custom domains",
+	"ipb-action-request-custom-domain": "Requesting custom domains",
 	"log-action-filter-requestssl": "Type of action:",
 	"log-action-filter-requestssl-request": "New requests submitted",
 	"log-action-filter-requestssl-statusupdate": "Status updated for requests",
