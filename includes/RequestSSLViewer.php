@@ -57,7 +57,7 @@ class RequestSSLViewer {
 		if (
 			$this->requestSslRequestManager->isPrivate( forced: false ) &&
 			$user->getName() !== $this->requestSslRequestManager->getRequester()->getName() &&
-			!$this->permissionManager->userHasRight( $user, 'view-private-ssl-requests' )
+			!$this->permissionManager->userHasRight( $user, 'view-private-custom-domain-requests' )
 		) {
 			$this->context->getOutput()->addHTML(
 				Html::warningBox(
@@ -159,7 +159,7 @@ class RequestSSLViewer {
 		}
 
 		if (
-			$this->permissionManager->userHasRight( $user, 'handle-ssl-requests' ) ||
+			$this->permissionManager->userHasRight( $user, 'handle-custom-domain-requests' ) ||
 			$user->getActorId() === $this->requestSslRequestManager->getRequester()->getActorId()
 		) {
 			$formDescriptor += [
@@ -214,7 +214,7 @@ class RequestSSLViewer {
 			];
 		}
 
-		if ( $this->permissionManager->userHasRight( $user, 'handle-ssl-requests' ) ) {
+		if ( $this->permissionManager->userHasRight( $user, 'handle-custom-domain-requests' ) ) {
 			$validRequest = true;
 			$status = $this->requestSslRequestManager->getStatus();
 
@@ -298,7 +298,7 @@ class RequestSSLViewer {
 				],
 			];
 
-			if ( $this->permissionManager->userHasRight( $user, 'view-private-ssl-requests' ) ) {
+			if ( $this->permissionManager->userHasRight( $user, 'view-private-custom-domain-requests' ) ) {
 				$formDescriptor += [
 					'handle-private' => [
 						'type' => 'check',
