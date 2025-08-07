@@ -96,6 +96,7 @@ class RequestSSLCFAddJob extends Job {
 
 		$apiResponse = $this->queryCloudflare(
 			$sanitizedDomain,
+			$this->requestManager->getTarget(),
 			$this->config->get( 'RequestSSLCloudflareConfig' )['tlsversion'] ?? '1.3'
 		);
 
@@ -199,7 +200,7 @@ class RequestSSLCFAddJob extends Job {
 		return true;
 	}
 
-	private function queryCloudflare( string $customDomain, string $tlsVersion ): array {
+	private function queryCloudflare( string $customDomain, string $dbName, string $tlsVersion ): array {
 		try {
 			// Step 1: Create a custom hostname
 			$this->logger->debug( 'Requesting Cloudflare to create custom hostname for {domain}', [
@@ -217,6 +218,9 @@ class RequestSSLCFAddJob extends Job {
 						'min_tls_version' => $tlsVersion,
 					],
 				],
+				'custom_metadata' => [
+					'dbname' => $dbName,
+				]
 			] );
 
 			$hostnameId = $response['result']['id'] ?? null;
