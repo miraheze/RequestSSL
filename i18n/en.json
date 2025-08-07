@@ -4,9 +4,9 @@
 			"Universal Omega"
 		]
 	},
-	"action-handle-ssl-requests": "handle custom domain requests",
-	"action-request-ssl": "request custom domain configurations",
-	"action-view-private-ssl-requests": "view private custom domain requests",
+	"action-handle-custom-domain-requests": "handle custom domain requests",
+	"action-request-custom-domain": "request custom domain configurations",
+	"action-view-private-custom-domain-requests": "view private custom domain requests",
 	"echo-category-title-requestssl-new-request": "New custom domain request",
 	"echo-category-title-requestssl-request-comment": "Comment added to a custom domain request",
 	"echo-category-title-requestssl-request-status-update": "Status updated for a custom domain request",
@@ -113,9 +113,9 @@
 	"logentry-requestssl-statusupdate": "$1 {{GENDER:$2|updated}} status of custom domain request $4 to '$5'.",
 	"logentry-requestsslprivate-request": "$1 {{GENDER:$2|requested}} a custom domain for private wiki $4 in $5.",
 	"logentry-requestsslprivate-statusupdate": "$1 {{GENDER:$2|updated}} status of private custom domain request $4 to '$5'.",
-	"requestssl": "Request to use a custom domain for your wiki",
-	"requestsslqueue": "Custom domain requests queue",
-	"right-handle-ssl-requests": "Handle custom domain requests",
-	"right-request-ssl": "Request custom domain configurations",
-	"right-view-private-ssl-requests": "View private custom domain requests"
+	"requestcustomdomain": "Request to use a custom domain for your wiki",
+	"requestcustomdomainqueue": "Custom domain requests queue",
+	"right-handle-custom-domain-requests": "Handle custom domain requests",
+	"right-request-custom-domain": "Request custom domain configurations",
+	"right-view-private-custom-domain-requests": "View private custom domain requests"
 }
