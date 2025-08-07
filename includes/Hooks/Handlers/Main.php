@@ -44,7 +44,7 @@ class Main implements
 			return;
 		}
 
-		$actions[ 'request-ssl' ] = 300;
+		$actions[ 'request-custom-domain' ] = 300;
 	}
 
 	/**
