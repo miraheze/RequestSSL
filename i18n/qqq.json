@@ -9,9 +9,9 @@
 			"Verdy p"
 		]
 	},
-	"action-handle-ssl-requests": "{{doc-action|handle-ssl-requests}}",
-	"action-request-ssl": "{{doc-action|request-ssl}}",
-	"action-view-private-ssl-requests": "{{doc-action|view-private-ssl-requests}}",
+	"action-handle-custom-domain-requests": "{{doc-action|handle-custom-domain-requests}}",
+	"action-request-custom-domain": "{{doc-action|request-custom-domain}}",
+	"action-view-private-custom-domain-requests": "{{doc-action|view-private-custom-domain-requests}}",
 	"echo-category-title-requestssl-new-request": "Echo category title for 'requestssl-new-request'.",
 	"echo-category-title-requestssl-request-comment": "Echo category title for 'requestssl-request-comment'.",
 	"echo-category-title-requestssl-request-status-update": "Echo category title for 'requestssl-request-status-update'.",
@@ -118,9 +118,9 @@
 	"logentry-requestssl-statusupdate": "{{logentry|[[Special:Log/requestssl]]}}",
 	"logentry-requestsslprivate-request": "{{logentry|[[Special:Log/requestsslprivate]]}}",
 	"logentry-requestsslprivate-statusupdate": "{{logentry|[[Special:Log/requestsslprivate]]}}",
-	"requestssl": "{{doc-special}}",
-	"requestsslqueue": "{{doc-special}}",
-	"right-handle-ssl-requests": "{{doc-right|handle-ssl-requests}}",
-	"right-request-ssl": "{{doc-right|request-ssl}}",
-	"right-view-private-ssl-requests": "{{doc-right|view-private-ssl-requests}}"
+	"requestcustomdomain": "{{doc-special}}",
+	"requestcustomdomainqueue": "{{doc-special}}",
+	"right-handle-custom-domain-requests": "{{doc-right|handle-custom-domain-requests}}",
+	"right-request-custom-domain": "{{doc-right|request-custom-domain}}",
+	"right-view-private-custom-domain-requests": "{{doc-right|view-private-custom-domain-requests}}"
 }
