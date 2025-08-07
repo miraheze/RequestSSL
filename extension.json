@@ -31,7 +31,7 @@
 	},
 	"GroupPermissions": {
 		"user": {
-			"request-ssl": true
+			"request-custom-domain": true
 		}
 	},
 	"AvailableRights": [
