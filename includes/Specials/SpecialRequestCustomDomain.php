@@ -115,7 +115,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 				'label-message' => 'requestssl-label-customdomain',
 				'help-message' => 'requestssl-help-customdomain',
 				'required' => true,
-				'validation-callback' => [ $this, 'isValidCustomDomain' ]
+				'validation-callback' => [ $this, 'isValidCustomDomain' ],
 			],
 		];
 
@@ -201,9 +201,9 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		);
 
 		$requestID = (string)$dbw->insertId();
-		$requestQueueLink = SpecialPage::getTitleValueFor( 'RequestSSLQueue', $requestID );
+		$requestQueueLink = SpecialPage::getTitleValueFor( 'RequestCustomDomainQueue', $requestID );
 
-		$requestLink = $this->getLinkRenderer()->makeLink( $requestQueueLink, "#{$requestID}" );
+		$requestLink = $this->getLinkRenderer()->makeLink( $requestQueueLink, "#$requestID" );
 
 		$this->getOutput()->addHTML(
 			Html::successBox(
@@ -231,14 +231,16 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) &&
 			$this->getConfig()->get( 'RequestSSLUsersNotifiedOnAllRequests' )
 		) {
-			$this->sendNotifications( $data['reason'], $this->getUser()->getName(),
-						 $requestID, $targetDatabaseName, $data['customdomain'] );
+			$this->sendNotifications(
+				$data['reason'], $this->getUser()->getName(),
+				$requestID, $targetDatabaseName, $data['customdomain']
+			);
 		}
 
 		if (
 			$this->getConfig()->get( 'RequestSSLCloudflareConfig' )['apikey'] &&
 			$this->getConfig()->get( 'RequestSSLCloudflareConfig' )['zoneid']
-			) {
+		) {
 			$this->requestSslRequestManager->fromID( (int)$requestID );
 			$this->requestSslRequestManager->queryCloudflare();
 		}
@@ -392,15 +394,8 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 	public function checkPermissions() {
 		parent::checkPermissions();
 
-		$user = $this->getUser();
-
-		$block = $user->getBlock();
-		if (
-			$block && (
-				$user->isBlockedFromUpload() ||
-				$block->appliesToRight( 'request-custom-domain' )
-			)
-		) {
+		$block = $this->getUser()->getBlock();
+		if ( $block && $block->appliesToRight( 'request-custom-domain' ) ) {
 			throw new UserBlockedError( $block );
 		}
 	}
