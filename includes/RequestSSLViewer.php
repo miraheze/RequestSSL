@@ -200,9 +200,7 @@ class RequestSSLViewer {
 					'rows' => 4,
 					'label-message' => 'requestssl-label-reason',
 					'section' => 'editing',
-					'required' => true,
 					'default' => $this->requestSslRequestManager->getReason(),
-					'validation-callback' => [ $this, 'isValidReason' ],
 					'disabled' => $this->requestSslRequestManager->isLocked(),
 					'raw' => true,
 				],
@@ -365,18 +363,6 @@ class RequestSSLViewer {
 	}
 
 	/**
-	 * @param ?string $reason
-	 * @return string|bool|Message
-	 */
-	public function isValidReason( ?string $reason ) {
-		if ( !$reason || ctype_space( $reason ) ) {
-			return $this->context->msg( 'htmlform-required' );
-		}
-
-		return true;
-	}
-
-	/**
 	 * @param ?string $url
 	 * @param array $alldata
 	 * @return string|bool
@@ -470,7 +456,7 @@ class RequestSSLViewer {
 			$this->requestSslRequestManager->startAtomic( __METHOD__ );
 
 			$changes = [];
-			if ( $this->requestSslRequestManager->getReason() !== $formData['edit-reason'] ) {
+			if ( $this->requestSslRequestManager->getReason() !== ( $formData['edit-reason'] ?? '' ) ) {
 				$changes[] = $this->context->msg( 'requestssl-request-edited-reason' )->plaintextParams(
 					$this->requestSslRequestManager->getReason(),
 					$formData['edit-reason']
