@@ -157,7 +157,7 @@ class RequestSSLManager {
 	 * @param User $user
 	 */
 	public function logStatusUpdate( string $comment, string $newStatus, User $user ) {
-		$requestQueueLink = SpecialPage::getTitleValueFor( 'RequestSSLQueue', (string)$this->ID );
+		$requestQueueLink = SpecialPage::getTitleValueFor( 'RequestCustomDomainQueue', (string)$this->ID );
 		$requestLink = $this->linkRenderer->makeLink( $requestQueueLink, "#{$this->ID}" );
 
 		$logEntry = new ManualLogEntry(
@@ -191,7 +191,7 @@ class RequestSSLManager {
 	 * @param User $user
 	 */
 	public function sendNotification( string $comment, string $type, User $user ) {
-		$requestLink = SpecialPage::getTitleFor( 'RequestSSLQueue', (string)$this->ID )->getFullURL();
+		$requestLink = SpecialPage::getTitleFor( 'RequestCustomDomainQueue', (string)$this->ID )->getFullURL();
 
 		$involvedUsers = array_values( array_filter(
 			array_diff( $this->getInvolvedUsers(), [ $user ] )
@@ -341,8 +341,8 @@ class RequestSSLManager {
 	public function logToManageWiki( User $user ) {
 		$logEntry = new ManualLogEntry( 'managewiki', 'settings' );
 		$logEntry->setPerformer( $user );
-		$logEntry->setTarget( SpecialPage::getTitleValueFor( 'RequestSSLQueue', (string)$this->ID ) );
-		$logEntry->setComment( "[[Special:RequestSSLQueue/{$this->ID}|Requested]]" );
+		$logEntry->setTarget( SpecialPage::getTitleValueFor( 'RequestCustomDomainQueue', (string)$this->ID ) );
+		$logEntry->setComment( "[[Special:RequestCustomDomainQueue/{$this->ID}|Requested]]" );
 		$logEntry->setParameters( [ '4::wiki' => $this->getTarget(), '5::changes' => 'servername' ] );
 		$logID = $logEntry->insert();
 		$logEntry->publish( $logID );

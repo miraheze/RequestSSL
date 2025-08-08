@@ -31,13 +31,13 @@
 	},
 	"GroupPermissions": {
 		"user": {
-			"request-ssl": true
+			"request-custom-domain": true
 		}
 	},
 	"AvailableRights": [
-		"handle-ssl-requests",
-		"request-ssl",
-		"view-private-ssl-requests"
+		"handle-custom-domain-requests",
+		"request-custom-domain",
+		"view-private-custom-domain-requests"
 	],
 	"JobClasses": {
 		"RequestSSLCFAddJob": {
@@ -89,8 +89,8 @@
 		}
 	},
 	"SpecialPages": {
-		"RequestSSL": {
-			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestSSL",
+		"RequestCustomDomain": {
+			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestCustomDomain",
 			"services": [
 				"ConnectionProvider",
 				"MimeAnalyzer",
@@ -100,8 +100,8 @@
 				"UserFactory"
 			]
 		},
-		"RequestSSLQueue": {
-			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestSSLQueue",
+		"RequestCustomDomainQueue": {
+			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestCustomDomainQueue",
 			"services": [
 				"ConnectionProvider",
 				"RequestSSLManager",
@@ -183,14 +183,6 @@
 		"echo-subscriptions-web-requestssl-new-request": false,
 		"echo-subscriptions-web-requestssl-request-comment": true,
 		"echo-subscriptions-web-requestssl-request-status-update": true
-	},
-	"RateLimits": {
-		"request-ssl": {
-			"user": [
-				5,
-				60
-			]
-		}
 	},
 	"ServiceWiringFiles": [
 		"includes/ServiceWiring.php"

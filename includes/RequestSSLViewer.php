@@ -7,6 +7,7 @@ use MediaWiki\Context\IContextSource;
 use MediaWiki\Html\Html;
 use MediaWiki\HTMLForm\HTMLForm;
 use MediaWiki\Linker\Linker;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Message\Message;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Registration\ExtensionRegistry;
@@ -57,7 +58,7 @@ class RequestSSLViewer {
 		if (
 			$this->requestSslRequestManager->isPrivate( forced: false ) &&
 			$user->getName() !== $this->requestSslRequestManager->getRequester()->getName() &&
-			!$this->permissionManager->userHasRight( $user, 'view-private-ssl-requests' )
+			!$this->permissionManager->userHasRight( $user, 'view-private-custom-domain-requests' )
 		) {
 			$this->context->getOutput()->addHTML(
 				Html::warningBox(
@@ -159,7 +160,7 @@ class RequestSSLViewer {
 		}
 
 		if (
-			$this->permissionManager->userHasRight( $user, 'handle-ssl-requests' ) ||
+			$this->permissionManager->userHasRight( $user, 'handle-custom-domain-requests' ) ||
 			$user->getActorId() === $this->requestSslRequestManager->getRequester()->getActorId()
 		) {
 			$formDescriptor += [
@@ -214,7 +215,7 @@ class RequestSSLViewer {
 			];
 		}
 
-		if ( $this->permissionManager->userHasRight( $user, 'handle-ssl-requests' ) ) {
+		if ( $this->permissionManager->userHasRight( $user, 'handle-custom-domain-requests' ) ) {
 			$validRequest = true;
 			$status = $this->requestSslRequestManager->getStatus();
 
@@ -241,30 +242,13 @@ class RequestSSLViewer {
 			if ( $this->requestSslRequestManager->getRequester()->getBlock() ) {
 				$info .= new MessageWidget( [
 					'label' => new HtmlSnippet(
-							$this->context->msg( 'requestssl-info-requester-locally-blocked',
+							$this->context->msg( 'requestssl-info-requester-blocked',
 								$this->requestSslRequestManager->getRequester()->getName(),
 								WikiMap::getCurrentWikiId()
 							)->escaped()
 						),
 					'type' => 'warning',
 				] );
-			}
-
-			// @phan-suppress-next-line PhanDeprecatedFunction Only for MW 1.39 or lower.
-			if ( $this->requestSslRequestManager->getRequester()->getGlobalBlock() ) {
-				$info .= new MessageWidget( [
-					'label' => new HtmlSnippet(
-								$this->context->msg( 'requestssl-info-requester-globally-blocked',
-								$this->requestSslRequestManager->getRequester()->getName()
-							)->escaped()
-						),
-					'type' => 'error',
-				] );
-
-				$validRequest = false;
-				if ( $status === 'pending' || $status === 'inprogress' ) {
-					$status = 'declined';
-				}
 			}
 
 			if ( $this->requestSslRequestManager->getRequester()->isLocked() ) {
@@ -298,7 +282,7 @@ class RequestSSLViewer {
 				],
 			];
 
-			if ( $this->permissionManager->userHasRight( $user, 'view-private-ssl-requests' ) ) {
+			if ( $this->permissionManager->userHasRight( $user, 'view-private-custom-domain-requests' ) ) {
 				$formDescriptor += [
 					'handle-private' => [
 						'type' => 'check',
@@ -373,7 +357,7 @@ class RequestSSLViewer {
 	 * @return string|bool|Message
 	 */
 	public function isValidDatabase( ?string $target ) {
-		if ( !in_array( $target, $this->config->get( 'LocalDatabases' ) ) ) {
+		if ( !in_array( $target, $this->config->get( MainConfigNames::LocalDatabases ), true ) ) {
 			return $this->context->msg( 'requestssl-invalid-target' );
 		}
 
