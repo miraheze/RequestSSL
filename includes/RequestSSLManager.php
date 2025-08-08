@@ -161,7 +161,7 @@ class RequestSSLManager {
 		$requestLink = $this->linkRenderer->makeLink( $requestQueueLink, "#{$this->ID}" );
 
 		$logEntry = new ManualLogEntry(
-			$this->isPrivate( forced: false ) ? 'requestsslprivate' : 'requestssl',
+			$this->isPrivate( forced: false ) ? 'requestcustomdomainprivate' : 'requestcustomdomain',
 			'statusupdate'
 		);
 
