@@ -36,8 +36,7 @@
 	},
 	"AvailableRights": [
 		"handle-custom-domain-requests",
-		"request-custom-domain",
-		"view-private-custom-domain-requests"
+		"request-custom-domain"
 	],
 	"JobClasses": {
 		"RequestSSLCFAddJob": {
@@ -52,34 +51,19 @@
 		}
 	},
 	"LogActionsHandlers": {
-		"requestssl/*": "LogFormatter",
-		"requestsslprivate/*": "LogFormatter"
+		"requestssl/*": "LogFormatter"
 	},
 	"LogHeaders": {
-		"requestssl": "requestssl-log-header",
-		"requestsslprivate": "requestsslprivate-log-header"
+		"requestssl": "requestssl-log-header"
 	},
 	"LogNames": {
-		"requestssl": "requestssl-log-name",
-		"requestsslprivate": "requestsslprivate-log-name"
+		"requestssl": "requestssl-log-name"
 	},
 	"LogTypes": [
-		"requestssl",
-		"requestsslprivate"
+		"requestssl"
 	],
-	"LogRestrictions": {
-		"requestsslprivate": "view-private-custom-domain-requests"
-	},
 	"ActionFilteredLogs": {
 		"requestssl": {
-			"request": [
-				"request"
-			],
-			"statusupdate": [
-				"statusupdate"
-			]
-		},
-		"requestsslprivate": {
 			"request": [
 				"request"
 			],
@@ -94,7 +78,6 @@
 			"services": [
 				"ConnectionProvider",
 				"MimeAnalyzer",
-				"RemoteWikiFactory",
 				"RequestSSLManager",
 				"RepoGroup",
 				"UserFactory"

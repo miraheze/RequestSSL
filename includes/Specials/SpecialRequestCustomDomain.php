@@ -15,7 +15,6 @@ use MediaWiki\Status\Status;
 use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
 use MediaWiki\WikiMap\WikiMap;
-use Miraheze\CreateWiki\Services\RemoteWikiFactory;
 use Miraheze\RequestSSL\RequestSSLManager;
 use RepoGroup;
 use UserBlockedError;
@@ -31,9 +30,6 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 	/** @var MimeAnalyzer */
 	private $mimeAnalyzer;
 
-	/** @var RemoteWikiFactory */
-	private $remoteWikiFactory;
-
 	/** @var RequestSSLManager */
 	private $requestSslRequestManager;
 
@@ -46,7 +42,6 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 	/**
 	 * @param IConnectionProvider $connectionProvider
 	 * @param MimeAnalyzer $mimeAnalyzer
-	 * @param RemoteWikiFactory $remoteWikiFactory
 	 * @param RequestSSLManager $requestSslRequestManager
 	 * @param RepoGroup $repoGroup
 	 * @param UserFactory $userFactory
@@ -54,7 +49,6 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 	public function __construct(
 		IConnectionProvider $connectionProvider,
 		MimeAnalyzer $mimeAnalyzer,
-		RemoteWikiFactory $remoteWikiFactory,
 		RequestSSLManager $requestSslRequestManager,
 		RepoGroup $repoGroup,
 		UserFactory $userFactory
@@ -63,7 +57,6 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 
 		$this->connectionProvider = $connectionProvider;
 		$this->mimeAnalyzer = $mimeAnalyzer;
-		$this->remoteWikiFactory = $remoteWikiFactory;
 		$this->requestSslRequestManager = $requestSslRequestManager;
 		$this->repoGroup = $repoGroup;
 		$this->userFactory = $userFactory;
@@ -209,7 +202,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			)
 		);
 
-		$logEntry = new ManualLogEntry( $this->getLogType( $targetDatabaseName ), 'request' );
+		$logEntry = new ManualLogEntry( 'requestssl', 'request' );
 
 		$logEntry->setPerformer( $this->getUser() );
 		$logEntry->setTarget( $requestQueueLink );
@@ -247,22 +240,6 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 	}
 
 	/**
-	 * @param string $target
-	 * @return string
-	 */
-	public function getLogType( string $target ): string {
-		if (
-			!ExtensionRegistry::getInstance()->isLoaded( 'CreateWiki' ) ||
-			!$this->getConfig()->get( 'CreateWikiUsePrivateWikis' )
-		) {
-			return 'requestssl';
-		}
-
-		$remoteWiki = $this->remoteWikiFactory->newInstance( $target );
-		return $remoteWiki->isPrivate() ? 'requestsslprivate' : 'requestssl';
-	}
-
-	/**
 	 * @param string $reason
 	 * @param string $requester
 	 * @param string $requestID
@@ -287,13 +264,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		$requestLink = SpecialPage::getTitleFor( 'RequestCustomDomainQueue', $requestID )->getFullURL();
 
 		foreach ( $notifiedUsers as $receiver ) {
-			if (
-				!$receiver->isAllowed( 'handle-custom-domain-requests' ) ||
-				(
-					$this->getLogType( $target ) === 'requestsslprivate' &&
-					!$receiver->isAllowed( 'view-private-custom-domain-requests' )
-				)
-			) {
+			if ( !$receiver->isAllowed( 'handle-custom-domain-requests' ) ) {
 				continue;
 			}
 

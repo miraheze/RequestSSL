@@ -14,7 +14,6 @@ CREATE TABLE /*_*/requestssl_requests (
     'pending'
   ) NOT NULL,
   request_locked TINYINT UNSIGNED DEFAULT 0 NOT NULL,
-  request_private TINYINT UNSIGNED DEFAULT 0 NOT NULL,
   INDEX request_actor_timestamp (
     request_actor, request_timestamp
   ),
