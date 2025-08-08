@@ -108,7 +108,7 @@
 	"log-action-filter-requestsslprivate": "Type of action:",
 	"log-action-filter-requestsslprivate-request": "New requests submitted",
 	"log-action-filter-requestsslprivate-statusupdate": "Status updated for requests",
-	"logentry-requestssl-request": "$1 {{GENDER:$2|requested}} an custom domain for $4 in $5.",
+	"logentry-requestssl-request": "$1 {{GENDER:$2|requested}} a custom domain for $4 in $5.",
 	"logentry-requestssl-statusupdate": "$1 {{GENDER:$2|updated}} status of custom domain request $4 to '$5'.",
 	"logentry-requestsslprivate-request": "$1 {{GENDER:$2|requested}} a custom domain for private wiki $4 in $5.",
 	"logentry-requestsslprivate-statusupdate": "$1 {{GENDER:$2|updated}} status of private custom domain request $4 to '$5'.",
