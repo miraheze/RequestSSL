@@ -261,7 +261,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		}
 
 		$remoteWiki = $this->remoteWikiFactory->newInstance( $target );
-		return $remoteWiki->isPrivate() ? 'requestsslprivate' : 'requestssl';
+		return $remoteWiki->isPrivate() ? 'requestcustomdomainprivate' : 'requestcustomdomain';
 	}
 
 	/**
@@ -292,7 +292,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			if (
 				!$receiver->isAllowed( 'handle-custom-domain-requests' ) ||
 				(
-					$this->getLogType( $target ) === 'requestsslprivate' &&
+					$this->getLogType( $target ) === 'requestcustomdomainprivate' &&
 					!$receiver->isAllowed( 'view-private-custom-domain-requests' )
 				)
 			) {
