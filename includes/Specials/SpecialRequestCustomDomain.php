@@ -147,8 +147,6 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			'rows' => 4,
 			'label-message' => 'requestssl-label-reason',
 			'help-message' => 'requestssl-help-reason',
-			'required' => true,
-			'validation-callback' => [ $this, 'isValidReason' ],
 		];
 
 		return $formDescriptor;
@@ -191,7 +189,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			[
 				'request_customdomain' => $data['customdomain'],
 				'request_target' => $targetDatabaseName,
-				'request_reason' => $data['reason'],
+				'request_reason' => $data['reason'] ?? '',
 				'request_status' => 'pending',
 				'request_actor' => $this->getUser()->getActorId(),
 				'request_timestamp' => $timestamp,
@@ -374,18 +372,6 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		$targetDatabase = $target . $this->getConfig()->get( 'CreateWikiDatabaseSuffix' );
 		if ( !in_array( $targetDatabase, $this->getConfig()->get( MainConfigNames::LocalDatabases ), true ) ) {
 			return $this->msg( 'requestssl-invalid-target' );
-		}
-
-		return true;
-	}
-
-	/**
-	 * @param ?string $reason
-	 * @return string|bool|Message
-	 */
-	public function isValidReason( ?string $reason ) {
-		if ( !$reason || ctype_space( $reason ) ) {
-			return $this->msg( 'htmlform-required' );
 		}
 
 		return true;
