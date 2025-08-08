@@ -68,7 +68,7 @@
 		"requestsslprivate"
 	],
 	"LogRestrictions": {
-		"requestsslprivate": "view-private-ssl-requests"
+		"requestsslprivate": "view-private-custom-domain-requests"
 	},
 	"ActionFilteredLogs": {
 		"requestssl": {
