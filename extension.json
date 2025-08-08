@@ -52,26 +52,26 @@
 		}
 	},
 	"LogActionsHandlers": {
-		"requestssl/*": "LogFormatter",
-		"requestsslprivate/*": "LogFormatter"
+		"requestcustomdomain/*": "LogFormatter",
+		"requestcustomdomainprivate/*": "LogFormatter"
 	},
 	"LogHeaders": {
-		"requestssl": "requestssl-log-header",
-		"requestsslprivate": "requestsslprivate-log-header"
+		"requestcustomdomain": "requestcustomdomain-log-header",
+		"requestcustomdomainprivate": "requestcustomdomainprivate-log-header"
 	},
 	"LogNames": {
-		"requestssl": "requestssl-log-name",
-		"requestsslprivate": "requestsslprivate-log-name"
+		"requestcustomdomain": "requestcustomdomain-log-name",
+		"requestcustomdomainprivate": "requestcustomdomainprivate-log-name"
 	},
 	"LogTypes": [
-		"requestssl",
-		"requestsslprivate"
+		"requestcustomdomain",
+		"requestcustomdomainprivate"
 	],
 	"LogRestrictions": {
-		"requestsslprivate": "view-private-ssl-requests"
+		"requestcustomdomainprivate": "view-private-ssl-requests"
 	},
 	"ActionFilteredLogs": {
-		"requestssl": {
+		"requestcustomdomain": {
 			"request": [
 				"request"
 			],
@@ -79,7 +79,7 @@
 				"statusupdate"
 			]
 		},
-		"requestsslprivate": {
+		"requestcustomdomainprivate": {
 			"request": [
 				"request"
 			],
