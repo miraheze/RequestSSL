@@ -41,7 +41,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		$this->setParameter( $par );
 		$this->setHeaders();
 
-		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestssl' );
+		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestcustomdomain' );
 		if ( !WikiMap::isCurrentWikiDbDomain( $dbr->getDomainID() ) ) {
 			throw new ErrorPageError( 'requestssl-notcentral', 'requestssl-notcentral-text' );
 		}
@@ -59,8 +59,8 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		$this->checkPermissions();
 		$this->getOutput()->addModules( [ 'mediawiki.special.userrights' ] );
 
-		if ( $this->getConfig()->get( 'RequestSSLHelpUrl' ) ) {
-			$this->getOutput()->addHelpLink( $this->getConfig()->get( 'RequestSSLHelpUrl' ), true );
+		if ( $this->getConfig()->get( 'RequestCustomDomainHelpUrl' ) ) {
+			$this->getOutput()->addHelpLink( $this->getConfig()->get( 'RequestCustomDomainHelpUrl' ), true );
 		}
 
 		$form = $this->getForm()->setWrapperLegendMsg( 'requestssl-header' );
@@ -128,7 +128,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			return Status::newFatal( 'sessionfailure' );
 		}
 
-		$dbw = $this->connectionProvider->getPrimaryDatabase( 'virtual-requestssl' );
+		$dbw = $this->connectionProvider->getPrimaryDatabase( 'virtual-requestcustomdomain' );
 		$targetDatabaseName = $data['target'] . ( $this->getConfig()->get( 'CreateWikiDatabaseSuffix' ) ?? '' );
 
 		$duplicate = $dbw->newSelectQueryBuilder()
@@ -188,7 +188,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 
 		if (
 			ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) &&
-			$this->getConfig()->get( 'RequestSSLUsersNotifiedOnAllRequests' )
+			$this->getConfig()->get( 'RequestCustomDomainUsersNotifiedOnAllRequests' )
 		) {
 			$this->sendNotifications(
 				$data['reason'] ?? '', $this->getUser()->getName(),
@@ -197,8 +197,8 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		}
 
 		if (
-			$this->getConfig()->get( 'RequestSSLCloudflareConfig' )['apikey'] &&
-			$this->getConfig()->get( 'RequestSSLCloudflareConfig' )['zoneid']
+			$this->getConfig()->get( 'RequestCustomDomainCloudflareConfig' )['apikey'] &&
+			$this->getConfig()->get( 'RequestCustomDomainCloudflareConfig' )['zoneid']
 		) {
 			$this->requestManager->fromID( (int)$requestID );
 			$this->requestManager->queryCloudflare();
@@ -225,7 +225,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			array_map(
 				function ( string $userName ): ?User {
 					return $this->userFactory->newFromName( $userName );
-				}, $this->getConfig()->get( 'RequestSSLUsersNotifiedOnAllRequests' )
+				}, $this->getConfig()->get( 'RequestCustomDomainUsersNotifiedOnAllRequests' )
 			)
 		);
 
@@ -292,7 +292,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			}
 		}
 
-		$disallowedDomains = $this->getConfig()->get( 'RequestSSLDisallowedDomains' );
+		$disallowedDomains = $this->getConfig()->get( 'RequestCustomDomainDisallowedDomains' );
 		if ( $disallowedDomains ) {
 			foreach ( $disallowedDomains as $disallowed ) {
 				if ( str_ends_with( $customDomain, $disallowed ) ) {

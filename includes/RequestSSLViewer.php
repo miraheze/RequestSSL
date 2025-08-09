@@ -261,8 +261,8 @@ class RequestSSLViewer {
 			];
 
 			if (
-				$this->config->get( 'RequestSSLCloudflareConfig' )['apikey'] &&
-				$this->config->get( 'RequestSSLCloudflareConfig' )['zoneid'] &&
+				$this->config->get( 'RequestCustomDomainCloudflareConfig' )['apikey'] &&
+				$this->config->get( 'RequestCustomDomainCloudflareConfig' )['zoneid'] &&
 				$this->requestManager->getStatus() === 'pending'
 			) {
 				$formDescriptor['handle-cf'] = [
@@ -449,7 +449,7 @@ class RequestSSLViewer {
 
 				$this->requestManager->logStatusUpdate( $comment, 'pending', $user );
 
-				$this->requestManager->addComment( $comment, User::newSystemUser( 'RequestSSL Extension' ) );
+				$this->requestManager->addComment( $comment, User::newSystemUser( 'RequestCustomDomain Extension' ) );
 
 				$this->requestManager->sendNotification(
 					$comment, 'requestssl-request-status-update', $user
@@ -459,7 +459,7 @@ class RequestSSLViewer {
 					implode( "\n\n", $changes )
 				)->inContentLanguage()->escaped();
 
-				$this->requestManager->addComment( $comment, User::newSystemUser( 'RequestSSL Extension' ) );
+				$this->requestManager->addComment( $comment, User::newSystemUser( 'RequestCustomDomain Extension' ) );
 			}
 
 			$this->requestManager->endAtomic( __METHOD__ );
@@ -553,7 +553,7 @@ class RequestSSLViewer {
 			}
 
 			if ( $formData['handle-comment'] ) {
-				$commentUser = User::newSystemUser( 'RequestSSL Status Update' );
+				$commentUser = User::newSystemUser( 'RequestCustomDomain Status Update' );
 
 				$comment .= "\n" . $this->context->msg( 'requestssl-comment-given', $user->getName() )
 					->inContentLanguage()

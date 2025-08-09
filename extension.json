@@ -43,8 +43,8 @@
 			"class": "Miraheze\\RequestSSL\\Jobs\\RequestSSLCFAddJob",
 			"services": [
 				"HttpRequestFactory",
-				"RequestSSLConfig",
-				"RequestSSLLogger",
+				"RequestCustomDomainConfig",
+				"RequestCustomDomainLogger",
 				"RequestSSLManager"
 			],
 			"needsPage": false
@@ -135,7 +135,7 @@
 		"remoteExtPath": "RequestSSL/modules"
 	},
 	"config": {
-		"RequestSSLCloudflareConfig": {
+		"RequestCustomDomainCloudflareConfig": {
 			"description": "Array. Cloudflare configuration array, including API Key and Zone ID.",
 			"value": {
 				"apikey": null,
@@ -143,21 +143,21 @@
 				"zoneid": null
 			}
 		},
-		"RequestSSLDisallowedDomains": {
+		"RequestCustomDomainDisallowedDomains": {
 			"value": [],
-			"description": "Array. Domains that are not allowed to be requested via RequestSSL."
+			"description": "Array. Domains that are not allowed to be requested via RequestCustomDomain."
 		},
-		"RequestSSLHelpUrl": {
+		"RequestCustomDomainHelpUrl": {
 			"value": "",
-			"description": "Full URL. If set, adds a help URL to Special:RequestSSL."
+			"description": "Full URL. If set, adds a help URL to Special:RequestCustomDomain."
 		},
-		"RequestSSLUsersNotifiedOnAllRequests": {
+		"RequestCustomDomainUsersNotifiedOnAllRequests": {
 			"value": [],
 			"description": "Array of usernames to send email notifications to for all requests. Users listed here must have a verified email address on their account. This doesn't do anything if the Echo extension is not installed."
 		}
 	},
 	"ConfigRegistry": {
-		"RequestSSL": "MediaWiki\\Config\\GlobalVarConfig::newInstance"
+		"RequestCustomDomain": "MediaWiki\\Config\\GlobalVarConfig::newInstance"
 	},
 	"DefaultUserOptions": {
 		"echo-subscriptions-email-requestssl-new-request": true,
@@ -171,7 +171,7 @@
 		"includes/ServiceWiring.php"
 	],
 	"DatabaseVirtualDomains": [
-		"virtual-requestssl"
+		"virtual-requestcustomdomain"
 	],
 	"manifest_version": 2
 }
