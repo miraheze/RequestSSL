@@ -9,11 +9,11 @@ use MediaWiki\MediaWikiServices;
 use Psr\Log\LoggerInterface;
 
 return [
-	'RequestSSLConfig' => static function ( MediaWikiServices $services ): Config {
-		return $services->getConfigFactory()->makeConfig( 'RequestSSL' );
+	'RequestCustomDomainConfig' => static function ( MediaWikiServices $services ): Config {
+		return $services->getConfigFactory()->makeConfig( 'RequestCustomDomain' );
 	},
-	'RequestSSLLogger' => static function (): LoggerInterface {
-		return LoggerFactory::getInstance( 'RequestSSL' );
+	'RequestCustomDomainLogger' => static function (): LoggerInterface {
+		return LoggerFactory::getInstance( 'RequestCustomDomain' );
 	},
 	'RequestSSLManager' => static function ( MediaWikiServices $services ): RequestSSLManager {
 		return new RequestSSLManager(
