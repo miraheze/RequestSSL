@@ -14,7 +14,7 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
  * @group Medium
  * @coversDefaultClass \Miraheze\RequestCustomDomain\RequestManager
  */
-class RequestCustomDomainManagerTest extends MediaWikiIntegrationTestCase {
+class RequestManagerTest extends MediaWikiIntegrationTestCase {
 
 	public function addDBDataOnce(): void {
 		$this->setMwGlobals( MainConfigNames::VirtualDomainsMapping, [
