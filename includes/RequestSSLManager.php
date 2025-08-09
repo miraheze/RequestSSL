@@ -4,7 +4,6 @@ namespace Miraheze\RequestSSL;
 
 use JobSpecification;
 use ManualLogEntry;
-use MediaWiki\Config\Config;
 use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\JobQueue\JobQueueGroupFactory;
 use MediaWiki\Linker\LinkRenderer;
@@ -29,9 +28,6 @@ class RequestSSLManager {
 	private const IGNORED_USERS = [
 		'RequestSSL Extension',
 	];
-
-	/** @var Config */
-	private $config;
 
 	/** @var IDatabase */
 	private $dbw;
@@ -70,7 +66,6 @@ class RequestSSLManager {
 	private $userGroupManagerFactory;
 
 	/**
-	 * @param Config $config
 	 * @param ActorStoreFactory $actorStoreFactory
 	 * @param IConnectionProvider $connectionProvider
 	 * @param JobQueueGroupFactory $jobQueueGroupFactory
@@ -82,7 +77,6 @@ class RequestSSLManager {
 	 * @param UserGroupManagerFactory $userGroupManagerFactory
 	 */
 	public function __construct(
-		Config $config,
 		ActorStoreFactory $actorStoreFactory,
 		IConnectionProvider $connectionProvider,
 		JobQueueGroupFactory $jobQueueGroupFactory,
@@ -93,7 +87,6 @@ class RequestSSLManager {
 		UserFactory $userFactory,
 		UserGroupManagerFactory $userGroupManagerFactory
 	) {
-		$this->config = $config;
 		$this->actorStoreFactory = $actorStoreFactory;
 		$this->connectionProvider = $connectionProvider;
 		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
