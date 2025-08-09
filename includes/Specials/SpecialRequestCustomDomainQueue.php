@@ -15,36 +15,13 @@ use Wikimedia\Rdbms\IConnectionProvider;
 
 class SpecialRequestCustomDomainQueue extends SpecialPage {
 
-	/** @var IConnectionProvider */
-	private $connectionProvider;
-
-	/** @var RequestSSLManager */
-	private $requestSslRequestManager;
-
-	/** @var PermissionManager */
-	private $permissionManager;
-
-	/** @var UserFactory */
-	private $userFactory;
-
-	/**
-	 * @param IConnectionProvider $connectionProvider
-	 * @param RequestSSLManager $requestSslRequestManager
-	 * @param PermissionManager $permissionManager
-	 * @param UserFactory $userFactory
-	 */
 	public function __construct(
-		IConnectionProvider $connectionProvider,
-		RequestSSLManager $requestSslRequestManager,
-		PermissionManager $permissionManager,
-		UserFactory $userFactory
+		private readonly IConnectionProvider $connectionProvider,
+		private readonly PermissionManager $permissionManager,
+		private readonly RequestSSLManager $requestManager,
+		private readonly UserFactory $userFactory
 	) {
 		parent::__construct( 'RequestCustomDomainQueue' );
-
-		$this->connectionProvider = $connectionProvider;
-		$this->requestSslRequestManager = $requestSslRequestManager;
-		$this->permissionManager = $permissionManager;
-		$this->userFactory = $userFactory;
 	}
 
 	/**
@@ -124,7 +101,6 @@ class SpecialRequestCustomDomainQueue extends SpecialPage {
 		);
 
 		$table = $pager->getFullOutput();
-
 		$this->getOutput()->addParserOutputContent( $table );
 	}
 
@@ -135,14 +111,13 @@ class SpecialRequestCustomDomainQueue extends SpecialPage {
 		$requestViewer = new RequestSSLViewer(
 			$this->getConfig(),
 			$this->getContext(),
-			$this->requestSslRequestManager,
-			$this->permissionManager
+			$this->permissionManager,
+			$this->requestManager
 		);
 
 		$this->getOutput()->addModules( [ 'mediawiki.special.userrights' ] );
 
 		$htmlForm = $requestViewer->getForm( (int)$par );
-
 		if ( $htmlForm ) {
 			$htmlForm->show();
 		}

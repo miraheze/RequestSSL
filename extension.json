@@ -78,8 +78,8 @@
 			"services": [
 				"ConnectionProvider",
 				"MimeAnalyzer",
-				"RequestSSLManager",
 				"RepoGroup",
+				"RequestSSLManager",
 				"UserFactory"
 			]
 		},
@@ -87,8 +87,8 @@
 			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestCustomDomainQueue",
 			"services": [
 				"ConnectionProvider",
-				"RequestSSLManager",
 				"PermissionManager",
+				"RequestSSLManager",
 				"UserFactory"
 			]
 		}

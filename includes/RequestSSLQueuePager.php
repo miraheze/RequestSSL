@@ -78,7 +78,7 @@ class RequestSSLQueuePager extends TablePager {
 	public function getQueryInfo(): array {
 		$info = [
 			'tables' => [
-				'requestssl_requests',
+				'customdomain_requests',
 			],
 			'fields' => [
 				'request_actor',

@@ -2,7 +2,7 @@
 -- Source: sql/tables.json
 -- Do not modify this file directly.
 -- See https://www.mediawiki.org/wiki/Manual:Schema_changes
-CREATE TABLE /*_*/requestssl_requests (
+CREATE TABLE /*_*/customdomain_requests (
   request_id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
   request_actor BIGINT UNSIGNED NOT NULL,
   request_timestamp BINARY(14) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE /*_*/requestssl_requests (
 ) /*$wgDBTableOptions*/;
 
 
-CREATE TABLE /*_*/requestssl_request_comments (
+CREATE TABLE /*_*/customdomain_request_comments (
   request_comment_id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
   request_id BIGINT UNSIGNED NOT NULL,
   request_comment_actor BIGINT UNSIGNED NOT NULL,

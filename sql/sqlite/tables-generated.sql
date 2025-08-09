@@ -2,7 +2,7 @@
 -- Source: sql/tables.json
 -- Do not modify this file directly.
 -- See https://www.mediawiki.org/wiki/Manual:Schema_changes
-CREATE TABLE /*_*/requestssl_requests (
+CREATE TABLE /*_*/customdomain_requests (
   request_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   request_actor BIGINT UNSIGNED NOT NULL,
   request_timestamp BLOB NOT NULL,
@@ -13,18 +13,18 @@ CREATE TABLE /*_*/requestssl_requests (
   request_locked SMALLINT UNSIGNED DEFAULT 0 NOT NULL
 );
 
-CREATE INDEX request_actor_timestamp ON /*_*/requestssl_requests (
+CREATE INDEX request_actor_timestamp ON /*_*/customdomain_requests (
   request_actor, request_timestamp
 );
 
-CREATE INDEX request_timestamp ON /*_*/requestssl_requests (request_timestamp);
+CREATE INDEX request_timestamp ON /*_*/customdomain_requests (request_timestamp);
 
-CREATE INDEX request_target ON /*_*/requestssl_requests (request_target);
+CREATE INDEX request_target ON /*_*/customdomain_requests (request_target);
 
-CREATE INDEX request_status ON /*_*/requestssl_requests (request_status);
+CREATE INDEX request_status ON /*_*/customdomain_requests (request_status);
 
 
-CREATE TABLE /*_*/requestssl_request_comments (
+CREATE TABLE /*_*/customdomain_request_comments (
   request_comment_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   request_id BIGINT UNSIGNED NOT NULL,
   request_comment_actor BIGINT UNSIGNED NOT NULL,
@@ -32,6 +32,6 @@ CREATE TABLE /*_*/requestssl_request_comments (
   request_comment_text BLOB NOT NULL
 );
 
-CREATE INDEX request_id ON /*_*/requestssl_request_comments (request_id);
+CREATE INDEX request_id ON /*_*/customdomain_request_comments (request_id);
 
-CREATE INDEX request_comment_timestamp ON /*_*/requestssl_request_comments (request_comment_timestamp);
+CREATE INDEX request_comment_timestamp ON /*_*/customdomain_request_comments (request_comment_timestamp);

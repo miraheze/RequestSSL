@@ -24,42 +24,14 @@ use Wikimedia\Rdbms\IConnectionProvider;
 
 class SpecialRequestCustomDomain extends FormSpecialPage {
 
-	/** @var IConnectionProvider */
-	private $connectionProvider;
-
-	/** @var MimeAnalyzer */
-	private $mimeAnalyzer;
-
-	/** @var RequestSSLManager */
-	private $requestSslRequestManager;
-
-	/** @var RepoGroup */
-	private $repoGroup;
-
-	/** @var UserFactory */
-	private $userFactory;
-
-	/**
-	 * @param IConnectionProvider $connectionProvider
-	 * @param MimeAnalyzer $mimeAnalyzer
-	 * @param RequestSSLManager $requestSslRequestManager
-	 * @param RepoGroup $repoGroup
-	 * @param UserFactory $userFactory
-	 */
 	public function __construct(
-		IConnectionProvider $connectionProvider,
-		MimeAnalyzer $mimeAnalyzer,
-		RequestSSLManager $requestSslRequestManager,
-		RepoGroup $repoGroup,
-		UserFactory $userFactory
+		private readonly IConnectionProvider $connectionProvider,
+		private readonly MimeAnalyzer $mimeAnalyzer,
+		private readonly RepoGroup $repoGroup,
+		private readonly RequestSSLManager $requestManager,
+		private readonly UserFactory $userFactory
 	) {
 		parent::__construct( 'RequestCustomDomain', 'request-custom-domain' );
-
-		$this->connectionProvider = $connectionProvider;
-		$this->mimeAnalyzer = $mimeAnalyzer;
-		$this->requestSslRequestManager = $requestSslRequestManager;
-		$this->repoGroup = $repoGroup;
-		$this->userFactory = $userFactory;
 	}
 
 	/**
@@ -85,7 +57,6 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		}
 
 		$this->checkPermissions();
-
 		$this->getOutput()->addModules( [ 'mediawiki.special.userrights' ] );
 
 		if ( $this->getConfig()->get( 'RequestSSLHelpUrl' ) ) {
@@ -158,11 +129,10 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		}
 
 		$dbw = $this->connectionProvider->getPrimaryDatabase( 'virtual-requestssl' );
-
 		$targetDatabaseName = $data['target'] . ( $this->getConfig()->get( 'CreateWikiDatabaseSuffix' ) ?? '' );
 
 		$duplicate = $dbw->newSelectQueryBuilder()
-			->table( 'requestssl_requests' )
+			->table( 'customdomain_requests' )
 			->field( '*' )
 			->where( [
 				'request_target' => $targetDatabaseName,
@@ -175,21 +145,19 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			return Status::newFatal( 'requestssl-duplicate-request' );
 		}
 
-		$timestamp = $dbw->timestamp();
-
-		$dbw->insert(
-			'requestssl_requests',
-			[
+		$dbw->newInsertQueryBuilder()
+			->insertInto( 'customdomain_requests' )
+			->ignore()
+			->row( [
 				'request_customdomain' => $data['customdomain'],
 				'request_target' => $targetDatabaseName,
 				'request_reason' => $data['reason'] ?? '',
 				'request_status' => 'pending',
 				'request_actor' => $this->getUser()->getActorId(),
-				'request_timestamp' => $timestamp,
-			],
-			__METHOD__,
-			[ 'IGNORE' ]
-		);
+				'request_timestamp' => $dbw->timestamp(),
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$requestID = (string)$dbw->insertId();
 		$requestQueueLink = SpecialPage::getTitleValueFor( 'RequestCustomDomainQueue', $requestID );
@@ -223,7 +191,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			$this->getConfig()->get( 'RequestSSLUsersNotifiedOnAllRequests' )
 		) {
 			$this->sendNotifications(
-				$data['reason'], $this->getUser()->getName(),
+				$data['reason'] ?? '', $this->getUser()->getName(),
 				$requestID, $targetDatabaseName, $data['customdomain']
 			);
 		}
@@ -232,8 +200,8 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			$this->getConfig()->get( 'RequestSSLCloudflareConfig' )['apikey'] &&
 			$this->getConfig()->get( 'RequestSSLCloudflareConfig' )['zoneid']
 		) {
-			$this->requestSslRequestManager->fromID( (int)$requestID );
-			$this->requestSslRequestManager->queryCloudflare();
+			$this->requestManager->fromID( (int)$requestID );
+			$this->requestManager->queryCloudflare();
 		}
 
 		return Status::newGood();

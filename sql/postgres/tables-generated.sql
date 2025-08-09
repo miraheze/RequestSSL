@@ -2,7 +2,7 @@
 -- Source: sql/tables.json
 -- Do not modify this file directly.
 -- See https://www.mediawiki.org/wiki/Manual:Schema_changes
-CREATE TABLE requestssl_requests (
+CREATE TABLE customdomain_requests (
   request_id BIGSERIAL NOT NULL,
   request_actor BIGINT NOT NULL,
   request_timestamp TIMESTAMPTZ NOT NULL,
@@ -14,18 +14,18 @@ CREATE TABLE requestssl_requests (
   PRIMARY KEY(request_id)
 );
 
-CREATE INDEX request_actor_timestamp ON requestssl_requests (
+CREATE INDEX request_actor_timestamp ON customdomain_requests (
   request_actor, request_timestamp
 );
 
-CREATE INDEX request_timestamp ON requestssl_requests (request_timestamp);
+CREATE INDEX request_timestamp ON customdomain_requests (request_timestamp);
 
-CREATE INDEX request_target ON requestssl_requests (request_target);
+CREATE INDEX request_target ON customdomain_requests (request_target);
 
-CREATE INDEX request_status ON requestssl_requests (request_status);
+CREATE INDEX request_status ON customdomain_requests (request_status);
 
 
-CREATE TABLE requestssl_request_comments (
+CREATE TABLE customdomain_request_comments (
   request_comment_id BIGSERIAL NOT NULL,
   request_id BIGINT NOT NULL,
   request_comment_actor BIGINT NOT NULL,
@@ -34,6 +34,6 @@ CREATE TABLE requestssl_request_comments (
   PRIMARY KEY(request_comment_id)
 );
 
-CREATE INDEX request_id ON requestssl_request_comments (request_id);
+CREATE INDEX request_id ON customdomain_request_comments (request_id);
 
-CREATE INDEX request_comment_timestamp ON requestssl_request_comments (request_comment_timestamp);
+CREATE INDEX request_comment_timestamp ON customdomain_request_comments (request_comment_timestamp);

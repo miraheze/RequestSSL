@@ -21,6 +21,7 @@ use RepoGroup;
 use stdClass;
 use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 use Wikimedia\Rdbms\SelectQueryBuilder;
 
 class RequestSSLManager {
@@ -29,73 +30,22 @@ class RequestSSLManager {
 		'RequestSSL Extension',
 	];
 
-	/** @var IDatabase */
-	private $dbw;
+	private IDatabase $dbw;
+	private stdClass|false $row;
 
-	/** @var int */
-	private $ID;
+	private int $ID;
 
-	/** @var ActorStoreFactory */
-	private $actorStoreFactory;
-
-	/** @var IConnectionProvider */
-	private $connectionProvider;
-
-	/** @var MessageLocalizer */
-	private $messageLocalizer;
-
-	/** @var JobQueueGroupFactory */
-	private $jobQueueGroupFactory;
-
-	/** @var LinkRenderer */
-	private $linkRenderer;
-
-	/** @var RemoteWikiFactory */
-	private $remoteWikiFactory;
-
-	/** @var RepoGroup */
-	private $repoGroup;
-
-	/** @var stdClass|bool */
-	private $row;
-
-	/** @var UserFactory */
-	private $userFactory;
-
-	/** @var UserGroupManagerFactory */
-	private $userGroupManagerFactory;
-
-	/**
-	 * @param ActorStoreFactory $actorStoreFactory
-	 * @param IConnectionProvider $connectionProvider
-	 * @param JobQueueGroupFactory $jobQueueGroupFactory
-	 * @param LinkRenderer $linkRenderer
-	 * @param RemoteWikiFactory $remoteWikiFactory
-	 * @param RepoGroup $repoGroup
-	 * @param MessageLocalizer $messageLocalizer
-	 * @param UserFactory $userFactory
-	 * @param UserGroupManagerFactory $userGroupManagerFactory
-	 */
 	public function __construct(
-		ActorStoreFactory $actorStoreFactory,
-		IConnectionProvider $connectionProvider,
-		JobQueueGroupFactory $jobQueueGroupFactory,
-		LinkRenderer $linkRenderer,
-		RemoteWikiFactory $remoteWikiFactory,
-		RepoGroup $repoGroup,
-		MessageLocalizer $messageLocalizer,
-		UserFactory $userFactory,
-		UserGroupManagerFactory $userGroupManagerFactory
+		private readonly ActorStoreFactory $actorStoreFactory,
+		private readonly IConnectionProvider $connectionProvider,
+		private readonly JobQueueGroupFactory $jobQueueGroupFactory,
+		private readonly LinkRenderer $linkRenderer,
+		private readonly RemoteWikiFactory $remoteWikiFactory,
+		private readonly RepoGroup $repoGroup,
+		private readonly MessageLocalizer $messageLocalizer,
+		private readonly UserFactory $userFactory,
+		private readonly UserGroupManagerFactory $userGroupManagerFactory
 	) {
-		$this->actorStoreFactory = $actorStoreFactory;
-		$this->connectionProvider = $connectionProvider;
-		$this->jobQueueGroupFactory = $jobQueueGroupFactory;
-		$this->linkRenderer = $linkRenderer;
-		$this->messageLocalizer = $messageLocalizer;
-		$this->remoteWikiFactory = $remoteWikiFactory;
-		$this->repoGroup = $repoGroup;
-		$this->userFactory = $userFactory;
-		$this->userGroupManagerFactory = $userGroupManagerFactory;
 	}
 
 	/**
@@ -106,8 +56,8 @@ class RequestSSLManager {
 		$this->ID = $requestID;
 
 		$this->row = $this->dbw->newSelectQueryBuilder()
-			->table( 'requestssl_requests' )
-			->field( '*' )
+			->select( ISQLPlatform::ALL_ROWS )
+			->from( 'customdomain_requests' )
 			->where( [ 'request_id' => $requestID ] )
 			->caller( __METHOD__ )
 			->fetchRow();
@@ -126,7 +76,7 @@ class RequestSSLManager {
 	 */
 	public function addComment( string $comment, User $user ) {
 		$this->dbw->insert(
-			'requestssl_request_comments',
+			'customdomain_request_comments',
 			[
 				'request_id' => $this->ID,
 				'request_comment_text' => $comment,
@@ -205,8 +155,8 @@ class RequestSSLManager {
 	 */
 	public function getComments(): array {
 		$res = $this->dbw->newSelectQueryBuilder()
-			->table( 'requestssl_request_comments' )
-			->field( '*' )
+			->select( ISQLPlatform::ALL_ROWS )
+			->from( 'customdomain_request_comments' )
 			->where( [ 'request_id' => $this->ID ] )
 			->orderBy( 'request_comment_timestamp', SelectQueryBuilder::SORT_DESC )
 			->caller( __METHOD__ )
@@ -329,7 +279,7 @@ class RequestSSLManager {
 	 */
 	public function setLocked( int $locked ) {
 		$this->dbw->update(
-			'requestssl_requests',
+			'customdomain_requests',
 			[
 				'request_locked' => $locked,
 			],
@@ -345,7 +295,7 @@ class RequestSSLManager {
 	 */
 	public function setReason( string $reason ) {
 		$this->dbw->update(
-			'requestssl_requests',
+			'customdomain_requests',
 			[
 				'request_reason' => $reason,
 			],
@@ -361,7 +311,7 @@ class RequestSSLManager {
 	 */
 	public function setCustomDomain( string $customDomain ) {
 		$this->dbw->update(
-			'requestssl_requests',
+			'customdomain_requests',
 			[
 				'request_customdomain' => $customDomain,
 			],
@@ -377,7 +327,7 @@ class RequestSSLManager {
 	 */
 	public function setStatus( string $status ) {
 		$this->dbw->update(
-			'requestssl_requests',
+			'customdomain_requests',
 			[
 				'request_status' => $status,
 			],
@@ -394,7 +344,7 @@ class RequestSSLManager {
 	 */
 	public function setTarget( string $target ) {
 		$this->dbw->update(
-			'requestssl_requests',
+			'customdomain_requests',
 			[
 				'request_target' => $target,
 			],

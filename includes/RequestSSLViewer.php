@@ -19,41 +19,19 @@ use UserNotLoggedIn;
 
 class RequestSSLViewer {
 
-	/** @var Config */
-	private $config;
-
-	/** @var IContextSource */
-	private $context;
-
-	/** @var RequestSSLManager */
-	private $requestSslRequestManager;
-
-	/** @var PermissionManager */
-	private $permissionManager;
-
-	/**
-	 * @param Config $config
-	 * @param IContextSource $context
-	 * @param RequestSSLManager $requestSslRequestManager
-	 * @param PermissionManager $permissionManager
-	 */
 	public function __construct(
-		Config $config,
-		IContextSource $context,
-		RequestSSLManager $requestSslRequestManager,
-		PermissionManager $permissionManager
+		private readonly Config $config,
+		private readonly IContextSource $context,
+		private readonly PermissionManager $permissionManager,
+		private readonly RequestSSLManager $requestManager
 	) {
-		$this->config = $config;
-		$this->context = $context;
-		$this->requestSslRequestManager = $requestSslRequestManager;
-		$this->permissionManager = $permissionManager;
 	}
 
 	/**
 	 * @return array
 	 */
 	public function getFormDescriptor(): array {
-		if ( $this->requestSslRequestManager->isLocked() ) {
+		if ( $this->requestManager->isLocked() ) {
 			$this->context->getOutput()->addHTML(
 				Html::warningBox(
 					Html::element(
@@ -74,23 +52,23 @@ class RequestSSLViewer {
 				'type' => 'url',
 				'readonly' => true,
 				'section' => 'details',
-				'default' => $this->requestSslRequestManager->getCustomDomain(),
+				'default' => $this->requestManager->getCustomDomain(),
 			],
 			'target' => [
 				'label-message' => 'requestssl-label-target',
 				'type' => 'text',
 				'readonly' => true,
 				'section' => 'details',
-				'default' => $this->requestSslRequestManager->getTarget(),
+				'default' => $this->requestManager->getTarget(),
 			],
 			'requester' => [
 				'label-message' => 'requestssl-label-requester',
 				'type' => 'info',
 				'section' => 'details',
-				'default' => htmlspecialchars( $this->requestSslRequestManager->getRequester()->getName() ) .
+				'default' => htmlspecialchars( $this->requestManager->getRequester()->getName() ) .
 					Linker::userToolLinks(
-						$this->requestSslRequestManager->getRequester()->getId(),
-						$this->requestSslRequestManager->getRequester()->getName()
+						$this->requestManager->getRequester()->getId(),
+						$this->requestManager->getRequester()->getName()
 					),
 				'raw' => true,
 			],
@@ -99,7 +77,7 @@ class RequestSSLViewer {
 				'type' => 'info',
 				'section' => 'details',
 				'default' => $this->context->getLanguage()->timeanddate(
-					$this->requestSslRequestManager->getTimestamp(), true
+					$this->requestManager->getTimestamp(), true
 				),
 			],
 			'status' => [
@@ -108,7 +86,7 @@ class RequestSSLViewer {
 				'readonly' => true,
 				'section' => 'details',
 				'default' => $this->context->msg(
-					'requestssl-label-' . $this->requestSslRequestManager->getStatus()
+					'requestssl-label-' . $this->requestManager->getStatus()
 				)->text(),
 			],
 			'reason' => [
@@ -116,14 +94,14 @@ class RequestSSLViewer {
 				'rows' => 4,
 				'readonly' => true,
 				'label-message' => 'requestssl-label-reason',
-				'default' => $this->requestSslRequestManager->getReason(),
+				'default' => $this->requestManager->getReason(),
 				'raw' => true,
 				'cssclass' => 'requestssl-infuse',
 				'section' => 'details',
 			],
 		];
 
-		foreach ( $this->requestSslRequestManager->getComments() as $comment ) {
+		foreach ( $this->requestManager->getComments() as $comment ) {
 			$formDescriptor['comment' . $comment['timestamp'] ] = [
 				'type' => 'textarea',
 				'readonly' => true,
@@ -142,7 +120,7 @@ class RequestSSLViewer {
 
 		if (
 			$this->permissionManager->userHasRight( $user, 'handle-custom-domain-requests' ) ||
-			$user->getActorId() === $this->requestSslRequestManager->getRequester()->getActorId()
+			$user->getActorId() === $this->requestManager->getRequester()->getActorId()
 		) {
 			$formDescriptor += [
 				'comment' => [
@@ -151,71 +129,71 @@ class RequestSSLViewer {
 					'label-message' => 'requestssl-label-comment',
 					'section' => 'comments',
 					'validation-callback' => [ $this, 'isValidComment' ],
-					'disabled' => $this->requestSslRequestManager->isLocked(),
+					'disabled' => $this->requestManager->isLocked(),
 				],
 				'submit-comment' => [
 					'type' => 'submit',
 					'default' => $this->context->msg( 'requestssl-label-add-comment' )->text(),
 					'section' => 'comments',
-					'disabled' => $this->requestSslRequestManager->isLocked(),
+					'disabled' => $this->requestManager->isLocked(),
 				],
 				'edit-source' => [
 					'label-message' => 'requestssl-label-customdomain',
 					'type' => 'url',
 					'section' => 'editing',
 					'required' => true,
-					'default' => $this->requestSslRequestManager->getCustomDomain(),
-					'disabled' => $this->requestSslRequestManager->isLocked(),
+					'default' => $this->requestManager->getCustomDomain(),
+					'disabled' => $this->requestManager->isLocked(),
 				],
 				'edit-target' => [
 					'label-message' => 'requestssl-label-target',
 					'type' => 'text',
 					'section' => 'editing',
 					'required' => true,
-					'default' => $this->requestSslRequestManager->getTarget(),
+					'default' => $this->requestManager->getTarget(),
 					'validation-callback' => [ $this, 'isValidDatabase' ],
-					'disabled' => $this->requestSslRequestManager->isLocked(),
+					'disabled' => $this->requestManager->isLocked(),
 				],
 				'edit-reason' => [
 					'type' => 'textarea',
 					'rows' => 4,
 					'label-message' => 'requestssl-label-reason',
 					'section' => 'editing',
-					'default' => $this->requestSslRequestManager->getReason(),
-					'disabled' => $this->requestSslRequestManager->isLocked(),
+					'default' => $this->requestManager->getReason(),
+					'disabled' => $this->requestManager->isLocked(),
 					'raw' => true,
 				],
 				'submit-edit' => [
 					'type' => 'submit',
 					'default' => $this->context->msg( 'requestssl-label-edit-request' )->text(),
 					'section' => 'editing',
-					'disabled' => $this->requestSslRequestManager->isLocked(),
+					'disabled' => $this->requestManager->isLocked(),
 				],
 			];
 		}
 
 		if ( $this->permissionManager->userHasRight( $user, 'handle-custom-domain-requests' ) ) {
 			$validRequest = true;
-			$status = $this->requestSslRequestManager->getStatus();
+			$status = $this->requestManager->getStatus();
 
 			$info = new MessageWidget( [
 				'label' => new HtmlSnippet(
 						$this->context->msg( 'requestssl-info-groups',
-							$this->requestSslRequestManager->getRequester()->getName(),
-							$this->requestSslRequestManager->getTarget(),
+							$this->requestManager->getRequester()->getName(),
+							$this->requestManager->getTarget(),
 							$this->context->getLanguage()->commaList(
-								$this->requestSslRequestManager->getUserGroupsFromTarget()
+								$this->requestManager->getUserGroupsFromTarget()
 							)
 						)->escaped(),
 					),
 				'type' => 'notice',
 			] );
 
-			if ( $this->requestSslRequestManager->getRequester()->getBlock() ) {
+			if ( $this->requestManager->getRequester()->getBlock() ) {
 				$info .= new MessageWidget( [
 					'label' => new HtmlSnippet(
 							$this->context->msg( 'requestssl-info-requester-blocked',
-								$this->requestSslRequestManager->getRequester()->getName(),
+								$this->requestManager->getRequester()->getName(),
 								WikiMap::getCurrentWikiId()
 							)->escaped()
 						),
@@ -223,11 +201,11 @@ class RequestSSLViewer {
 				] );
 			}
 
-			if ( $this->requestSslRequestManager->getRequester()->isLocked() ) {
+			if ( $this->requestManager->getRequester()->isLocked() ) {
 				$info .= new MessageWidget( [
 					'label' => new HtmlSnippet(
 								$this->context->msg( 'requestssl-info-requester-locked',
-								$this->requestSslRequestManager->getRequester()->getName()
+								$this->requestManager->getRequester()->getName()
 							)->escaped()
 						),
 					'type' => 'error',
@@ -249,7 +227,7 @@ class RequestSSLViewer {
 				'handle-lock' => [
 					'type' => 'check',
 					'label-message' => 'requestssl-label-lock',
-					'default' => $this->requestSslRequestManager->isLocked(),
+					'default' => $this->requestManager->isLocked(),
 					'section' => 'handling',
 				],
 			];
@@ -285,7 +263,7 @@ class RequestSSLViewer {
 			if (
 				$this->config->get( 'RequestSSLCloudflareConfig' )['apikey'] &&
 				$this->config->get( 'RequestSSLCloudflareConfig' )['zoneid'] &&
-				$this->requestSslRequestManager->getStatus() === 'pending'
+				$this->requestManager->getStatus() === 'pending'
 			) {
 				$formDescriptor['handle-cf'] = [
 					'type' => 'submit',
@@ -335,10 +313,10 @@ class RequestSSLViewer {
 	 * @return ?RequestSSLOOUIForm
 	 */
 	public function getForm( int $requestID ): ?RequestSSLOOUIForm {
-		$this->requestSslRequestManager->fromID( $requestID );
+		$this->requestManager->fromID( $requestID );
 		$out = $this->context->getOutput();
 
-		if ( $requestID === 0 || !$this->requestSslRequestManager->exists() ) {
+		if ( $requestID === 0 || !$this->requestManager->exists() ) {
 			$out->addHTML(
 				Html::errorBox( $this->context->msg( 'requestssl-unknown' )->escaped() )
 			);
@@ -380,7 +358,7 @@ class RequestSSLViewer {
 		$out = $form->getContext()->getOutput();
 
 		if ( isset( $formData['handle-cf'] ) ) {
-			$this->requestSslRequestManager->queryCloudflare();
+			$this->requestManager->queryCloudflare();
 
 			$out->addHTML(
 				Html::successBox(
@@ -397,7 +375,7 @@ class RequestSSLViewer {
 		}
 
 		if ( isset( $formData['submit-comment'] ) ) {
-			$this->requestSslRequestManager->addComment( $formData['comment'], $user );
+			$this->requestManager->addComment( $formData['comment'], $user );
 			$out->addHTML(
 				Html::successBox(
 					Html::element(
@@ -412,42 +390,42 @@ class RequestSSLViewer {
 			return;
 		}
 
-		$oldStatus = $this->requestSslRequestManager->getStatus();
+		$oldStatus = $this->requestManager->getStatus();
 
 		if ( isset( $formData['submit-edit'] ) ) {
-			$this->requestSslRequestManager->startAtomic( __METHOD__ );
+			$this->requestManager->startAtomic( __METHOD__ );
 
 			$changes = [];
-			if ( $this->requestSslRequestManager->getReason() !== ( $formData['edit-reason'] ?? '' ) ) {
+			if ( $this->requestManager->getReason() !== ( $formData['edit-reason'] ?? '' ) ) {
 				$changes[] = $this->context->msg( 'requestssl-request-edited-reason' )->plaintextParams(
-					$this->requestSslRequestManager->getReason(),
+					$this->requestManager->getReason(),
 					$formData['edit-reason']
 				)->escaped();
 
-				$this->requestSslRequestManager->setReason( $formData['edit-reason'] );
+				$this->requestManager->setReason( $formData['edit-reason'] );
 			}
 
-			if ( $this->requestSslRequestManager->getCustomDomain() !== $formData['edit-source'] ) {
+			if ( $this->requestManager->getCustomDomain() !== $formData['edit-source'] ) {
 				$changes[] = $this->context->msg( 'requestssl-request-edited-source' )->plaintextParams(
-					$this->requestSslRequestManager->getCustomDomain(),
+					$this->requestManager->getCustomDomain(),
 					$formData['edit-source']
 				)->escaped();
 
-				$this->requestSslRequestManager->setCustomDomain( $formData['edit-source'] );
+				$this->requestManager->setCustomDomain( $formData['edit-source'] );
 			}
 
-			if ( $this->requestSslRequestManager->getTarget() !== $formData['edit-target'] ) {
+			if ( $this->requestManager->getTarget() !== $formData['edit-target'] ) {
 				$changes[] = $this->context->msg(
 					'requestssl-request-edited-target',
-					$this->requestSslRequestManager->getTarget(),
+					$this->requestManager->getTarget(),
 					$formData['edit-target']
 				)->escaped();
 
-				$this->requestSslRequestManager->setTarget( $formData['edit-target'] );
+				$this->requestManager->setTarget( $formData['edit-target'] );
 			}
 
 			if ( !$changes ) {
-				$this->requestSslRequestManager->endAtomic( __METHOD__ );
+				$this->requestManager->endAtomic( __METHOD__ );
 
 				$this->context->getOutput()->addHTML(
 					Html::warningBox(
@@ -462,18 +440,18 @@ class RequestSSLViewer {
 				return;
 			}
 
-			if ( $this->requestSslRequestManager->getStatus() === 'declined' ) {
-				$this->requestSslRequestManager->setStatus( 'pending' );
+			if ( $this->requestManager->getStatus() === 'declined' ) {
+				$this->requestManager->setStatus( 'pending' );
 
 				$comment = $this->context->msg( 'requestssl-request-reopened', $user->getName() )->rawParams(
 					implode( "\n\n", $changes )
 				)->inContentLanguage()->escaped();
 
-				$this->requestSslRequestManager->logStatusUpdate( $comment, 'pending', $user );
+				$this->requestManager->logStatusUpdate( $comment, 'pending', $user );
 
-				$this->requestSslRequestManager->addComment( $comment, User::newSystemUser( 'RequestSSL Extension' ) );
+				$this->requestManager->addComment( $comment, User::newSystemUser( 'RequestSSL Extension' ) );
 
-				$this->requestSslRequestManager->sendNotification(
+				$this->requestManager->sendNotification(
 					$comment, 'requestssl-request-status-update', $user
 				);
 			} else {
@@ -481,10 +459,10 @@ class RequestSSLViewer {
 					implode( "\n\n", $changes )
 				)->inContentLanguage()->escaped();
 
-				$this->requestSslRequestManager->addComment( $comment, User::newSystemUser( 'RequestSSL Extension' ) );
+				$this->requestManager->addComment( $comment, User::newSystemUser( 'RequestSSL Extension' ) );
 			}
 
-			$this->requestSslRequestManager->endAtomic( __METHOD__ );
+			$this->requestManager->endAtomic( __METHOD__ );
 
 			$out->addHTML(
 				Html::successBox(
@@ -501,18 +479,18 @@ class RequestSSLViewer {
 		}
 
 		if ( isset( $formData['submit-handle'] ) ) {
-			$this->requestSslRequestManager->startAtomic( __METHOD__ );
+			$this->requestManager->startAtomic( __METHOD__ );
 			$changes = [];
 
-			if ( $this->requestSslRequestManager->isLocked() !== (bool)$formData['handle-lock'] ) {
-				$changes[] = $this->requestSslRequestManager->isLocked() ?
+			if ( $this->requestManager->isLocked() !== (bool)$formData['handle-lock'] ) {
+				$changes[] = $this->requestManager->isLocked() ?
 					'unlocked' : 'locked';
 
-				$this->requestSslRequestManager->setLocked( (int)$formData['handle-lock'] );
+				$this->requestManager->setLocked( (int)$formData['handle-lock'] );
 			}
 
-			if ( $this->requestSslRequestManager->getStatus() === $formData['handle-status'] ) {
-				$this->requestSslRequestManager->endAtomic( __METHOD__ );
+			if ( $this->requestManager->getStatus() === $formData['handle-status'] ) {
+				$this->requestManager->endAtomic( __METHOD__ );
 
 				if ( !$changes ) {
 					$out->addHTML(
@@ -557,20 +535,20 @@ class RequestSSLViewer {
 				return;
 			}
 
-			$this->requestSslRequestManager->setStatus( $formData['handle-status'] );
+			$this->requestManager->setStatus( $formData['handle-status'] );
 
 			$statusMessage = $this->context->msg( 'requestssl-label-' . $formData['handle-status'] )
 				->inContentLanguage()
 				->text();
 
-			$comment = $this->context->msg( 'requestssl-status-updated', strtolower( $statusMessage ) )
+			$comment = $this->context->msg( 'requestssl-status-updated', mb_strtolower( $statusMessage ) )
 				->inContentLanguage()
 				->escaped();
 
 			if ( $oldStatus !== 'complete' && $formData['handle-status'] === 'complete' ) {
-				$serverNameUpdated = $this->requestSslRequestManager->updateServerName();
+				$serverNameUpdated = $this->requestManager->updateServerName();
 				if ( $serverNameUpdated && ExtensionRegistry::getInstance()->isLoaded( 'ManageWiki' ) ) {
-					$this->requestSslRequestManager->logToManageWiki( $this->context->getUser() );
+					$this->requestManager->logToManageWiki( $this->context->getUser() );
 				}
 			}
 
@@ -584,14 +562,14 @@ class RequestSSLViewer {
 				$comment .= ' ' . $formData['handle-comment'];
 			}
 
-			$this->requestSslRequestManager->addComment( $comment, $commentUser ?? $user );
-			$this->requestSslRequestManager->logStatusUpdate(
+			$this->requestManager->addComment( $comment, $commentUser ?? $user );
+			$this->requestManager->logStatusUpdate(
 				$formData['handle-comment'], $formData['handle-status'], $user
 			);
 
-			$this->requestSslRequestManager->sendNotification( $comment, 'requestssl-request-status-update', $user );
+			$this->requestManager->sendNotification( $comment, 'requestssl-request-status-update', $user );
 
-			$this->requestSslRequestManager->endAtomic( __METHOD__ );
+			$this->requestManager->endAtomic( __METHOD__ );
 
 			$out->addHTML(
 				Html::successBox(

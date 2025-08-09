@@ -1,6 +1,6 @@
 [
 	{
-		"name": "requestssl_requests",
+		"name": "customdomain_requests",
 		"comment": "",
 		"columns": [
 			{
@@ -85,7 +85,7 @@
 		"pk": [ "request_id" ]
 	},
 	{
-		"name": "requestssl_request_comments",
+		"name": "customdomain_request_comments",
 		"comment": "",
 		"columns": [
 			{
