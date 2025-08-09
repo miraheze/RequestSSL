@@ -12,7 +12,7 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
  * @group RequestCustomDomain
  * @group Database
  * @group Medium
- * @coversDefaultClass \Miraheze\RequestCustomDomain\RequestCustomDomainManager
+ * @coversDefaultClass \Miraheze\RequestCustomDomain\RequestManager
  */
 class RequestCustomDomainManagerTest extends MediaWikiIntegrationTestCase {
 
