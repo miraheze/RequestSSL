@@ -26,15 +26,15 @@ class Main implements
 	 * @param array &$reservedUsernames
 	 */
 	public function onUserGetReservedNames( &$reservedUsernames ) {
-		$reservedUsernames[] = 'RequestSSL Extension';
-		$reservedUsernames[] = 'RequestSSL Status Update';
+		$reservedUsernames[] = 'RequestCustomDomain Extension';
+		$reservedUsernames[] = 'RequestCustomDomain Status Update';
 	}
 
 	/**
 	 * @param array &$actions
 	 */
 	public function onGetAllBlockActions( &$actions ) {
-		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestssl' );
+		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestcustomdomain' );
 		if ( !WikiMap::isCurrentWikiDbDomain( $dbr->getDomainID() ) ) {
 			return;
 		}
@@ -48,7 +48,7 @@ class Main implements
 	 * @param array &$icons
 	 */
 	public function onBeforeCreateEchoEvent( &$notifications, &$notificationCategories, &$icons ) {
-		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestssl' );
+		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestcustomdomain' );
 		if ( !WikiMap::isCurrentWikiDbDomain( $dbr->getDomainID() ) ) {
 			return;
 		}

@@ -18,13 +18,13 @@ class RequestSSLManagerTest extends MediaWikiIntegrationTestCase {
 
 	public function addDBDataOnce(): void {
 		$this->setMwGlobals( MainConfigNames::VirtualDomainsMapping, [
-			'virtual-requestssl' => [ 'db' => 'wikidb' ],
+			'virtual-requestcustomdomain' => [ 'db' => 'wikidb' ],
 		] );
 
 		ConvertibleTimestamp::setFakeTime( ConvertibleTimestamp::now() );
 
 		$connectionProvider = $this->getServiceContainer()->getConnectionProvider();
-		$dbw = $connectionProvider->getPrimaryDatabase( 'virtual-requestssl' );
+		$dbw = $connectionProvider->getPrimaryDatabase( 'virtual-requestcustomdomain' );
 
 		$dbw->newInsertQueryBuilder()
 			->insertInto( 'customdomain_requests' )

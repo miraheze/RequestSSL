@@ -12,7 +12,7 @@ class Installer implements LoadExtensionSchemaUpdatesHook {
 		$dir = __DIR__ . '/../../../sql';
 
 		$updater->addExtensionUpdateOnVirtualDomain( [
-			'virtual-requestssl',
+			'virtual-requestcustomdomain',
 			'addTable',
 			'customdomain_requests',
 			"$dir/$dbType/tables-generated.sql",

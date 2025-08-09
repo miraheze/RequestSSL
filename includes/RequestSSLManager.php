@@ -27,7 +27,7 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
 class RequestSSLManager {
 
 	private const IGNORED_USERS = [
-		'RequestSSL Extension',
+		'RequestCustomDomain Extension',
 	];
 
 	private IDatabase $dbw;
@@ -52,7 +52,7 @@ class RequestSSLManager {
 	 * @param int $requestID
 	 */
 	public function fromID( int $requestID ) {
-		$this->dbw = $this->connectionProvider->getPrimaryDatabase( 'virtual-requestssl' );
+		$this->dbw = $this->connectionProvider->getPrimaryDatabase( 'virtual-requestcustomdomain' );
 		$this->ID = $requestID;
 
 		$this->row = $this->dbw->newSelectQueryBuilder()

@@ -30,7 +30,7 @@ class SpecialRequestCustomDomainQueue extends SpecialPage {
 	public function execute( $par ) {
 		$this->setHeaders();
 
-		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestssl' );
+		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestcustomdomain' );
 		if ( !WikiMap::isCurrentWikiDbDomain( $dbr->getDomainID() ) ) {
 			throw new ErrorPageError( 'requestssl-notcentral', 'requestssl-notcentral-text' );
 		}

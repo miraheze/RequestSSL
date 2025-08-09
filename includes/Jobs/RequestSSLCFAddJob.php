@@ -35,11 +35,11 @@ class RequestSSLCFAddJob extends Job {
 	) {
 		parent::__construct( self::JOB_NAME, $params );
 
-		$this->apiKey = $this->config->get( 'RequestSSLCloudflareConfig' )['apikey'] ?? '';
-		$this->zoneId = $this->config->get( 'RequestSSLCloudflareConfig' )['zoneid'] ?? '';
+		$this->apiKey = $this->config->get( 'RequestCustomDomainCloudflareConfig' )['apikey'] ?? '';
+		$this->zoneId = $this->config->get( 'RequestCustomDomainCloudflareConfig' )['zoneid'] ?? '';
 
 		$this->messageLocalizer = RequestContext::getMain();
-		$this->systemUser = User::newSystemUser( 'RequestSSL Extension', [ 'steal' => true ] );
+		$this->systemUser = User::newSystemUser( 'RequestCustomDomain Extension', [ 'steal' => true ] );
 
 		$this->baseApiUrl = 'https://api.cloudflare.com/client/v4';
 		$this->id = $params['id'];
@@ -97,7 +97,7 @@ class RequestSSLCFAddJob extends Job {
 		$apiResponse = $this->queryCloudflare(
 			$sanitizedDomain,
 			$this->requestManager->getTarget(),
-			$this->config->get( 'RequestSSLCloudflareConfig' )['tlsversion'] ?? '1.3'
+			$this->config->get( 'RequestCustomDomainCloudflareConfig' )['tlsversion'] ?? '1.3'
 		);
 
 		// If the API response is empty or invalid, we cannot proceed

@@ -21,7 +21,7 @@ class RequestSSLQueuePager extends TablePager {
 		private readonly string $target
 	) {
 		parent::__construct( $context, $linkRenderer );
-		$this->mDb = $connectionProvider->getReplicaDatabase( 'virtual-requestssl' );
+		$this->mDb = $connectionProvider->getReplicaDatabase( 'virtual-requestcustomdomain' );
 	}
 
 	/** @inheritDoc */
