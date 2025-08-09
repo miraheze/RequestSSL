@@ -1,6 +1,6 @@
 <?php
 
-namespace Miraheze\RequestSSL\Specials;
+namespace Miraheze\RequestCustomDomain\Specials;
 
 use ErrorPageError;
 use ManualLogEntry;
@@ -15,7 +15,7 @@ use MediaWiki\Status\Status;
 use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
 use MediaWiki\WikiMap\WikiMap;
-use Miraheze\RequestSSL\RequestSSLManager;
+use Miraheze\RequestCustomDomain\RequestManager;
 use RepoGroup;
 use UserBlockedError;
 use UserNotLoggedIn;
@@ -28,7 +28,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		private readonly IConnectionProvider $connectionProvider,
 		private readonly MimeAnalyzer $mimeAnalyzer,
 		private readonly RepoGroup $repoGroup,
-		private readonly RequestSSLManager $requestManager,
+		private readonly RequestManager $requestManager,
 		private readonly UserFactory $userFactory
 	) {
 		parent::__construct( 'RequestCustomDomain', 'request-custom-domain' );
@@ -43,7 +43,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 
 		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestcustomdomain' );
 		if ( !WikiMap::isCurrentWikiDbDomain( $dbr->getDomainID() ) ) {
-			throw new ErrorPageError( 'requestssl-notcentral', 'requestssl-notcentral-text' );
+			throw new ErrorPageError( 'requestcustomdomain-notcentral', 'requestcustomdomain-notcentral-text' );
 		}
 
 		if ( !$this->getUser()->isRegistered() ) {
@@ -53,7 +53,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 				]
 			);
 
-			throw new UserNotLoggedIn( 'requestssl-notloggedin', 'exception-nologin', [ $loginURL ] );
+			throw new UserNotLoggedIn( 'requestcustomdomain-notloggedin', 'exception-nologin', [ $loginURL ] );
 		}
 
 		$this->checkPermissions();
@@ -63,7 +63,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			$this->getOutput()->addHelpLink( $this->getConfig()->get( 'RequestCustomDomainHelpUrl' ), true );
 		}
 
-		$form = $this->getForm()->setWrapperLegendMsg( 'requestssl-header' );
+		$form = $this->getForm()->setWrapperLegendMsg( 'requestcustomdomain-header' );
 		if ( $form->show() ) {
 			$this->onSuccess();
 		}
@@ -76,8 +76,8 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		$formDescriptor = [
 			'customdomain' => [
 				'type' => 'url',
-				'label-message' => 'requestssl-label-customdomain',
-				'help-message' => 'requestssl-help-customdomain',
+				'label-message' => 'requestcustomdomain-label-customdomain',
+				'help-message' => 'requestcustomdomain-help-customdomain',
 				'required' => true,
 				'validation-callback' => [ $this, 'isValidCustomDomain' ],
 			],
@@ -90,8 +90,8 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 				'buttonflags' => [],
 				'buttonid' => 'inline-target',
 				'buttondefault' => '.' . $this->getConfig()->get( 'CreateWikiSubdomain' ),
-				'label-message' => 'requestssl-label-target-subdomain',
-				'help-message' => 'requestssl-help-target-subdomain',
+				'label-message' => 'requestcustomdomain-label-target-subdomain',
+				'help-message' => 'requestcustomdomain-help-target-subdomain',
 				'required' => true,
 				'validation-callback' => [ $this, 'isValidDatabase' ],
 				'maxlength' => 64,
@@ -99,8 +99,8 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		} else {
 			$formDescriptor['target'] = [
 				'type' => 'text',
-				'label-message' => 'requestssl-label-target',
-				'help-message' => 'requestssl-help-target',
+				'label-message' => 'requestcustomdomain-label-target',
+				'help-message' => 'requestcustomdomain-help-target',
 				'required' => true,
 				'validation-callback' => [ $this, 'isValidDatabase' ],
 			];
@@ -109,8 +109,8 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		$formDescriptor['reason'] = [
 			'type' => 'textarea',
 			'rows' => 4,
-			'label-message' => 'requestssl-label-reason',
-			'help-message' => 'requestssl-help-reason',
+			'label-message' => 'requestcustomdomain-label-reason',
+			'help-message' => 'requestcustomdomain-help-reason',
 		];
 
 		return $formDescriptor;
@@ -142,7 +142,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			->fetchRow();
 
 		if ( (bool)$duplicate ) {
-			return Status::newFatal( 'requestssl-duplicate-request' );
+			return Status::newFatal( 'requestcustomdomain-duplicate-request' );
 		}
 
 		$dbw->newInsertQueryBuilder()
@@ -166,7 +166,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 
 		$this->getOutput()->addHTML(
 			Html::successBox(
-				$this->msg( 'requestssl-success' )->rawParams( $requestLink )->escaped()
+				$this->msg( 'requestcustomdomain-success' )->rawParams( $requestLink )->escaped()
 			)
 		);
 
@@ -237,7 +237,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			}
 
 			Event::create( [
-				'type' => 'requestssl-new-request',
+				'type' => 'requestcustomdomain-new-request',
 				'extra' => [
 					'request-id' => $requestID,
 					'request-url' => $requestLink,
@@ -258,12 +258,12 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 	 */
 	public function isValidCustomDomain( ?string $customDomain ) {
 		if ( !$customDomain ) {
-			return $this->msg( 'requestssl-customdomain-not-a-url' );
+			return $this->msg( 'requestcustomdomain-customdomain-not-a-url' );
 		}
 
 		$parsedURL = parse_url( $customDomain );
 		if ( !$parsedURL ) {
-			return $this->msg( 'requestssl-customdomain-not-a-url' );
+			return $this->msg( 'requestcustomdomain-customdomain-not-a-url' );
 		}
 
 		$unneededComponents = [
@@ -276,19 +276,19 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		];
 
 		if ( !array_key_exists( 'scheme', $parsedURL ) ) {
-			return $this->msg( 'requestssl-customdomain-protocol-not-https' );
+			return $this->msg( 'requestcustomdomain-customdomain-protocol-not-https' );
 		} else {
 			if ( $parsedURL['scheme'] !== 'https' ) {
-				return $this->msg( 'requestssl-customdomain-protocol-not-https' );
+				return $this->msg( 'requestcustomdomain-customdomain-protocol-not-https' );
 			}
 		}
 		if ( !array_key_exists( 'host', $parsedURL ) ) {
-			return $this->msg( 'requestssl-customdomain-no-hostname' );
+			return $this->msg( 'requestcustomdomain-customdomain-no-hostname' );
 		}
 
 		foreach ( $unneededComponents as $component ) {
 			if ( array_key_exists( $component, $parsedURL ) ) {
-				return $this->msg( 'requestssl-customdomain-unneeded-component' );
+				return $this->msg( 'requestcustomdomain-customdomain-unneeded-component' );
 			}
 		}
 
@@ -296,7 +296,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		if ( $disallowedDomains ) {
 			foreach ( $disallowedDomains as $disallowed ) {
 				if ( str_ends_with( $customDomain, $disallowed ) ) {
-					return $this->msg( 'requestssl-customdomain-disallowed' );
+					return $this->msg( 'requestcustomdomain-customdomain-disallowed' );
 				}
 			}
 		}
@@ -310,7 +310,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 	public function isValidDatabase( ?string $target ) {
 		$targetDatabase = $target . $this->getConfig()->get( 'CreateWikiDatabaseSuffix' );
 		if ( !in_array( $targetDatabase, $this->getConfig()->get( MainConfigNames::LocalDatabases ), true ) ) {
-			return $this->msg( 'requestssl-invalid-target' );
+			return $this->msg( 'requestcustomdomain-invalid-target' );
 		}
 
 		return true;

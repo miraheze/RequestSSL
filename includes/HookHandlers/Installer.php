@@ -1,6 +1,6 @@
 <?php
 
-namespace Miraheze\RequestSSL\Hooks\Handlers;
+namespace Miraheze\RequestCustomDomain\HookHandlers;
 
 use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 

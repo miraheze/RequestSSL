@@ -1,6 +1,6 @@
 <?php
 
-namespace Miraheze\RequestSSL\Notifications;
+namespace Miraheze\RequestCustomDomain\Notifications;
 
 use MediaWiki\Extension\Notifications\DiscussionParser;
 use MediaWiki\Extension\Notifications\Formatters\EchoEventPresentationModel;
@@ -20,7 +20,7 @@ class EchoNewRequestPresentationModel extends EchoEventPresentationModel {
 	 */
 	public function getHeaderMessage() {
 		return $this->msg(
-			'requestssl-notification-header-new-request',
+			'requestcustomdomain-notification-header-new-request',
 			$this->event->getExtraParam( 'request-id' )
 		);
 	}
@@ -34,7 +34,7 @@ class EchoNewRequestPresentationModel extends EchoEventPresentationModel {
 			$this->language
 		);
 
-		return $this->msg( 'requestssl-notification-body-new-request',
+		return $this->msg( 'requestcustomdomain-notification-body-new-request',
 			$reason,
 			$this->event->getExtraParam( 'requester' ),
 			$this->event->getExtraParam( 'target' ),
@@ -55,7 +55,7 @@ class EchoNewRequestPresentationModel extends EchoEventPresentationModel {
 	public function getSecondaryLinks() {
 		$visitLink = [
 			'url' => $this->event->getExtraParam( 'request-url', 0 ),
-			'label' => $this->msg( 'requestssl-notification-visit-request' )->text(),
+			'label' => $this->msg( 'requestcustomdomain-notification-visit-request' )->text(),
 			'prioritized' => true,
 		];
 

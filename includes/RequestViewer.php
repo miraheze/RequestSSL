@@ -1,6 +1,6 @@
 <?php
 
-namespace Miraheze\RequestSSL;
+namespace Miraheze\RequestCustomDomain;
 
 use MediaWiki\Config\Config;
 use MediaWiki\Context\IContextSource;
@@ -17,13 +17,13 @@ use OOUI\HtmlSnippet;
 use OOUI\MessageWidget;
 use UserNotLoggedIn;
 
-class RequestSSLViewer {
+class RequestViewer {
 
 	public function __construct(
 		private readonly Config $config,
 		private readonly IContextSource $context,
 		private readonly PermissionManager $permissionManager,
-		private readonly RequestSSLManager $requestManager
+		private readonly RequestManager $requestManager
 	) {
 	}
 
@@ -37,7 +37,7 @@ class RequestSSLViewer {
 					Html::element(
 						'p',
 						[],
-						$this->context->msg( 'requestssl-request-locked' )->text()
+						$this->context->msg( 'requestcustomdomain-request-locked' )->text()
 					),
 					'mw-notify-error'
 				)
@@ -48,21 +48,21 @@ class RequestSSLViewer {
 
 		$formDescriptor = [
 			'customdomain' => [
-				'label-message' => 'requestssl-label-customdomain',
+				'label-message' => 'requestcustomdomain-label-customdomain',
 				'type' => 'url',
 				'readonly' => true,
 				'section' => 'details',
 				'default' => $this->requestManager->getCustomDomain(),
 			],
 			'target' => [
-				'label-message' => 'requestssl-label-target',
+				'label-message' => 'requestcustomdomain-label-target',
 				'type' => 'text',
 				'readonly' => true,
 				'section' => 'details',
 				'default' => $this->requestManager->getTarget(),
 			],
 			'requester' => [
-				'label-message' => 'requestssl-label-requester',
+				'label-message' => 'requestcustomdomain-label-requester',
 				'type' => 'info',
 				'section' => 'details',
 				'default' => htmlspecialchars( $this->requestManager->getRequester()->getName() ) .
@@ -73,7 +73,7 @@ class RequestSSLViewer {
 				'raw' => true,
 			],
 			'requestedDate' => [
-				'label-message' => 'requestssl-label-requested-date',
+				'label-message' => 'requestcustomdomain-label-requested-date',
 				'type' => 'info',
 				'section' => 'details',
 				'default' => $this->context->getLanguage()->timeanddate(
@@ -81,22 +81,22 @@ class RequestSSLViewer {
 				),
 			],
 			'status' => [
-				'label-message' => 'requestssl-label-status',
+				'label-message' => 'requestcustomdomain-label-status',
 				'type' => 'text',
 				'readonly' => true,
 				'section' => 'details',
 				'default' => $this->context->msg(
-					'requestssl-label-' . $this->requestManager->getStatus()
+					'requestcustomdomain-label-' . $this->requestManager->getStatus()
 				)->text(),
 			],
 			'reason' => [
 				'type' => 'textarea',
 				'rows' => 4,
 				'readonly' => true,
-				'label-message' => 'requestssl-label-reason',
+				'label-message' => 'requestcustomdomain-label-reason',
 				'default' => $this->requestManager->getReason(),
 				'raw' => true,
-				'cssclass' => 'requestssl-infuse',
+				'cssclass' => 'ext-requestcustomdomain-infuse',
 				'section' => 'details',
 			],
 		];
@@ -108,7 +108,7 @@ class RequestSSLViewer {
 				'section' => 'comments',
 				'rows' => 4,
 				'label-message' => [
-					'requestssl-header-comment-withtimestamp',
+					'requestcustomdomain-header-comment-withtimestamp',
 					$comment['user']->getName(),
 					$this->context->getLanguage()->timeanddate( $comment['timestamp'], true ),
 				],
@@ -126,19 +126,19 @@ class RequestSSLViewer {
 				'comment' => [
 					'type' => 'textarea',
 					'rows' => 4,
-					'label-message' => 'requestssl-label-comment',
+					'label-message' => 'requestcustomdomain-label-comment',
 					'section' => 'comments',
 					'validation-callback' => [ $this, 'isValidComment' ],
 					'disabled' => $this->requestManager->isLocked(),
 				],
 				'submit-comment' => [
 					'type' => 'submit',
-					'default' => $this->context->msg( 'requestssl-label-add-comment' )->text(),
+					'default' => $this->context->msg( 'requestcustomdomain-label-add-comment' )->text(),
 					'section' => 'comments',
 					'disabled' => $this->requestManager->isLocked(),
 				],
 				'edit-source' => [
-					'label-message' => 'requestssl-label-customdomain',
+					'label-message' => 'requestcustomdomain-label-customdomain',
 					'type' => 'url',
 					'section' => 'editing',
 					'required' => true,
@@ -146,7 +146,7 @@ class RequestSSLViewer {
 					'disabled' => $this->requestManager->isLocked(),
 				],
 				'edit-target' => [
-					'label-message' => 'requestssl-label-target',
+					'label-message' => 'requestcustomdomain-label-target',
 					'type' => 'text',
 					'section' => 'editing',
 					'required' => true,
@@ -157,7 +157,7 @@ class RequestSSLViewer {
 				'edit-reason' => [
 					'type' => 'textarea',
 					'rows' => 4,
-					'label-message' => 'requestssl-label-reason',
+					'label-message' => 'requestcustomdomain-label-reason',
 					'section' => 'editing',
 					'default' => $this->requestManager->getReason(),
 					'disabled' => $this->requestManager->isLocked(),
@@ -165,7 +165,7 @@ class RequestSSLViewer {
 				],
 				'submit-edit' => [
 					'type' => 'submit',
-					'default' => $this->context->msg( 'requestssl-label-edit-request' )->text(),
+					'default' => $this->context->msg( 'requestcustomdomain-label-edit-request' )->text(),
 					'section' => 'editing',
 					'disabled' => $this->requestManager->isLocked(),
 				],
@@ -178,7 +178,7 @@ class RequestSSLViewer {
 
 			$info = new MessageWidget( [
 				'label' => new HtmlSnippet(
-						$this->context->msg( 'requestssl-info-groups',
+						$this->context->msg( 'requestcustomdomain-info-groups',
 							$this->requestManager->getRequester()->getName(),
 							$this->requestManager->getTarget(),
 							$this->context->getLanguage()->commaList(
@@ -192,7 +192,7 @@ class RequestSSLViewer {
 			if ( $this->requestManager->getRequester()->getBlock() ) {
 				$info .= new MessageWidget( [
 					'label' => new HtmlSnippet(
-							$this->context->msg( 'requestssl-info-requester-blocked',
+							$this->context->msg( 'requestcustomdomain-info-requester-blocked',
 								$this->requestManager->getRequester()->getName(),
 								WikiMap::getCurrentWikiId()
 							)->escaped()
@@ -204,7 +204,7 @@ class RequestSSLViewer {
 			if ( $this->requestManager->getRequester()->isLocked() ) {
 				$info .= new MessageWidget( [
 					'label' => new HtmlSnippet(
-								$this->context->msg( 'requestssl-info-requester-locked',
+								$this->context->msg( 'requestcustomdomain-info-requester-locked',
 								$this->requestManager->getRequester()->getName()
 							)->escaped()
 						),
@@ -226,7 +226,7 @@ class RequestSSLViewer {
 				],
 				'handle-lock' => [
 					'type' => 'check',
-					'label-message' => 'requestssl-label-lock',
+					'label-message' => 'requestcustomdomain-label-lock',
 					'default' => $this->requestManager->isLocked(),
 					'section' => 'handling',
 				],
@@ -235,22 +235,22 @@ class RequestSSLViewer {
 			$formDescriptor += [
 				'handle-status' => [
 					'type' => 'select',
-					'label-message' => 'requestssl-label-update-status',
+					'label-message' => 'requestcustomdomain-label-update-status',
 					'options-messages' => [
-						'requestssl-label-pending' => 'pending',
-						'requestssl-label-inprogress' => 'inprogress',
-						'requestssl-label-complete' => 'complete',
-						'requestssl-label-declined' => 'declined',
+						'requestcustomdomain-label-pending' => 'pending',
+						'requestcustomdomain-label-inprogress' => 'inprogress',
+						'requestcustomdomain-label-complete' => 'complete',
+						'requestcustomdomain-label-declined' => 'declined',
 					],
 					'default' => $status,
 					'disabled' => !$validRequest,
-					'cssclass' => 'requestssl-infuse',
+					'cssclass' => 'ext-requestcustomdomain-infuse',
 					'section' => 'handling',
 				],
 				'handle-comment' => [
 					'type' => 'textarea',
 					'rows' => 4,
-					'label-message' => 'requestssl-label-status-updated-comment',
+					'label-message' => 'requestcustomdomain-label-status-updated-comment',
 					'section' => 'handling',
 				],
 				'submit-handle' => [
@@ -268,7 +268,7 @@ class RequestSSLViewer {
 				$formDescriptor['handle-cf'] = [
 					'type' => 'submit',
 					'flags' => [ 'progressive', 'primary' ],
-					'buttonlabel-message' => 'requestssl-label-cloudflare-handle',
+					'buttonlabel-message' => 'requestcustomdomain-label-cloudflare-handle',
 					'section' => 'handling',
 				];
 			}
@@ -296,7 +296,7 @@ class RequestSSLViewer {
 	 */
 	public function isValidDatabase( ?string $target ) {
 		if ( !in_array( $target, $this->config->get( MainConfigNames::LocalDatabases ), true ) ) {
-			return $this->context->msg( 'requestssl-invalid-target' );
+			return $this->context->msg( 'requestcustomdomain-invalid-target' );
 		}
 
 		return true;
@@ -310,28 +310,28 @@ class RequestSSLViewer {
 
 	/**
 	 * @param int $requestID
-	 * @return ?RequestSSLOOUIForm
+	 * @return ?OOUIHTMLFormTabs
 	 */
-	public function getForm( int $requestID ): ?RequestSSLOOUIForm {
+	public function getForm( int $requestID ): ?OOUIHTMLFormTabs {
 		$this->requestManager->fromID( $requestID );
 		$out = $this->context->getOutput();
 
 		if ( $requestID === 0 || !$this->requestManager->exists() ) {
 			$out->addHTML(
-				Html::errorBox( $this->context->msg( 'requestssl-unknown' )->escaped() )
+				Html::errorBox( $this->context->msg( 'requestcustomdomain-unknown' )->escaped() )
 			);
 
 			return null;
 		}
 
-		$out->addModules( [ 'ext.requestssl.oouiform' ] );
-		$out->addModuleStyles( [ 'ext.requestssl.oouiform.styles' ] );
+		$out->addModules( [ 'ext.requestcustomdomain.oouiform' ] );
+		$out->addModuleStyles( [ 'ext.requestcustomdomain.oouiform.styles' ] );
 		$out->addModuleStyles( [ 'oojs-ui-widgets.styles' ] );
 
 		$formDescriptor = $this->getFormDescriptor();
-		$htmlForm = new RequestSSLOOUIForm( $formDescriptor, $this->context, 'requestssl-section' );
+		$htmlForm = new OOUIHTMLFormTabs( $formDescriptor, $this->context, 'requestcustomdomain-section' );
 
-		$htmlForm->setId( 'requestssl-request-viewer' );
+		$htmlForm->setId( 'requestcustomdomain-request-viewer' );
 		$htmlForm->suppressDefaultSubmit();
 		$htmlForm->setSubmitCallback(
 			function ( array $formData, HTMLForm $form ) {
@@ -365,7 +365,7 @@ class RequestSSLViewer {
 					Html::element(
 						'p',
 						[],
-						$this->context->msg( 'requestssl-cloudflare-label-success' )->text()
+						$this->context->msg( 'requestcustomdomain-cloudflare-label-success' )->text()
 					),
 					'mw-notify-success'
 				)
@@ -381,7 +381,7 @@ class RequestSSLViewer {
 					Html::element(
 						'p',
 						[],
-						$this->context->msg( 'requestssl-comment-success' )->text()
+						$this->context->msg( 'requestcustomdomain-comment-success' )->text()
 					),
 					'mw-notify-success'
 				)
@@ -397,7 +397,7 @@ class RequestSSLViewer {
 
 			$changes = [];
 			if ( $this->requestManager->getReason() !== ( $formData['edit-reason'] ?? '' ) ) {
-				$changes[] = $this->context->msg( 'requestssl-request-edited-reason' )->plaintextParams(
+				$changes[] = $this->context->msg( 'requestcustomdomain-request-edited-reason' )->plaintextParams(
 					$this->requestManager->getReason(),
 					$formData['edit-reason']
 				)->escaped();
@@ -406,7 +406,7 @@ class RequestSSLViewer {
 			}
 
 			if ( $this->requestManager->getCustomDomain() !== $formData['edit-source'] ) {
-				$changes[] = $this->context->msg( 'requestssl-request-edited-source' )->plaintextParams(
+				$changes[] = $this->context->msg( 'requestcustomdomain-request-edited-source' )->plaintextParams(
 					$this->requestManager->getCustomDomain(),
 					$formData['edit-source']
 				)->escaped();
@@ -416,7 +416,7 @@ class RequestSSLViewer {
 
 			if ( $this->requestManager->getTarget() !== $formData['edit-target'] ) {
 				$changes[] = $this->context->msg(
-					'requestssl-request-edited-target',
+					'requestcustomdomain-request-edited-target',
 					$this->requestManager->getTarget(),
 					$formData['edit-target']
 				)->escaped();
@@ -432,7 +432,7 @@ class RequestSSLViewer {
 						Html::element(
 							'p',
 							[],
-							$this->context->msg( 'requestssl-no-changes' )->text()
+							$this->context->msg( 'requestcustomdomain-no-changes' )->text()
 						),
 						'mw-notify-error'
 					)
@@ -443,7 +443,7 @@ class RequestSSLViewer {
 			if ( $this->requestManager->getStatus() === 'declined' ) {
 				$this->requestManager->setStatus( 'pending' );
 
-				$comment = $this->context->msg( 'requestssl-request-reopened', $user->getName() )->rawParams(
+				$comment = $this->context->msg( 'requestcustomdomain-request-reopened', $user->getName() )->rawParams(
 					implode( "\n\n", $changes )
 				)->inContentLanguage()->escaped();
 
@@ -452,10 +452,10 @@ class RequestSSLViewer {
 				$this->requestManager->addComment( $comment, User::newSystemUser( 'RequestCustomDomain Extension' ) );
 
 				$this->requestManager->sendNotification(
-					$comment, 'requestssl-request-status-update', $user
+					$comment, 'requestcustomdomain-request-status-update', $user
 				);
 			} else {
-				$comment = $this->context->msg( 'requestssl-request-edited', $user->getName() )->rawParams(
+				$comment = $this->context->msg( 'requestcustomdomain-request-edited', $user->getName() )->rawParams(
 					implode( "\n\n", $changes )
 				)->inContentLanguage()->escaped();
 
@@ -469,7 +469,7 @@ class RequestSSLViewer {
 					Html::element(
 						'p',
 						[],
-						$this->context->msg( 'requestssl-edit-success' )->text()
+						$this->context->msg( 'requestcustomdomain-edit-success' )->text()
 					),
 					'mw-notify-success'
 				)
@@ -498,7 +498,7 @@ class RequestSSLViewer {
 							Html::element(
 								'p',
 								[],
-								$this->context->msg( 'requestssl-no-changes' )->text()
+								$this->context->msg( 'requestcustomdomain-no-changes' )->text()
 							),
 							'mw-notify-error'
 						)
@@ -512,7 +512,7 @@ class RequestSSLViewer {
 							Html::element(
 								'p',
 								[],
-								$this->context->msg( 'requestssl-success-locked' )->text()
+								$this->context->msg( 'requestcustomdomain-success-locked' )->text()
 							),
 							'mw-notify-success'
 						)
@@ -525,7 +525,7 @@ class RequestSSLViewer {
 							Html::element(
 								'p',
 								[],
-								$this->context->msg( 'requestssl-success-unlocked' )->text()
+								$this->context->msg( 'requestcustomdomain-success-unlocked' )->text()
 							),
 							'mw-notify-success'
 						)
@@ -537,11 +537,11 @@ class RequestSSLViewer {
 
 			$this->requestManager->setStatus( $formData['handle-status'] );
 
-			$statusMessage = $this->context->msg( 'requestssl-label-' . $formData['handle-status'] )
+			$statusMessage = $this->context->msg( 'requestcustomdomain-label-' . $formData['handle-status'] )
 				->inContentLanguage()
 				->text();
 
-			$comment = $this->context->msg( 'requestssl-status-updated', mb_strtolower( $statusMessage ) )
+			$comment = $this->context->msg( 'requestcustomdomain-status-updated', mb_strtolower( $statusMessage ) )
 				->inContentLanguage()
 				->escaped();
 
@@ -555,7 +555,7 @@ class RequestSSLViewer {
 			if ( $formData['handle-comment'] ) {
 				$commentUser = User::newSystemUser( 'RequestCustomDomain Status Update' );
 
-				$comment .= "\n" . $this->context->msg( 'requestssl-comment-given', $user->getName() )
+				$comment .= "\n" . $this->context->msg( 'requestcustomdomain-comment-given', $user->getName() )
 					->inContentLanguage()
 					->escaped();
 
@@ -567,7 +567,7 @@ class RequestSSLViewer {
 				$formData['handle-comment'], $formData['handle-status'], $user
 			);
 
-			$this->requestManager->sendNotification( $comment, 'requestssl-request-status-update', $user );
+			$this->requestManager->sendNotification( $comment, 'requestcustomdomain-request-status-update', $user );
 
 			$this->requestManager->endAtomic( __METHOD__ );
 
@@ -576,7 +576,7 @@ class RequestSSLViewer {
 					Html::element(
 						'p',
 						[],
-						$this->context->msg( 'requestssl-status-updated-success' )->text()
+						$this->context->msg( 'requestcustomdomain-status-updated-success' )->text()
 					),
 					'mw-notify-success'
 				)

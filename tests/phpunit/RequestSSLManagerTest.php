@@ -1,20 +1,20 @@
 <?php
 
-namespace Miraheze\RequestSSL\Tests;
+namespace Miraheze\RequestCustomDomain\Tests;
 
 use MediaWiki\MainConfigNames;
 use MediaWikiIntegrationTestCase;
-use Miraheze\RequestSSL\RequestSSLManager;
+use Miraheze\RequestCustomDomain\RequestManager;
 use Wikimedia\TestingAccessWrapper;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
- * @group RequestSSL
+ * @group RequestCustomDomain
  * @group Database
  * @group Medium
- * @coversDefaultClass \Miraheze\RequestSSL\RequestSSLManager
+ * @coversDefaultClass \Miraheze\RequestCustomDomain\RequestCustomDomainManager
  */
-class RequestSSLManagerTest extends MediaWikiIntegrationTestCase {
+class RequestCustomDomainManagerTest extends MediaWikiIntegrationTestCase {
 
 	public function addDBDataOnce(): void {
 		$this->setMwGlobals( MainConfigNames::VirtualDomainsMapping, [
@@ -41,9 +41,9 @@ class RequestSSLManagerTest extends MediaWikiIntegrationTestCase {
 			->execute();
 	}
 
-	private function getRequestManager(): RequestSSLManager {
+	private function getRequestManager(): RequestManager {
 		$services = $this->getServiceContainer();
-		$manager = $services->getService( 'RequestSSLManager' );
+		$manager = $services->getService( 'RequestCustomDomainManager' );
 
 		$manager->fromID( 1 );
 		return $manager;

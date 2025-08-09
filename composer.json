@@ -1,8 +1,8 @@
 {
-	"name": "miraheze/request-ssl",
+	"name": "miraheze/request-custom-domain",
 	"type": "mediawiki-extension",
-	"description": "A MediaWiki extension designed to automate requesting and generating SSL certificates",
-	"homepage": "https://www.mediawiki.org/wiki/Extension:RequestSSL",
+	"description": "A MediaWiki extension designed to automate requesting of custom domains",
+	"homepage": "https://www.mediawiki.org/wiki/Extension:RequestCustomDomain",
 	"license": "GPL-3.0-or-later",
 	"authors": [
 		{
@@ -10,8 +10,8 @@
 		}
 	],
 	"support": {
-		"issues": "https://issue-tracker.miraheze.org/tag/requestssl/",
-		"wiki": "https://www.mediawiki.org/wiki/Extension:RequestSSL"
+		"issues": "https://issue-tracker.miraheze.org/tag/requestcustomdomain/",
+		"wiki": "https://www.mediawiki.org/wiki/Extension:RequestCustomDomain"
 	},
 	"require": {
 		"composer/installers": ">=1.0.1"

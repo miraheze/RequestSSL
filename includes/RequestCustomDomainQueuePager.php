@@ -1,6 +1,6 @@
 <?php
 
-namespace Miraheze\RequestSSL;
+namespace Miraheze\RequestCustomDomain;
 
 use MediaWiki\Context\IContextSource;
 use MediaWiki\Linker\LinkRenderer;
@@ -9,7 +9,7 @@ use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\UserFactory;
 use Wikimedia\Rdbms\IConnectionProvider;
 
-class RequestSSLQueuePager extends TablePager {
+class RequestCustomDomainQueuePager extends TablePager {
 
 	public function __construct(
 		IContextSource $context,
@@ -27,10 +27,10 @@ class RequestSSLQueuePager extends TablePager {
 	/** @inheritDoc */
 	protected function getFieldNames(): array {
 		return [
-			'request_timestamp' => $this->msg( 'requestssl-table-requested-date' )->text(),
-			'request_actor' => $this->msg( 'requestssl-table-requester' )->text(),
-			'request_status' => $this->msg( 'requestssl-table-status' )->text(),
-			'request_target' => $this->msg( 'requestssl-table-target' )->text(),
+			'request_timestamp' => $this->msg( 'requestcustomdomain-table-requested-date' )->text(),
+			'request_actor' => $this->msg( 'requestcustomdomain-table-requester' )->text(),
+			'request_status' => $this->msg( 'requestcustomdomain-table-status' )->text(),
+			'request_target' => $this->msg( 'requestcustomdomain-table-target' )->text(),
 		];
 	}
 
@@ -53,7 +53,7 @@ class RequestSSLQueuePager extends TablePager {
 				$row = $this->getCurrentRow();
 				$formatted = $this->getLinkRenderer()->makeLink(
 					SpecialPage::getTitleValueFor( 'RequestCustomDomainQueue', $row->request_id ),
-					$this->msg( "requestssl-label-$value" )->text()
+					$this->msg( "requestcustomdomain-label-$value" )->text()
 				);
 				break;
 			case 'request_actor':

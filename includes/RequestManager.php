@@ -1,6 +1,6 @@
 <?php
 
-namespace Miraheze\RequestSSL;
+namespace Miraheze\RequestCustomDomain;
 
 use JobSpecification;
 use ManualLogEntry;
@@ -16,7 +16,7 @@ use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserGroupManagerFactory;
 use MessageLocalizer;
 use Miraheze\CreateWiki\Services\RemoteWikiFactory;
-use Miraheze\RequestSSL\Jobs\RequestSSLCFAddJob;
+use Miraheze\RequestCustomDomain\Jobs\RequestCustomDomainCFAddJob;
 use RepoGroup;
 use stdClass;
 use Wikimedia\Rdbms\IConnectionProvider;
@@ -24,7 +24,7 @@ use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 use Wikimedia\Rdbms\SelectQueryBuilder;
 
-class RequestSSLManager {
+class RequestManager {
 
 	private const IGNORED_USERS = [
 		'RequestCustomDomain Extension',
@@ -90,7 +90,7 @@ class RequestSSLManager {
 			ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) &&
 			!in_array( $user->getName(), self::IGNORED_USERS )
 		) {
-			$this->sendNotification( $comment, 'requestssl-request-comment', $user );
+			$this->sendNotification( $comment, 'requestcustomdomain-request-comment', $user );
 		}
 	}
 
@@ -115,7 +115,7 @@ class RequestSSLManager {
 			[
 				'4::requestLink' => Message::rawParam( $requestLink ),
 				'5::requestStatus' => mb_strtolower( $this->messageLocalizer->msg(
-					"requestssl-label-$newStatus"
+					"requestcustomdomain-label-$newStatus"
 				)->inContentLanguage()->text() ),
 			]
 		);
@@ -197,7 +197,7 @@ class RequestSSLManager {
 			->getUserIdentityByName( $userName );
 
 		if ( !$remoteUser ) {
-			return [ $this->messageLocalizer->msg( 'requestssl-usergroups-none' )->text() ];
+			return [ $this->messageLocalizer->msg( 'requestcustomdomain-usergroups-none' )->text() ];
 		}
 
 		return $this->userGroupManagerFactory
@@ -377,7 +377,7 @@ class RequestSSLManager {
 		$jobQueueGroup = $this->jobQueueGroupFactory->makeJobQueueGroup();
 		$jobQueueGroup->push(
 			new JobSpecification(
-				RequestSSLCFAddJob::JOB_NAME,
+				RequestCustomDomainCFAddJob::JOB_NAME,
 				[ 'id' => $this->ID ]
 			)
 		);

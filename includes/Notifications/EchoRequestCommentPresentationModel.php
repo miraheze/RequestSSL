@@ -1,6 +1,6 @@
 <?php
 
-namespace Miraheze\RequestSSL\Notifications;
+namespace Miraheze\RequestCustomDomain\Notifications;
 
 use MediaWiki\Extension\Notifications\DiscussionParser;
 use MediaWiki\Extension\Notifications\Formatters\EchoEventPresentationModel;
@@ -21,7 +21,7 @@ class EchoRequestCommentPresentationModel extends EchoEventPresentationModel {
 	 */
 	public function getHeaderMessage() {
 		return $this->msg(
-			'requestssl-notification-header-comment',
+			'requestcustomdomain-notification-header-comment',
 			$this->event->getExtraParam( 'request-id' )
 		);
 	}
@@ -49,7 +49,7 @@ class EchoRequestCommentPresentationModel extends EchoEventPresentationModel {
 	public function getSecondaryLinks() {
 		$visitLink = [
 			'url' => $this->event->getExtraParam( 'request-url', 0 ),
-			'label' => $this->msg( 'requestssl-notification-visit-request' )->text(),
+			'label' => $this->msg( 'requestcustomdomain-notification-visit-request' )->text(),
 			'prioritized' => true,
 		];
 
