@@ -11,7 +11,6 @@ CREATE TABLE requestssl_requests (
   request_reason TEXT NOT NULL,
   request_status TEXT NOT NULL,
   request_locked SMALLINT DEFAULT 0 NOT NULL,
-  request_private SMALLINT DEFAULT 0 NOT NULL,
   PRIMARY KEY(request_id)
 );
 
