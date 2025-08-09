@@ -27,11 +27,11 @@ class RequestSSLManagerTest extends MediaWikiIntegrationTestCase {
 		$dbw = $connectionProvider->getPrimaryDatabase( 'virtual-requestssl' );
 
 		$dbw->newInsertQueryBuilder()
-			->insertInto( 'requestssl_requests' )
+			->insertInto( 'customdomain_requests' )
 			->ignore()
 			->row( [
-				'request_customdomain' => 'https://requestssltest.com',
-				'request_target' => 'requestssltest',
+				'request_customdomain' => 'https://requestcustomdomaintest.com',
+				'request_target' => 'requestcustomdomaintest',
 				'request_reason' => 'test',
 				'request_status' => 'pending',
 				'request_actor' => $this->getTestUser()->getUser()->getActorId(),
@@ -41,12 +41,11 @@ class RequestSSLManagerTest extends MediaWikiIntegrationTestCase {
 			->execute();
 	}
 
-	private function getRequestSSLManager(): RequestSSLManager {
+	private function getRequestManager(): RequestSSLManager {
 		$services = $this->getServiceContainer();
 		$manager = $services->getService( 'RequestSSLManager' );
 
 		$manager->fromID( 1 );
-
 		return $manager;
 	}
 
@@ -54,9 +53,9 @@ class RequestSSLManagerTest extends MediaWikiIntegrationTestCase {
 	 * @covers ::__construct
 	 * @covers ::fromID
 	 */
-	public function testFromID() {
+	public function testFromID(): void {
 		$manager = TestingAccessWrapper::newFromObject(
-			$this->getRequestSSLManager()
+			$this->getRequestManager()
 		);
 
 		$this->assertSame( 1, $manager->ID );
@@ -65,9 +64,8 @@ class RequestSSLManagerTest extends MediaWikiIntegrationTestCase {
 	/**
 	 * @covers ::exists
 	 */
-	public function testExists() {
-		$manager = $this->getRequestSSLManager();
-
+	public function testExists(): void {
+		$manager = $this->getRequestManager();
 		$this->assertTrue( $manager->exists() );
 	}
 }

@@ -2,14 +2,11 @@
 
 namespace Miraheze\RequestSSL\Hooks\Handlers;
 
-use MediaWiki\Installer\DatabaseUpdater;
 use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 
 class Installer implements LoadExtensionSchemaUpdatesHook {
 
-	/**
-	 * @param DatabaseUpdater $updater
-	 */
+	/** @inheritDoc */
 	public function onLoadExtensionSchemaUpdates( $updater ) {
 		$dbType = $updater->getDB()->getType();
 		$dir = __DIR__ . '/../../../sql';
@@ -17,7 +14,7 @@ class Installer implements LoadExtensionSchemaUpdatesHook {
 		$updater->addExtensionUpdateOnVirtualDomain( [
 			'virtual-requestssl',
 			'addTable',
-			'requestssl_requests',
+			'customdomain_requests',
 			"$dir/$dbType/tables-generated.sql",
 			true,
 		] );
