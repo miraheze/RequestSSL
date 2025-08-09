@@ -202,7 +202,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			)
 		);
 
-		$logEntry = new ManualLogEntry( 'requestssl', 'request' );
+		$logEntry = new ManualLogEntry( 'requestcustomdomain', 'request' );
 
 		$logEntry->setPerformer( $this->getUser() );
 		$logEntry->setTarget( $requestQueueLink );

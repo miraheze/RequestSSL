@@ -51,19 +51,19 @@
 		}
 	},
 	"LogActionsHandlers": {
-		"requestssl/*": "LogFormatter"
+		"requestcustomdomain/*": "LogFormatter"
 	},
 	"LogHeaders": {
-		"requestssl": "requestssl-log-header"
+		"requestcustomdomain": "requestcustomdomain-log-header"
 	},
 	"LogNames": {
-		"requestssl": "requestssl-log-name"
+		"requestcustomdomain": "requestcustomdomain-log-name"
 	},
 	"LogTypes": [
-		"requestssl"
+		"requestcustomdomain"
 	],
 	"ActionFilteredLogs": {
-		"requestssl": {
+		"requestcustomdomain": {
 			"request": [
 				"request"
 			],

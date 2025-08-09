@@ -153,7 +153,7 @@ class RequestSSLManager {
 		$requestQueueLink = SpecialPage::getTitleValueFor( 'RequestCustomDomainQueue', (string)$this->ID );
 		$requestLink = $this->linkRenderer->makeLink( $requestQueueLink, "#{$this->ID}" );
 
-		$logEntry = new ManualLogEntry( 'requestssl', 'statusupdate' );
+		$logEntry = new ManualLogEntry( 'requestcustomdomain', 'statusupdate' );
 		$logEntry->setPerformer( $user );
 		$logEntry->setTarget( $requestQueueLink );
 
