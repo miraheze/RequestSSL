@@ -17,7 +17,6 @@ return [
 	},
 	'RequestSSLManager' => static function ( MediaWikiServices $services ): RequestSSLManager {
 		return new RequestSSLManager(
-			$services->get( 'RequestSSLConfig' ),
 			$services->getActorStoreFactory(),
 			$services->getConnectionProvider(),
 			$services->getJobQueueGroupFactory(),
