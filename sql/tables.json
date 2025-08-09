@@ -54,12 +54,6 @@
 				"comment": "",
 				"type": "mwtinyint",
 				"options": { "notnull": true, "unsigned": true, "default": 0 }
-			},
-			{
-				"name": "request_private",
-				"comment": "",
-				"type": "mwtinyint",
-				"options": { "notnull": true, "unsigned": true, "default": 0 }
 			}
 		],
 		"indexes": [

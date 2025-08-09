@@ -53,27 +53,6 @@ class RequestSSLViewer {
 	 * @return array
 	 */
 	public function getFormDescriptor(): array {
-		$user = $this->context->getUser();
-
-		if (
-			$this->requestSslRequestManager->isPrivate( forced: false ) &&
-			$user->getName() !== $this->requestSslRequestManager->getRequester()->getName() &&
-			!$this->permissionManager->userHasRight( $user, 'view-private-custom-domain-requests' )
-		) {
-			$this->context->getOutput()->addHTML(
-				Html::warningBox(
-					Html::element(
-						'p',
-						[],
-						$this->context->msg( 'requestssl-private' )->text()
-					),
-					'mw-notify-error'
-				)
-			);
-
-			return [];
-		}
-
 		if ( $this->requestSslRequestManager->isLocked() ) {
 			$this->context->getOutput()->addHTML(
 				Html::warningBox(
@@ -159,6 +138,8 @@ class RequestSSLViewer {
 			];
 		}
 
+		$user = $this->context->getUser();
+
 		if (
 			$this->permissionManager->userHasRight( $user, 'handle-custom-domain-requests' ) ||
 			$user->getActorId() === $this->requestSslRequestManager->getRequester()->getActorId()
@@ -230,13 +211,6 @@ class RequestSSLViewer {
 				'type' => 'notice',
 			] );
 
-			if ( $this->requestSslRequestManager->isPrivate( forced: false ) ) {
-				$info .= new MessageWidget( [
-					'label' => new HtmlSnippet( $this->context->msg( 'requestssl-info-request-private' )->escaped() ),
-					'type' => 'warning',
-				] );
-			}
-
 			if ( $this->requestSslRequestManager->getRequester()->getBlock() ) {
 				$info .= new MessageWidget( [
 					'label' => new HtmlSnippet(
@@ -279,18 +253,6 @@ class RequestSSLViewer {
 					'section' => 'handling',
 				],
 			];
-
-			if ( $this->permissionManager->userHasRight( $user, 'view-private-custom-domain-requests' ) ) {
-				$formDescriptor += [
-					'handle-private' => [
-						'type' => 'check',
-						'label-message' => 'requestssl-label-private',
-						'default' => $this->requestSslRequestManager->isPrivate( forced: false ),
-						'disabled' => $this->requestSslRequestManager->isPrivate( forced: true ),
-						'section' => 'handling',
-					],
-				];
-			}
 
 			$formDescriptor += [
 				'handle-status' => [
@@ -549,16 +511,6 @@ class RequestSSLViewer {
 				$this->requestSslRequestManager->setLocked( (int)$formData['handle-lock'] );
 			}
 
-			if (
-				isset( $formData['handle-private'] ) &&
-				$this->requestSslRequestManager->isPrivate( forced: false ) !== (bool)$formData['handle-private']
-			) {
-				$changes[] = $this->requestSslRequestManager->isPrivate( forced: false ) ?
-					'public' : 'private';
-
-				$this->requestSslRequestManager->setPrivate( (int)$formData['handle-private'] );
-			}
-
 			if ( $this->requestSslRequestManager->getStatus() === $formData['handle-status'] ) {
 				$this->requestSslRequestManager->endAtomic( __METHOD__ );
 
@@ -574,32 +526,6 @@ class RequestSSLViewer {
 						)
 					);
 					return;
-				}
-
-				if ( in_array( 'private', $changes ) ) {
-					$out->addHTML(
-						Html::successBox(
-							Html::element(
-								'p',
-								[],
-								$this->context->msg( 'requestssl-success-private' )->text()
-							),
-							'mw-notify-success'
-						)
-					);
-				}
-
-				if ( in_array( 'public', $changes ) ) {
-					$out->addHTML(
-						Html::successBox(
-							Html::element(
-								'p',
-								[],
-								$this->context->msg( 'requestssl-success-public' )->text()
-							),
-							'mw-notify-success'
-						)
-					);
 				}
 
 				if ( in_array( 'locked', $changes ) ) {

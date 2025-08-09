@@ -160,11 +160,7 @@ class RequestSSLManager {
 		$requestQueueLink = SpecialPage::getTitleValueFor( 'RequestCustomDomainQueue', (string)$this->ID );
 		$requestLink = $this->linkRenderer->makeLink( $requestQueueLink, "#{$this->ID}" );
 
-		$logEntry = new ManualLogEntry(
-			$this->isPrivate( forced: false ) ? 'requestcustomdomainprivate' : 'requestcustomdomain',
-			'statusupdate'
-		);
-
+		$logEntry = new ManualLogEntry( 'requestcustomdomain', 'statusupdate' );
 		$logEntry->setPerformer( $user );
 		$logEntry->setTarget( $requestQueueLink );
 
@@ -175,8 +171,8 @@ class RequestSSLManager {
 		$logEntry->setParameters(
 			[
 				'4::requestLink' => Message::rawParam( $requestLink ),
-				'5::requestStatus' => strtolower( $this->messageLocalizer->msg(
-					'requestssl-label-' . $newStatus
+				'5::requestStatus' => mb_strtolower( $this->messageLocalizer->msg(
+					"requestssl-label-$newStatus"
 				)->inContentLanguage()->text() ),
 			]
 		);
@@ -316,26 +312,6 @@ class RequestSSLManager {
 	}
 
 	/**
-	 * @param bool $forced
-	 * @return bool
-	 */
-	public function isPrivate( bool $forced ): bool {
-		if ( !$forced && $this->row->request_private ) {
-			return true;
-		}
-
-		if (
-			!ExtensionRegistry::getInstance()->isLoaded( 'CreateWiki' ) ||
-			!$this->config->get( 'CreateWikiUsePrivateWikis' )
-		) {
-			return false;
-		}
-
-		$remoteWiki = $this->remoteWikiFactory->newInstance( $this->getTarget() );
-		return $remoteWiki->isPrivate();
-	}
-
-	/**
 	 * @param User $user
 	 */
 	public function logToManageWiki( User $user ) {
@@ -363,22 +339,6 @@ class RequestSSLManager {
 			'requestssl_requests',
 			[
 				'request_locked' => $locked,
-			],
-			[
-				'request_id' => $this->ID,
-			],
-			__METHOD__
-		);
-	}
-
-	/**
-	 * @param int $private
-	 */
-	public function setPrivate( int $private ) {
-		$this->dbw->update(
-			'requestssl_requests',
-			[
-				'request_private' => $private,
 			],
 			[
 				'request_id' => $this->ID,

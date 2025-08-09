@@ -10,8 +10,7 @@ CREATE TABLE /*_*/requestssl_requests (
   request_target VARCHAR(64) NOT NULL,
   request_reason BLOB NOT NULL,
   request_status TEXT NOT NULL,
-  request_locked SMALLINT UNSIGNED DEFAULT 0 NOT NULL,
-  request_private SMALLINT UNSIGNED DEFAULT 0 NOT NULL
+  request_locked SMALLINT UNSIGNED DEFAULT 0 NOT NULL
 );
 
 CREATE INDEX request_actor_timestamp ON /*_*/requestssl_requests (

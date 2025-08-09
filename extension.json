@@ -36,8 +36,7 @@
 	},
 	"AvailableRights": [
 		"handle-custom-domain-requests",
-		"request-custom-domain",
-		"view-private-custom-domain-requests"
+		"request-custom-domain"
 	],
 	"JobClasses": {
 		"RequestSSLCFAddJob": {
@@ -52,34 +51,19 @@
 		}
 	},
 	"LogActionsHandlers": {
-		"requestcustomdomain/*": "LogFormatter",
-		"requestcustomdomainprivate/*": "LogFormatter"
+		"requestcustomdomain/*": "LogFormatter"
 	},
 	"LogHeaders": {
-		"requestcustomdomain": "requestcustomdomain-log-header",
-		"requestcustomdomainprivate": "requestcustomdomainprivate-log-header"
+		"requestcustomdomain": "requestcustomdomain-log-header"
 	},
 	"LogNames": {
-		"requestcustomdomain": "requestcustomdomain-log-name",
-		"requestcustomdomainprivate": "requestcustomdomainprivate-log-name"
+		"requestcustomdomain": "requestcustomdomain-log-name"
 	},
 	"LogTypes": [
-		"requestcustomdomain",
-		"requestcustomdomainprivate"
+		"requestcustomdomain"
 	],
-	"LogRestrictions": {
-		"requestcustomdomainprivate": "view-private-custom-domain-requests"
-	},
 	"ActionFilteredLogs": {
 		"requestcustomdomain": {
-			"request": [
-				"request"
-			],
-			"statusupdate": [
-				"statusupdate"
-			]
-		},
-		"requestcustomdomainprivate": {
 			"request": [
 				"request"
 			],
@@ -94,7 +78,6 @@
 			"services": [
 				"ConnectionProvider",
 				"MimeAnalyzer",
-				"RemoteWikiFactory",
 				"RequestSSLManager",
 				"RepoGroup",
 				"UserFactory"
