@@ -17,7 +17,6 @@
 	"echo-pref-tooltip-requestcustomdomain-new-request": "Echo preference tooltip for 'requestcustomdomain-new-request'.",
 	"echo-pref-tooltip-requestcustomdomain-request-comment": "Echo preference tooltip for 'requestcustomdomain-request-comment'.",
 	"echo-pref-tooltip-requestcustomdomain-request-status-update": "Echo preference tooltip for 'requestcustomdomain-request-status-update'.",
-	"requestcustomdomain-button-copy": "Text for the 'Copy to Clipboard' button.",
 	"requestcustomdomain-cloudflare-comment-active": "Message commented on custom domain requests upon successful Cloudflare activation.",
 	"requestcustomdomain-cloudflare-comment-permissions": "Message commented on custom domain requests when the incorrect permissions are found for requester.",
 	"requestcustomdomain-cloudflare-comment-error": "Message commented on custom domain requests upon error.",

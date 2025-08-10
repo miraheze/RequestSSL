@@ -12,7 +12,6 @@
 	"echo-pref-tooltip-requestcustomdomain-new-request": "Notify me when there are any new custom domain requests.",
 	"echo-pref-tooltip-requestcustomdomain-request-comment": "Notify me when there is a comment on an custom domain request that I have participated on.",
 	"echo-pref-tooltip-requestcustomdomain-request-status-update": "Notify me when the status is updated for a custom domain request that I have participated on.",
-	"requestcustomdomain-button-copy": "(Copy to Clipboard)",
 	"requestcustomdomain-cloudflare-comment-active": "This custom domain has been successfully activated and is now applied to this wiki.",
 	"requestcustomdomain-cloudflare-comment-permissions": "Since the requester is not a bureaucrat, a system administrator will manually review this request.",
 	"requestcustomdomain-cloudflare-comment-error": "An error occurred while processing your custom domain request with Cloudflare. A system administrator will now manually review your request.",
