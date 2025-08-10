@@ -39,7 +39,7 @@
 	"requestcustomdomain-help-target": "This must be a valid database name (i.e. examplewiki).",
 	"requestcustomdomain-help-target-subdomain": "This must be a valid subdomain (i.e. examplewiki.wikifarm.com)",
 	"requestcustomdomain-info-groups": "User groups that $1 has on $2: $3",
-	"requestcustomdomain-info-requester-blocked": "The requester ($1) has been locally blocked on this wiki ($2).",
+	"requestcustomdomain-info-requester-blocked": "The requester ($1) has been blocked on this wiki ($2).",
 	"requestcustomdomain-info-requester-locked": "The requester ($1) has been locked. This request should be declined.",
 	"requestcustomdomain-invalid-target": "The provided target is not a valid database name.",
 	"requestcustomdomain-label-add-comment": "Add Comment",
