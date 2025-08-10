@@ -4,5 +4,5 @@
 			"Anterdc99"
 		]
 	},
-	"requestssl-info-groups": "$1在$2的用戶組：$3"
+	"requestcustomdomain-info-groups": "$1在$2的用戶組：$3"
 }
