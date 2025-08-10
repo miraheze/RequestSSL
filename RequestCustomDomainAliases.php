@@ -3,6 +3,6 @@
 $specialPageAliases = [];
 
 $specialPageAliases['en'] = [
-	'RequestCustomDomain' => [ 'RequestCustomDomain', 'RequestSSL' ],
+	'RequestCustomDomain' => [ 'RequestCustomDomain' ],
 	'RequestCustomDomainQueue' => [ 'RequestCustomDomainQueue' ],
 ];

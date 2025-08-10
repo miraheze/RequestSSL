@@ -1,6 +1,6 @@
 <?php
 
-namespace Miraheze\RequestSSL;
+namespace Miraheze\RequestCustomDomain;
 
 use MediaWiki\Config\Config;
 use MediaWiki\Context\RequestContext;
@@ -15,8 +15,8 @@ return [
 	'RequestCustomDomainLogger' => static function (): LoggerInterface {
 		return LoggerFactory::getInstance( 'RequestCustomDomain' );
 	},
-	'RequestSSLManager' => static function ( MediaWikiServices $services ): RequestSSLManager {
-		return new RequestSSLManager(
+	'RequestCustomDomainManager' => static function ( MediaWikiServices $services ): RequestManager {
+		return new RequestManager(
 			$services->getActorStoreFactory(),
 			$services->getConnectionProvider(),
 			$services->getJobQueueGroupFactory(),

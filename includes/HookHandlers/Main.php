@@ -1,15 +1,15 @@
 <?php
 
-namespace Miraheze\RequestSSL\Hooks\Handlers;
+namespace Miraheze\RequestCustomDomain\HookHandlers;
 
 use MediaWiki\Block\Hook\GetAllBlockActionsHook;
 use MediaWiki\Extension\Notifications\AttributeManager;
 use MediaWiki\Extension\Notifications\UserLocator;
 use MediaWiki\User\Hook\UserGetReservedNamesHook;
 use MediaWiki\WikiMap\WikiMap;
-use Miraheze\RequestSSL\Notifications\EchoNewRequestPresentationModel;
-use Miraheze\RequestSSL\Notifications\EchoRequestCommentPresentationModel;
-use Miraheze\RequestSSL\Notifications\EchoRequestStatusUpdatePresentationModel;
+use Miraheze\RequestCustomDomain\Notifications\EchoNewRequestPresentationModel;
+use Miraheze\RequestCustomDomain\Notifications\EchoRequestCommentPresentationModel;
+use Miraheze\RequestCustomDomain\Notifications\EchoRequestStatusUpdatePresentationModel;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 class Main implements
@@ -53,26 +53,26 @@ class Main implements
 			return;
 		}
 
-		$notificationCategories['requestssl-new-request'] = [
+		$notificationCategories['requestcustomdomain-new-request'] = [
 			'priority' => 3,
-			'tooltip' => 'echo-pref-tooltip-requestssl-new-request',
+			'tooltip' => 'echo-pref-tooltip-requestcustomdomain-new-request',
 		];
 
-		$notificationCategories['requestssl-request-comment'] = [
+		$notificationCategories['requestcustomdomain-request-comment'] = [
 			'priority' => 3,
-			'tooltip' => 'echo-pref-tooltip-requestssl-request-comment',
+			'tooltip' => 'echo-pref-tooltip-requestcustomdomain-request-comment',
 		];
 
-		$notificationCategories['requestssl-request-status-update'] = [
+		$notificationCategories['requestcustomdomain-request-status-update'] = [
 			'priority' => 3,
-			'tooltip' => 'echo-pref-tooltip-requestssl-request-status-update',
+			'tooltip' => 'echo-pref-tooltip-requestcustomdomain-request-status-update',
 		];
 
-		$notifications['requestssl-new-request'] = [
+		$notifications['requestcustomdomain-new-request'] = [
 			AttributeManager::ATTR_LOCATORS => [
 				[ [ UserLocator::class, 'locateEventAgent' ] ],
 			],
-			'category' => 'requestssl-new-request',
+			'category' => 'requestcustomdomain-new-request',
 			'group' => 'positive',
 			'section' => 'alert',
 			'canNotifyAgent' => true,
@@ -80,11 +80,11 @@ class Main implements
 			'immediate' => true,
 		];
 
-		$notifications['requestssl-request-comment'] = [
+		$notifications['requestcustomdomain-request-comment'] = [
 			AttributeManager::ATTR_LOCATORS => [
 				[ [ UserLocator::class, 'locateEventAgent' ] ],
 			],
-			'category' => 'requestssl-request-comment',
+			'category' => 'requestcustomdomain-request-comment',
 			'group' => 'positive',
 			'section' => 'alert',
 			'canNotifyAgent' => true,
@@ -92,11 +92,11 @@ class Main implements
 			'immediate' => true,
 		];
 
-		$notifications['requestssl-request-status-update'] = [
+		$notifications['requestcustomdomain-request-status-update'] = [
 			AttributeManager::ATTR_LOCATORS => [
 				[ [ UserLocator::class, 'locateEventAgent' ] ],
 			],
-			'category' => 'requestssl-request-status-update',
+			'category' => 'requestcustomdomain-request-status-update',
 			'group' => 'positive',
 			'section' => 'alert',
 			'canNotifyAgent' => true,

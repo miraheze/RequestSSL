@@ -1,9 +1,9 @@
 <?php
 
-namespace Miraheze\RequestSSL;
+namespace Miraheze\RequestCustomDomain;
 
-use MediaWiki\Html\Html;
 use MediaWiki\HTMLForm\OOUIHTMLForm;
+use MediaWiki\Logger\LoggerFactory;
 use OOUI\FieldsetLayout;
 use OOUI\HtmlSnippet;
 use OOUI\IndexLayout;
@@ -11,19 +11,10 @@ use OOUI\PanelLayout;
 use OOUI\TabPanelLayout;
 use OOUI\Widget;
 
-class RequestSSLOOUIForm extends OOUIHTMLForm {
+class OOUIHTMLFormTabs extends OOUIHTMLForm {
 
-	/** @var bool */
+	/** @var bool Override default value from HTMLForm */
 	protected $mSubSectionBeforeFields = false;
-
-	/**
-	 * @param string $html
-	 * @return string
-	 */
-	public function wrapForm( $html ) {
-		$html = Html::rawElement( 'div', [ 'id' => 'requestssl' ], $html );
-		return parent::wrapForm( $html );
-	}
 
 	/**
 	 * @param string $legend
@@ -35,7 +26,7 @@ class RequestSSLOOUIForm extends OOUIHTMLForm {
 	protected function wrapFieldSetSection( $legend, $section, $attributes, $isRoot ) {
 		$layout = parent::wrapFieldSetSection( $legend, $section, $attributes, $isRoot );
 
-		$layout->addClasses( [ 'requestssl-fieldset-wrapper' ] );
+		$layout->addClasses( [ 'ext-requestcustomdomain-fieldset-wrapper' ] );
 		$layout->removeClasses( [ 'oo-ui-panelLayout-framed' ] );
 
 		return $layout;
@@ -48,8 +39,10 @@ class RequestSSLOOUIForm extends OOUIHTMLForm {
 		$tabPanels = [];
 		foreach ( $this->mFieldTree as $key => $val ) {
 			if ( !is_array( $val ) ) {
-				wfDebug( __METHOD__ . " encountered a field not attached to a section: '{$key}'" );
-
+				LoggerFactory::getInstance( 'RequestCustomDomain' )->debug(
+					'Encountered a field not attached to a section: {key}',
+					[ 'key' => $key ]
+				);
 				continue;
 			}
 
@@ -60,20 +53,20 @@ class RequestSSLOOUIForm extends OOUIHTMLForm {
 				$this->displaySection(
 					$val,
 					'',
-					"mw-section-{$key}-"
+					"mw-section-$key-"
 				) .
 				$this->getFooterHtml( $key );
 
-			$tabPanels[] = new TabPanelLayout( 'mw-section-' . $key, [
+			$tabPanels[] = new TabPanelLayout( "mw-section-$key", [
 				'classes' => [ 'mw-htmlform-autoinfuse-lazy' ],
 				'label' => $label,
 				'content' => new FieldsetLayout( [
-					'classes' => [ 'requestssl-section-fieldset' ],
-					'id' => "mw-section-{$key}",
+					'classes' => [ 'ext-requestcustomdomain-section-fieldset' ],
+					'id' => "mw-section-$key",
 					'label' => $label,
 					'items' => [
 						new Widget( [
-							'content' => new HtmlSnippet( $content )
+							'content' => new HtmlSnippet( $content ),
 						] ),
 					],
 				] ),
@@ -86,7 +79,7 @@ class RequestSSLOOUIForm extends OOUIHTMLForm {
 			'infusable' => true,
 			'expanded' => false,
 			'autoFocus' => false,
-			'classes' => [ 'requestssl-tabs' ],
+			'classes' => [ 'ext-requestcustomdomain-tabs' ],
 		] );
 
 		$indexLayout->addTabPanels( $tabPanels );
@@ -96,8 +89,8 @@ class RequestSSLOOUIForm extends OOUIHTMLForm {
 		$form = new PanelLayout( [
 			'framed' => true,
 			'expanded' => false,
-			'classes' => [ 'requestssl-tabs-wrapper' ],
-			'content' => $indexLayout
+			'classes' => [ 'ext-requestcustomdomain-tabs-wrapper' ],
+			'content' => $indexLayout,
 		] );
 
 		return $header . $form;

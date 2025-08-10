@@ -1,5 +1,5 @@
-# RequestSSL
-An extension designed to automate requesting and generating SSL certificates.
+# RequestCustomDomain
+An extension designed to automate requesting custom domains.
 
 Based on ImportDump developed by Universal Omega.
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Miraheze\RequestSSL\Specials;
+namespace Miraheze\RequestCustomDomain\Specials;
 
 use ErrorPageError;
 use MediaWiki\HTMLForm\HTMLForm;
@@ -8,9 +8,9 @@ use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\UserFactory;
 use MediaWiki\WikiMap\WikiMap;
-use Miraheze\RequestSSL\RequestSSLManager;
-use Miraheze\RequestSSL\RequestSSLQueuePager;
-use Miraheze\RequestSSL\RequestSSLViewer;
+use Miraheze\RequestCustomDomain\RequestCustomDomainQueuePager;
+use Miraheze\RequestCustomDomain\RequestManager;
+use Miraheze\RequestCustomDomain\RequestViewer;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 class SpecialRequestCustomDomainQueue extends SpecialPage {
@@ -18,7 +18,7 @@ class SpecialRequestCustomDomainQueue extends SpecialPage {
 	public function __construct(
 		private readonly IConnectionProvider $connectionProvider,
 		private readonly PermissionManager $permissionManager,
-		private readonly RequestSSLManager $requestManager,
+		private readonly RequestManager $requestManager,
 		private readonly UserFactory $userFactory
 	) {
 		parent::__construct( 'RequestCustomDomainQueue' );
@@ -32,7 +32,7 @@ class SpecialRequestCustomDomainQueue extends SpecialPage {
 
 		$dbr = $this->connectionProvider->getReplicaDatabase( 'virtual-requestcustomdomain' );
 		if ( !WikiMap::isCurrentWikiDbDomain( $dbr->getDomainID() ) ) {
-			throw new ErrorPageError( 'requestssl-notcentral', 'requestssl-notcentral-text' );
+			throw new ErrorPageError( 'requestcustomdomain-notcentral', 'requestcustomdomain-notcentral-text' );
 		}
 
 		if ( $par ) {
@@ -52,31 +52,31 @@ class SpecialRequestCustomDomainQueue extends SpecialPage {
 		$formDescriptor = [
 			'info' => [
 				'type' => 'info',
-				'default' => $this->msg( 'requestsslqueue-header-info' )->text(),
+				'default' => $this->msg( 'requestcustomdomainqueue-header-info' )->text(),
 			],
 			'target' => [
 				'type' => 'text',
 				'name' => 'target',
-				'label-message' => 'requestssl-label-target',
+				'label-message' => 'requestcustomdomain-label-target',
 				'default' => $target,
 			],
 			'requester' => [
 				'type' => 'user',
 				'name' => 'requester',
-				'label-message' => 'requestssl-label-requester',
+				'label-message' => 'requestcustomdomain-label-requester',
 				'exist' => true,
 				'default' => $requester,
 			],
 			'status' => [
 				'type' => 'select',
 				'name' => 'status',
-				'label-message' => 'requestssl-label-status',
+				'label-message' => 'requestcustomdomain-label-status',
 				'options-messages' => [
-					'requestssl-label-pending' => 'pending',
-					'requestssl-label-inprogress' => 'inprogress',
-					'requestssl-label-complete' => 'complete',
-					'requestssl-label-declined' => 'declined',
-					'requestssl-label-all' => '*',
+					'requestcustomdomain-label-pending' => 'pending',
+					'requestcustomdomain-label-inprogress' => 'inprogress',
+					'requestcustomdomain-label-complete' => 'complete',
+					'requestcustomdomain-label-declined' => 'declined',
+					'requestcustomdomain-label-all' => '*',
 				],
 				'default' => $status ?: 'pending',
 			],
@@ -85,12 +85,12 @@ class SpecialRequestCustomDomainQueue extends SpecialPage {
 		$htmlForm = HTMLForm::factory( 'ooui', $formDescriptor, $this->getContext() );
 		$htmlForm
 			->setMethod( 'get' )
-			->setWrapperLegendMsg( 'requestsslqueue-header' )
+			->setWrapperLegendMsg( 'requestcustomdomainqueue-header' )
 			->setSubmitTextMsg( 'search' )
 			->prepareForm()
 			->displayForm( false );
 
-		$pager = new RequestSSLQueuePager(
+		$pager = new RequestCustomDomainQueuePager(
 			$this->getContext(),
 			$this->connectionProvider,
 			$this->getLinkRenderer(),
@@ -108,7 +108,7 @@ class SpecialRequestCustomDomainQueue extends SpecialPage {
 	 * @param string $par
 	 */
 	private function lookupRequest( $par ) {
-		$requestViewer = new RequestSSLViewer(
+		$requestViewer = new RequestViewer(
 			$this->getConfig(),
 			$this->getContext(),
 			$this->permissionManager,

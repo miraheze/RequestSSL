@@ -1,5 +1,5 @@
 {
-	"name": "RequestSSL",
+	"name": "RequestCustomDomain",
 	"author": [
 		"Universal Omega",
 		"Agent Isai",
@@ -7,27 +7,27 @@
 		"Alex",
 		"MacFan4000"
 	],
-	"url": "https://github.com/miraheze/RequestSSL",
-	"descriptionmsg": "requestssl-desc",
-	"namemsg": "requestssl-extensionname",
+	"url": "https://github.com/miraheze/RequestCustomDomain",
+	"descriptionmsg": "requestcustomdomain-desc",
+	"namemsg": "requestcustomdomain-extensionname",
 	"license-name": "GPL-3.0-or-later",
 	"type": "specialpage",
 	"requires": {
 		"MediaWiki": ">= 1.43.0"
 	},
 	"MessagesDirs": {
-		"RequestSSL": [
+		"RequestCustomDomain": [
 			"i18n"
 		]
 	},
 	"ExtensionMessagesFiles": {
-		"RequestSSLAliases": "RequestSSLAliases.php"
+		"RequestCustomDomainAliases": "RequestCustomDomainAliases.php"
 	},
 	"AutoloadNamespaces": {
-		"Miraheze\\RequestSSL\\": "includes/"
+		"Miraheze\\RequestCustomDomain\\": "includes/"
 	},
 	"TestAutoloadNamespaces": {
-		"Miraheze\\RequestSSL\\Tests\\": "tests/phpunit/"
+		"Miraheze\\RequestCustomDomain\\Tests\\": "tests/phpunit/"
 	},
 	"GroupPermissions": {
 		"user": {
@@ -39,13 +39,13 @@
 		"request-custom-domain"
 	],
 	"JobClasses": {
-		"RequestSSLCFAddJob": {
-			"class": "Miraheze\\RequestSSL\\Jobs\\RequestSSLCFAddJob",
+		"RequestCustomDomainCFAddJob": {
+			"class": "Miraheze\\RequestCustomDomain\\Jobs\\RequestCustomDomainCFAddJob",
 			"services": [
 				"HttpRequestFactory",
 				"RequestCustomDomainConfig",
 				"RequestCustomDomainLogger",
-				"RequestSSLManager"
+				"RequestCustomDomainManager"
 			],
 			"needsPage": false
 		}
@@ -74,21 +74,21 @@
 	},
 	"SpecialPages": {
 		"RequestCustomDomain": {
-			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestCustomDomain",
+			"class": "Miraheze\\RequestCustomDomain\\Specials\\SpecialRequestCustomDomain",
 			"services": [
 				"ConnectionProvider",
 				"MimeAnalyzer",
 				"RepoGroup",
-				"RequestSSLManager",
+				"RequestCustomDomainManager",
 				"UserFactory"
 			]
 		},
 		"RequestCustomDomainQueue": {
-			"class": "Miraheze\\RequestSSL\\Specials\\SpecialRequestCustomDomainQueue",
+			"class": "Miraheze\\RequestCustomDomain\\Specials\\SpecialRequestCustomDomainQueue",
 			"services": [
 				"ConnectionProvider",
 				"PermissionManager",
-				"RequestSSLManager",
+				"RequestCustomDomainManager",
 				"UserFactory"
 			]
 		}
@@ -109,30 +109,30 @@
 	},
 	"HookHandlers": {
 		"Installer": {
-			"class": "Miraheze\\RequestSSL\\Hooks\\Handlers\\Installer"
+			"class": "Miraheze\\RequestCustomDomain\\HookHandlers\\Installer"
 		},
 		"Main": {
-			"class": "Miraheze\\RequestSSL\\Hooks\\Handlers\\Main",
+			"class": "Miraheze\\RequestCustomDomain\\HookHandlers\\Main",
 			"services": [
 				"ConnectionProvider"
 			]
 		}
 	},
 	"ResourceModules": {
-		"ext.requestssl.oouiform": {
-			"scripts": "ext.requestssl.oouiform.ooui.js",
+		"ext.requestcustomdomain.oouiform": {
+			"scripts": "ext.requestcustomdomain.oouiform.ooui.js",
 			"dependencies": [
 				"mediawiki.storage",
 				"oojs-ui-widgets"
 			]
 		},
-		"ext.requestssl.oouiform.styles": {
-			"styles": "ext.requestssl.oouiform.ooui.less"
+		"ext.requestcustomdomain.oouiform.styles": {
+			"styles": "ext.requestcustomdomain.oouiform.ooui.less"
 		}
 	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "modules",
-		"remoteExtPath": "RequestSSL/modules"
+		"remoteExtPath": "RequestCustomDomain/modules"
 	},
 	"config": {
 		"RequestCustomDomainCloudflareConfig": {
@@ -160,12 +160,12 @@
 		"RequestCustomDomain": "MediaWiki\\Config\\GlobalVarConfig::newInstance"
 	},
 	"DefaultUserOptions": {
-		"echo-subscriptions-email-requestssl-new-request": true,
-		"echo-subscriptions-email-requestssl-request-comment": true,
-		"echo-subscriptions-email-requestssl-request-status-update": true,
-		"echo-subscriptions-web-requestssl-new-request": false,
-		"echo-subscriptions-web-requestssl-request-comment": true,
-		"echo-subscriptions-web-requestssl-request-status-update": true
+		"echo-subscriptions-email-requestcustomdomain-new-request": true,
+		"echo-subscriptions-email-requestcustomdomain-request-comment": true,
+		"echo-subscriptions-email-requestcustomdomain-request-status-update": true,
+		"echo-subscriptions-web-requestcustomdomain-new-request": false,
+		"echo-subscriptions-web-requestcustomdomain-request-comment": true,
+		"echo-subscriptions-web-requestcustomdomain-request-status-update": true
 	},
 	"ServiceWiringFiles": [
 		"includes/ServiceWiring.php"

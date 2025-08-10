@@ -1,6 +1,6 @@
 <?php
 
-namespace Miraheze\RequestSSL\Hooks\Handlers;
+namespace Miraheze\RequestCustomDomain\HookHandlers;
 
 use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 
@@ -9,7 +9,7 @@ class Installer implements LoadExtensionSchemaUpdatesHook {
 	/** @inheritDoc */
 	public function onLoadExtensionSchemaUpdates( $updater ) {
 		$dbType = $updater->getDB()->getType();
-		$dir = __DIR__ . '/../../../sql';
+		$dir = __DIR__ . '/../../sql';
 
 		$updater->addExtensionUpdateOnVirtualDomain( [
 			'virtual-requestcustomdomain',

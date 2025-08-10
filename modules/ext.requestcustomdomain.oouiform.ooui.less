@@ -1,24 +1,5 @@
-#requestssl {
-	filter: brightness( 1 );
-
-	.oo-ui-flaggedElement-notice {
-		border-color: #33a6f1;
-		background: #bce5fd;
-
-		> code {
-			background-color: rgba( 248, 249, 250, 0.7 );
-		}
-
-		> button {
-			border: 0;
-			background: none;
-			cursor: pointer;
-		}
-	}
-}
-
-.requestssl-tabs {
-	.requestssl-fieldset-wrapper {
+.ext-requestcustomdomain-tabs {
+	.ext-requestcustomdomain-fieldset-wrapper {
 		padding-right: 0;
 		padding-left: 0;
 
@@ -32,8 +13,8 @@
 	}
 }
 
-.requestssl-tabs-wrapper.oo-ui-panelLayout-framed,
-.requestssl-tabs > .oo-ui-menuLayout-content > .oo-ui-indexLayout-stackLayout > .oo-ui-tabPanelLayout {
+.ext-requestcustomdomain-tabs-wrapper.oo-ui-panelLayout-framed,
+.ext-requestcustomdomain-tabs > .oo-ui-menuLayout-content > .oo-ui-indexLayout-stackLayout > .oo-ui-tabPanelLayout {
 	/* Decrease contrast of `border` slightly as padding/border combination is sufficient
 	 * accessibility wise and focus of content is more important here. */
 	border-color: #c8ccd1;
@@ -42,18 +23,18 @@
 /* JavaScript disabled */
 .client-nojs {
 	// Disable .oo-ui-panelLayout-framed on outer wrapper
-	.requestssl-tabs-wrapper {
+	.ext-requestcustomdomain-tabs-wrapper {
 		border-width: 0;
 		border-radius: 0;
 	}
 
-	.requestssl-tabs {
+	.ext-requestcustomdomain-tabs {
 		// Hide the tab menu when JS is disabled as we can't use this feature
 		> .oo-ui-menuLayout-menu {
 			display: none;
 		}
 
-		.requestssl-section-fieldset {
+		.ext-requestcustomdomain-section-fieldset {
 			// <legend> is hard to style, so apply border to top of group
 			> .oo-ui-fieldsetLayout-group {
 				padding-top: 1.5em;
@@ -74,7 +55,7 @@
 }
 
 /* JavaScript enabled */
-.client-js .requestssl-tabs {
+.client-js .ext-requestcustomdomain-tabs {
 	.oo-ui-tabPanelLayout {
 		// Panels don't need borders as the IndexLayout is inside a framed wrapper.
 		border: 0;
@@ -86,7 +67,7 @@
 	}
 
 	// Hide all but the first panel before infusion
-	&:not( .requestssl-tabs-infused ) {
+	&:not( .ext-requestcustomdomain-tabs-infused ) {
 		.oo-ui-tabPanelLayout:not( :first-child ) {
 			display: none;
 		}
@@ -109,13 +90,5 @@
 		display: inline-block;
 		width: 80%;
 		vertical-align: middle;
-	}
-}
-
-/* Compact number inputs */
-.mw-htmlform-field-HTMLFloatField,
-.mw-htmlform-field-HTMLIntField {
-	.oo-ui-inputWidget {
-		max-width: 10em;
 	}
 }

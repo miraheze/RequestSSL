@@ -1,6 +1,6 @@
 <?php
 
-namespace Miraheze\RequestSSL\Jobs;
+namespace Miraheze\RequestCustomDomain\Jobs;
 
 use Exception;
 use Job;
@@ -10,12 +10,12 @@ use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\MainConfigNames;
 use MediaWiki\User\User;
 use MessageLocalizer;
-use Miraheze\RequestSSL\RequestSSLManager;
+use Miraheze\RequestCustomDomain\RequestManager;
 use Psr\Log\LoggerInterface;
 
-class RequestSSLCFAddJob extends Job {
+class RequestCustomDomainCFAddJob extends Job {
 
-	public const JOB_NAME = 'RequestSSLCFAddJob';
+	public const JOB_NAME = 'RequestCustomDomainCFAddJob';
 
 	private readonly MessageLocalizer $messageLocalizer;
 	private readonly User $systemUser;
@@ -31,7 +31,7 @@ class RequestSSLCFAddJob extends Job {
 		private readonly HttpRequestFactory $httpRequestFactory,
 		private readonly Config $config,
 		private readonly LoggerInterface $logger,
-		private readonly RequestSSLManager $requestManager
+		private readonly RequestManager $requestManager
 	) {
 		parent::__construct( self::JOB_NAME, $params );
 
@@ -60,7 +60,7 @@ class RequestSSLCFAddJob extends Job {
 
 		$this->requestManager->fromID( $this->id );
 		$this->logger->debug(
-			'Request {id} loaded, ready for RequestSSL processing...',
+			'Request {id} loaded, ready for RequestCustomDomain processing...',
 			[ 'id' => $this->id ]
 		);
 
@@ -76,7 +76,7 @@ class RequestSSLCFAddJob extends Job {
 				[ 'id' => $this->id ]
 			);
 
-			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-permissions' )
+			$commentText = $this->messageLocalizer->msg( 'requestcustomdomain-cloudflare-comment-permissions' )
 				->inContentLanguage()
 				->escaped();
 
@@ -102,7 +102,7 @@ class RequestSSLCFAddJob extends Job {
 
 		// If the API response is empty or invalid, we cannot proceed
 		if ( !$apiResponse ) {
-			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error' )
+			$commentText = $this->messageLocalizer->msg( 'requestcustomdomain-cloudflare-comment-error' )
 				->inContentLanguage()
 				->escaped();
 
@@ -114,7 +114,7 @@ class RequestSSLCFAddJob extends Job {
 
 		// If the domain is not setup, halt early and comment on the request
 		if ( $apiResponse['result']['status'] == 'pending' && $apiResponse['result']['verification_errors'] ) {
-			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error-verification',
+			$commentText = $this->messageLocalizer->msg( 'requestcustomdomain-cloudflare-comment-error-verification',
 				$apiResponse['result']['verification_errors']
 			)->inContentLanguage()->escaped();
 
@@ -126,7 +126,7 @@ class RequestSSLCFAddJob extends Job {
 
 		if ( $apiResponse['errors'][0]['message'] ) {
 			// If the API response contains an error, halt early and comment on the request
-			$commentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error-other',
+			$commentText = $this->messageLocalizer->msg( 'requestcustomdomain-cloudflare-comment-error-other',
 				$apiResponse['errors'][0]['message']
 			)->inContentLanguage()->escaped();
 
@@ -154,11 +154,11 @@ class RequestSSLCFAddJob extends Job {
 	}
 
 	private function handleOutcome( string $status, string $comment ): bool {
-		$activeCommentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-active' )
+		$activeCommentText = $this->messageLocalizer->msg( 'requestcustomdomain-cloudflare-comment-active' )
 			->inContentLanguage()
 			->escaped();
 
-		$unknownCommentText = $this->messageLocalizer->msg( 'requestssl-cloudflare-comment-error' )
+		$unknownCommentText = $this->messageLocalizer->msg( 'requestcustomdomain-cloudflare-comment-error' )
 			->inContentLanguage()
 			->escaped();
 
@@ -173,7 +173,7 @@ class RequestSSLCFAddJob extends Job {
 				$this->requestManager->setStatus( 'complete' );
 				$this->requestManager->addComment( $activeCommentText, $this->systemUser );
 				$this->logger->debug(
-					'SSL request {id} has been approved and completed successfully.',
+					'Custom domain request {id} has been approved and completed successfully.',
 					[ 'id' => $this->id ]
 				);
 				break;
@@ -181,7 +181,7 @@ class RequestSSLCFAddJob extends Job {
 				$this->requestManager->addComment( $unknownCommentText, $this->systemUser );
 				$this->requestManager->setStatus( 'pending' );
 				$this->logger->debug(
-					'SSL request {id} returned a blocked status.',
+					'Custom domain request {id} returned a blocked status.',
 					[ 'id' => $this->id ]
 				);
 				break;
@@ -189,7 +189,7 @@ class RequestSSLCFAddJob extends Job {
 				$this->requestManager->addComment( $unknownCommentText, $this->systemUser );
 				$this->requestManager->setStatus( 'pending' );
 				$this->logger->debug(
-					'SSL request {id} recieved an unknown outcome with comment: {comment}',
+					'Custom domain request {id} recieved an unknown outcome with comment: {comment}',
 					[
 						'comment' => $comment,
 						'id' => $this->id,

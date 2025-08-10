@@ -2,11 +2,11 @@
 	$( () => {
 		let switchingNoHash;
 
-		const tabs = OO.ui.infuse( $( '.requestssl-tabs' ) );
-		tabs.$element.addClass( 'requestssl-tabs-infused' );
+		const tabs = OO.ui.infuse( $( '.ext-requestcustomdomain-tabs' ) );
+		tabs.$element.addClass( 'ext-requestcustomdomain-tabs-infused' );
 
 		function enhancePanel( panel ) {
-			const $infuse = $( panel.$element ).find( '.requestssl-infuse' );
+			const $infuse = $( panel.$element ).find( '.ext-requestcustomdomain-infuse' );
 			$infuse.each( function () {
 				try {
 					OO.ui.infuse( this );
@@ -47,7 +47,7 @@
 		 * @param {boolean} [noHash] A hash will be set according to the current
 		 *  open section. Use this flag to suppress this.
 		 */
-		function switchRequestSslTab( name, noHash ) {
+		function switchRequestCustomDomainTab( name, noHash ) {
 			if ( noHash ) {
 				switchingNoHash = true;
 			}
@@ -64,15 +64,15 @@
 			const hash = location.hash;
 			let matchedElement, $parentSection;
 			if ( hash.match( /^#mw-section-[\w-]+$/ ) ) {
-				mw.storage.session.remove( 'requestssl-prevTab' );
-				switchRequestSslTab( hash.slice( 1 ) );
+				mw.storage.session.remove( 'requestcustomdomain-prevTab' );
+				switchRequestCustomDomainTab( hash.slice( 1 ) );
 			} else if ( hash.match( /^#mw-[\w-]+$/ ) ) {
 				matchedElement = document.getElementById( hash.slice( 1 ) );
-				$parentSection = $( matchedElement ).closest( '.requestssl-section-fieldset' );
+				$parentSection = $( matchedElement ).closest( '.ext-requestcustomdomain-section-fieldset' );
 				if ( $parentSection.length ) {
-					mw.storage.session.remove( 'requestssl-prevTab' );
+					mw.storage.session.remove( 'requestcustomdomain-prevTab' );
 					// Switch to proper tab and scroll to selected item.
-					switchRequestSslTab( $parentSection.attr( 'id' ), true );
+					switchRequestCustomDomainTab( $parentSection.attr( 'id' ), true );
 					matchedElement.scrollIntoView();
 				}
 			}
@@ -83,23 +83,23 @@
 			if ( hash.match( /^#mw-[\w-]+/ ) ) {
 				detectHash();
 			} else if ( hash === '' ) {
-				switchRequestSslTab( $( '[id*=mw-section-]' ).attr( 'id' ), true );
+				switchRequestCustomDomainTab( $( '[id*=mw-section-]' ).attr( 'id' ), true );
 			}
 		} )
 			// Run the function immediately to select the proper tab on startup.
 			.trigger( 'hashchange' );
 
 		// Restore the active tab after saving
-		const previousTab = mw.storage.session.get( 'requestssl-prevTab' );
+		const previousTab = mw.storage.session.get( 'requestcustomdomain-prevTab' );
 		if ( previousTab ) {
-			switchRequestSslTab( previousTab, true );
+			switchRequestCustomDomainTab( previousTab, true );
 			// Deleting the key, the tab states should be reset until we press Save
-			mw.storage.session.remove( 'requestssl-prevTab' );
+			mw.storage.session.remove( 'requestcustomdomain-prevTab' );
 		}
 
-		$( '#requestssl-form' ).on( 'submit', () => {
+		$( '#requestcustomdomain-form' ).on( 'submit', () => {
 			const value = tabs.getCurrentTabPanelName();
-			mw.storage.session.set( 'requestssl-prevTab', value );
+			mw.storage.session.set( 'requestcustomdomain-prevTab', value );
 		} );
 	} );
 }() );
