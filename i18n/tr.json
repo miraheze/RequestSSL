@@ -5,7 +5,6 @@
 			"Slickdaddy"
 		]
 	},
-	"requestcustomdomain-button-copy": "(Panoya Kopyala)",
 	"requestcustomdomain-comment-given": "$1 tarafından yapılan yorum:",
 	"requestcustomdomain-label-add-comment": "Yorum Ekle",
 	"requestcustomdomain-label-all": "Tümü",
@@ -16,7 +15,6 @@
 	"requestcustomdomain-label-edit-request": "Düzenleme talebi",
 	"requestcustomdomain-label-inprogress": "Yapılıyor",
 	"requestcustomdomain-label-pending": "Beklemede",
-	"requestcustomdomain-label-private": "Bu istek özel olarak işaretlensin mi?",
 	"requestcustomdomain-label-reason": "Ek yorumlar:",
 	"requestcustomdomain-label-requested-date": "Talep tarihi:",
 	"requestcustomdomain-label-requester": "Talep eden:",
@@ -24,7 +22,6 @@
 	"requestcustomdomain-notcentral": "Devre dışı",
 	"requestcustomdomain-notification-visit-request": "Ziyaret isteği",
 	"requestcustomdomain-notloggedin": "Üzgünüz, SSL sertifikası talep edebilmeniz için <span class=\"plainlinks\">[ $1 giriş]</span> yapmanız gerekiyor.",
-	"requestcustomdomain-private": "Bu talebi görüntüleme yetkiniz yok, çünkü bu talep özel olarak işaretlenmiş.",
 	"requestcustomdomain-request-edited": "Talep $1 tarafından değiştirildi.\n\n[Değişiklikler yapıldı]\n\n$2",
 	"requestcustomdomain-request-edited-reason": "Gerekçe:\nÖnceki değer: $1 \nYeni değer: $2",
 	"requestcustomdomain-request-edited-source": "Kaynak:\nÖnceki değer: $1 \nYeni değer: $2",
@@ -39,8 +36,6 @@
 	"requestcustomdomain-status-updated-success": "Bu talebin durumu başarıyla güncellendi.",
 	"requestcustomdomain-success": "SSL sertifika talebiniz ($1) başarıyla gönderildi. İsteğiniz en kısa sürede incelenecektir.",
 	"requestcustomdomain-success-locked": "Bu istek başarıyla kapatıldı. Artık düzenleme yapılamaz ve yorum eklenemez.",
-	"requestcustomdomain-success-private": "Bu talep başarıyla gizli olarak işaretlendi. Artık hiç kimse bu talebi göremez.",
-	"requestcustomdomain-success-public": "Bu talep başarıyla herkese açık olarak işaretlendi. Şu an herkes tarafından görünebilir.",
 	"requestcustomdomain-success-unlocked": "Bu talep başarıyla açıldı.",
 	"requestcustomdomain-table-requested-date": "Talep tarihi:",
 	"requestcustomdomain-table-requester": "Talep eden:",
@@ -48,13 +43,10 @@
 	"requestcustomdomain-table-target": "Hedef",
 	"requestcustomdomain-unknown": "Bilinmeyen istek.",
 	"requestcustomdomain-usergroups-none": "hiçbiri",
-	"ipb-action-request-request-ssl": "SSL sertifikası talep et",
+	"ipb-action-request-custom-domain": "SSL sertifikası talep et",
 	"log-action-filter-requestcustomdomain": "Eylem türü:",
 	"log-action-filter-requestcustomdomain-request": "Yeni talepler gönderildi",
 	"log-action-filter-requestcustomdomain-statusupdate": "Talep durumları güncellendi",
-	"log-action-filter-requestcustomdomainprivate": "Eylem türü:",
-	"log-action-filter-requestcustomdomainprivate-request": "Yeni talepler gönderildi",
-	"log-action-filter-requestcustomdomainprivate-statusupdate": "Talep durumları güncellendi",
 	"requestcustomdomain": "SSL talep et",
 	"requestcustomdomainqueue": "SSL Sertifika Talebi Kuyruğu"
 }

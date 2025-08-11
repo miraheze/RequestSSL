@@ -5,15 +5,13 @@
 			"Volvox"
 		]
 	},
-	"action-request-ssl": "SSL-Certificaten unzefroen",
-	"requestcustomdomain-button-copy": "(An den Tëschespäicher kopéieren)",
+	"action-request-custom-domain": "SSL-Certificaten unzefroen",
 	"requestcustomdomain-comment-given": "Kommentar vum $1:",
 	"requestcustomdomain-label-add-comment": "Kommentar derbäisetzen",
 	"requestcustomdomain-label-comment": "Bemierkung:",
 	"requestcustomdomain-label-declined": "Refuséiert",
 	"requestcustomdomain-label-edit-request": "Ufro änneren",
 	"requestcustomdomain-label-inprogress": "Am Gaang",
-	"requestcustomdomain-label-private": "Dës Ufro als privat markéieren?",
 	"requestcustomdomain-label-reason": "Zousätzlech Bemierkungen:",
 	"requestcustomdomain-label-requested-date": "Gefroten Datum:",
 	"requestcustomdomain-label-status": "Status:",
@@ -27,8 +25,5 @@
 	"requestcustomdomain-usergroups-none": "keng",
 	"log-action-filter-requestcustomdomain": "Aktiounstyp:",
 	"log-action-filter-requestcustomdomain-request": "Nei Ufroen ofgeschéckt",
-	"log-action-filter-requestcustomdomain-statusupdate": "Status fir Ufroen aktualiséiert",
-	"log-action-filter-requestcustomdomainprivate": "Aktiounstyp:",
-	"log-action-filter-requestcustomdomainprivate-request": "Nei Ufroen ofgeschéckt",
-	"log-action-filter-requestcustomdomainprivate-statusupdate": "Status fir Ufroen aktualiséiert"
+	"log-action-filter-requestcustomdomain-statusupdate": "Status fir Ufroen aktualiséiert"
 }
