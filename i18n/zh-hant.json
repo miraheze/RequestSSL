@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Kly",
+			"McDutchie",
 			"Winston Sung"
 		]
 	},
@@ -99,7 +100,7 @@
 	"log-action-filter-requestcustomdomain-statusupdate": "更新請求的狀態",
 	"logentry-requestcustomdomain-request": "$1已在$5{{GENDER:$2|請求}}$4的 SSL 憑證。",
 	"logentry-requestcustomdomain-statusupdate": "$1已{{GENDER:$2|更新}}「$5」的 SSL 憑證請求$4。",
-	"requestcustomdomain": "請求 SSL",
+	"requestcustomdomain": "請求為您的 wiki 使用自訂網域",
 	"requestcustomdomainqueue": "自訂網域請求佇列",
 	"right-handle-custom-domain-requests": "處理自訂網域請求",
 	"right-request-custom-domain": "請求自訂網域組態"

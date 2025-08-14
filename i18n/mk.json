@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Bjankuloski06"
+			"Bjankuloski06",
+			"McDutchie"
 		]
 	},
 	"action-handle-custom-domain-requests": "ракување со барања за прилагоден домен",
@@ -98,7 +99,7 @@
 	"log-action-filter-requestcustomdomain-statusupdate": "Изменет статусот на барања",
 	"logentry-requestcustomdomain-request": "$1 {{GENDER:$2|побара}} SSL-уверение за $4 во $5.$5",
 	"logentry-requestcustomdomain-statusupdate": "$1 го {{GENDER:$2|измени}} статусот на барањето за SSL-уверение $4 во „$5“.",
-	"requestcustomdomain": "Побарај SSL",
+	"requestcustomdomain": "Побарајте прилагоден домен за вашето вики",
 	"requestcustomdomainqueue": "Редица на барања за SSL-уверенија",
 	"right-handle-custom-domain-requests": "Ракување со барања за прилагоден домен",
 	"right-request-custom-domain": "Барање на поставања на прилагоден домен"

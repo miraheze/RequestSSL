@@ -53,7 +53,7 @@
 	"requestcustomdomain-label-complete": "'Complete' status label.",
 	"requestcustomdomain-label-customdomain": "Label for the 'source' field.",
 	"requestcustomdomain-label-declined": "'Declined' status label.",
-	"requestcustomdomain-label-edit-request": "Label for the 'Edit Request' submit button.",
+	"requestcustomdomain-label-edit-request": "Label for a button for editing a request for using a custom domain for your wiki.",
 	"requestcustomdomain-label-inprogress": "'In progress' status label.",
 	"requestcustomdomain-label-lock": "Label for the 'lock' checkbox.",
 	"requestcustomdomain-label-pending": "'Pending' status label.",

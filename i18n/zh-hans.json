@@ -4,6 +4,7 @@
 			"Anterdc99",
 			"GuoPC",
 			"LittlePaw365",
+			"McDutchie",
 			"人间百态"
 		]
 	},
@@ -101,7 +102,7 @@
 	"log-action-filter-requestcustomdomain-statusupdate": "申请状态更新",
 	"logentry-requestcustomdomain-request": "$1在$5{{GENDER:$2|申请了}}$4的SSL证书。",
 	"logentry-requestcustomdomain-statusupdate": "$1{{GENDER:$2|更新了}}SSL证书申请$4的状态为“$5”。",
-	"requestcustomdomain": "申请SSL",
+	"requestcustomdomain": "申请为您的wiki使用自定义域名",
 	"requestcustomdomainqueue": "SSL证书申请队列",
 	"right-handle-custom-domain-requests": "处理自定义域名申请",
 	"right-request-custom-domain": "申请自定义域名配置"
