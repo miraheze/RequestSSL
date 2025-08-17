@@ -281,7 +281,7 @@ class RequestManager {
 		$this->dbw->newUpdateQueryBuilder()
 			->update( 'customdomain_requests' )
 			->set( [ 'request_locked' => $locked ] )
-			->where( [ 'request_id' => $this->ID ],
+			->where( [ 'request_id' => $this->ID ] )
 			->caller( __METHOD__ )
 			->execute();
 	}
@@ -293,7 +293,7 @@ class RequestManager {
 		$this->dbw->newUpdateQueryBuilder()
 			->update( 'customdomain_requests' )
 			->set( [ 'request_reason' => $reason ] )
-			->where( [ 'request_id' => $this->ID ],
+			->where( [ 'request_id' => $this->ID ] )
 			->caller( __METHOD__ )
 			->execute();
 	}
@@ -305,7 +305,7 @@ class RequestManager {
 		$this->dbw->newUpdateQueryBuilder()
 			->update( 'customdomain_requests' )
 			->set( [ 'request_customdomain' => $customDomain ] )
-			->where( [ 'request_id' => $this->ID ],
+			->where( [ 'request_id' => $this->ID ] )
 			->caller( __METHOD__ )
 			->execute();
 	}
@@ -317,7 +317,7 @@ class RequestManager {
 		$this->dbw->newUpdateQueryBuilder()
 			->update( 'customdomain_requests' )
 			->set( [ 'request_status' => $status ] )
-			->where( [ 'request_id' => $this->ID ],
+			->where( [ 'request_id' => $this->ID ] )
 			->caller( __METHOD__ )
 			->execute();
 
@@ -331,7 +331,7 @@ class RequestManager {
 		$this->dbw->newUpdateQueryBuilder()
 			->update( 'customdomain_requests' )
 			->set( [ 'request_target' => $target ] )
-			->where( [ 'request_id' => $this->ID ],
+			->where( [ 'request_id' => $this->ID ] )
 			->caller( __METHOD__ )
 			->execute();
 	}
