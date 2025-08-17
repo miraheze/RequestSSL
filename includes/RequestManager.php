@@ -75,16 +75,16 @@ class RequestManager {
 	 * @param User $user
 	 */
 	public function addComment( string $comment, User $user ) {
-		$this->dbw->insert(
-			'customdomain_request_comments',
-			[
+		$this->dbw->newInsertQueryBuilder()
+			->insertInto( 'customdomain_request_comments' )
+			->row( [
 				'request_id' => $this->ID,
 				'request_comment_text' => $comment,
 				'request_comment_timestamp' => $this->dbw->timestamp(),
 				'request_comment_actor' => $user->getActorId(),
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		if (
 			ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) &&
@@ -278,64 +278,49 @@ class RequestManager {
 	 * @param int $locked
 	 */
 	public function setLocked( int $locked ) {
-		$this->dbw->update(
-			'customdomain_requests',
-			[
-				'request_locked' => $locked,
-			],
-			[
-				'request_id' => $this->ID,
-			],
-			__METHOD__
-		);
+		$this->dbw->newUpdateQueryBuilder()
+			->update( 'customdomain_requests' )
+			->set( [ 'request_locked' => $locked ] )
+			->where( [ 'request_id' => $this->ID ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**
 	 * @param string $reason
 	 */
 	public function setReason( string $reason ) {
-		$this->dbw->update(
-			'customdomain_requests',
-			[
-				'request_reason' => $reason,
-			],
-			[
-				'request_id' => $this->ID,
-			],
-			__METHOD__
-		);
+		$this->dbw->newUpdateQueryBuilder()
+			->update( 'customdomain_requests' )
+			->set( [ 'request_reason' => $reason ] )
+			->where( [ 'request_id' => $this->ID ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**
 	 * @param string $customDomain
 	 */
 	public function setCustomDomain( string $customDomain ) {
-		$this->dbw->update(
-			'customdomain_requests',
-			[
-				'request_customdomain' => $customDomain,
-			],
-			[
-				'request_id' => $this->ID,
-			],
-			__METHOD__
-		);
+		$this->dbw->newUpdateQueryBuilder()
+			->update( 'customdomain_requests' )
+			->set( [ 'request_customdomain' => $customDomain ] )
+			->where( [ 'request_id' => $this->ID ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**
 	 * @param string $status
 	 */
 	public function setStatus( string $status ) {
-		$this->dbw->update(
-			'customdomain_requests',
-			[
-				'request_status' => $status,
-			],
-			[
-				'request_id' => $this->ID,
-			],
-			__METHOD__
-		);
+		$this->dbw->newUpdateQueryBuilder()
+			->update( 'customdomain_requests' )
+			->set( [ 'request_status' => $status ] )
+			->where( [ 'request_id' => $this->ID ] )
+			->caller( __METHOD__ )
+			->execute();
+
 		$this->row->request_status = $status;
 	}
 
@@ -343,16 +328,12 @@ class RequestManager {
 	 * @param string $target
 	 */
 	public function setTarget( string $target ) {
-		$this->dbw->update(
-			'customdomain_requests',
-			[
-				'request_target' => $target,
-			],
-			[
-				'request_id' => $this->ID,
-			],
-			__METHOD__
-		);
+		$this->dbw->newUpdateQueryBuilder()
+			->update( 'customdomain_requests' )
+			->set( [ 'request_target' => $target ] )
+			->where( [ 'request_id' => $this->ID ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**
