@@ -26,10 +26,6 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
 
 class RequestManager {
 
-	private const IGNORED_USERS = [
-		'RequestCustomDomain Extension',
-	];
-
 	private IDatabase $dbw;
 	private stdClass|false $row;
 
@@ -86,10 +82,7 @@ class RequestManager {
 			->caller( __METHOD__ )
 			->execute();
 
-		if (
-			ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) &&
-			!in_array( $user->getName(), self::IGNORED_USERS )
-		) {
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) ) {
 			$this->sendNotification( $comment, 'requestcustomdomain-request-comment', $user );
 		}
 	}
