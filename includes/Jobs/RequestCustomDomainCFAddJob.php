@@ -218,9 +218,6 @@ class RequestCustomDomainCFAddJob extends Job {
 						'min_tls_version' => $tlsVersion,
 					],
 				],
-				'custom_metadata' => [
-					'dbname' => $dbName,
-				]
 			] );
 
 			$hostnameId = $response['result']['id'] ?? null;
