@@ -5,7 +5,7 @@
 			"YaronSh"
 		]
 	},
-	"action-handle-custom-domain-requests": "טיפול בבקשות שמות תחום מותאמים אישית",
+	"action-handle-custom-domain-requests": "לטפל בבקשות שמות תחום מותאמים אישית",
 	"action-request-custom-domain": "לבקש אישורי SSL",
 	"echo-category-title-requestcustomdomain-new-request": "בקשת אישור SSL חדשה",
 	"echo-category-title-requestcustomdomain-request-comment": "נוספה הערה לבקשת SSL",
@@ -24,7 +24,7 @@
 	"requestcustomdomain-edit-success": "הבקשה נערכה.",
 	"requestcustomdomainqueue-header": "חיפוש בבקשות תחום מותאמות אישית",
 	"requestcustomdomainqueue-header-info": "אפשר להשתמש בטופס הזה כדי לחפש בקשות תחום מותאם אישית. הפרמטרים למטה מכווננים את החיפוש שלך.",
-	"requestcustomdomain-header": "הגשת בקשה",
+	"requestcustomdomain-header": "שליחת בקשה",
 	"requestcustomdomain-header-comment-withtimestamp": "ההערה נכתבה על־ידי $1 ב־$2:",
 	"requestcustomdomain-help-reason": "נא להוסיף הערות נוספות שלדעתך תהיינה מתאימות לבקשה הזאת.",
 	"requestcustomdomain-help-customdomain": "נא למלא את הכתובת המלאה של שם התחום הרצוי (למשל: https://example.org).",
@@ -49,7 +49,7 @@
 	"requestcustomdomain-label-status": "מצב:",
 	"requestcustomdomain-label-status-updated-comment": "הערה נוספת לבקשה הזאת (רשות):",
 	"requestcustomdomain-label-target": "שם מסד הנתונים המיועד:",
-	"requestcustomdomain-label-target-subdomain": "מה תת־שם התחום של הוויקי שלך?",
+	"requestcustomdomain-label-target-subdomain": "מה שם התת־תחום של הוויקי שלך?",
 	"requestcustomdomain-label-update-status": "הגדרת מצב הבקשה הזאת ל־:",
 	"requestcustomdomain-no-changes": "לא נעשו שינויים.",
 	"requestcustomdomain-notcentral": "כבוי",
