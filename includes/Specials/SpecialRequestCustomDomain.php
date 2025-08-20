@@ -129,7 +129,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		}
 
 		$dbw = $this->connectionProvider->getPrimaryDatabase( 'virtual-requestcustomdomain' );
-		$targetDatabaseName = $data['target'] . ( $this->getConfig()->get( 'CreateWikiDatabaseSuffix' ) ?? '' );
+		$targetDatabaseName = $data['target'] . $this->getConfig()->get( 'RequestCustomDomainDatabaseSuffix' );
 
 		$duplicate = $dbw->newSelectQueryBuilder()
 			->table( 'customdomain_requests' )
@@ -308,7 +308,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 	 * @return string|bool|Message
 	 */
 	public function isValidDatabase( ?string $target ) {
-		$targetDatabase = $target . $this->getConfig()->get( 'CreateWikiDatabaseSuffix' );
+		$targetDatabase = $target . $this->getConfig()->get( 'RequestCustomDomainDatabaseSuffix' );
 		if ( !in_array( $targetDatabase, $this->getConfig()->get( MainConfigNames::LocalDatabases ), true ) ) {
 			return $this->msg( 'requestcustomdomain-invalid-target' );
 		}
