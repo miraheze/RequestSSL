@@ -83,13 +83,13 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			],
 		];
 
-		if ( $this->getConfig()->get( 'CreateWikiSubdomain' ) ) {
+		if ( $this->getConfig()->get( 'RequestCustomDomainSubdomain' ) ) {
 			$formDescriptor['target'] = [
 				'type' => 'textwithbutton',
 				'buttontype' => 'button',
 				'buttonflags' => [],
 				'buttonid' => 'inline-target',
-				'buttondefault' => '.' . $this->getConfig()->get( 'CreateWikiSubdomain' ),
+				'buttondefault' => '.' . $this->getConfig()->get( 'RequestCustomDomainSubdomain' ),
 				'label-message' => 'requestcustomdomain-label-target-subdomain',
 				'help-message' => 'requestcustomdomain-help-target-subdomain',
 				'required' => true,
