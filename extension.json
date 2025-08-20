@@ -146,6 +146,10 @@
 				"zoneid": null
 			}
 		},
+		"RequestCustomDomainDatabaseSuffix": {
+			"description": "String. Database suffix.",
+			"value": "wiki"
+		},
 		"RequestCustomDomainDisallowedDomains": {
 			"description": "Array. Domains that are not allowed to be requested via RequestCustomDomain.",
 			"value": []
