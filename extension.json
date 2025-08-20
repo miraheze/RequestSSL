@@ -147,16 +147,20 @@
 			}
 		},
 		"RequestCustomDomainDisallowedDomains": {
-			"value": [],
-			"description": "Array. Domains that are not allowed to be requested via RequestCustomDomain."
+			"description": "Array. Domains that are not allowed to be requested via RequestCustomDomain.",
+			"value": []
 		},
 		"RequestCustomDomainHelpUrl": {
-			"value": "",
-			"description": "Full URL. If set, adds a help URL to Special:RequestCustomDomain."
+			"description": "Full URL. If set, adds a help URL to Special:RequestCustomDomain.",
+			"value": ""
+		},
+		"RequestCustomDomainSubdomain": {
+			"description": "String. The main part of default subdomains, e.g. wiki.example.org, example.org is the main part. Only necessary if used on a wiki farm. Only used to improve UI by adding a subdomain.tld inline form field hint.",
+			"value": ""
 		},
 		"RequestCustomDomainUsersNotifiedOnAllRequests": {
-			"value": [],
-			"description": "Array of usernames to send email notifications to for all requests. Users listed here must have a verified email address on their account. This doesn't do anything if the Echo extension is not installed."
+			"description": "Array of usernames to send email notifications to for all requests. Users listed here must have a verified email address on their account. This doesn't do anything if the Echo extension is not installed.",
+			"value": []
 		}
 	},
 	"ConfigRegistry": {
