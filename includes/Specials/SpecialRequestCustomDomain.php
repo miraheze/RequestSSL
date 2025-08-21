@@ -21,6 +21,7 @@ use UserBlockedError;
 use UserNotLoggedIn;
 use Wikimedia\Mime\MimeAnalyzer;
 use Wikimedia\Rdbms\IConnectionProvider;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 class SpecialRequestCustomDomain extends FormSpecialPage {
 
@@ -132,8 +133,8 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		$targetDatabaseName = $data['target'] . $this->getConfig()->get( 'RequestCustomDomainDatabaseSuffix' );
 
 		$duplicate = $dbw->newSelectQueryBuilder()
-			->table( 'customdomain_requests' )
-			->field( '*' )
+			->select( ISQLPlatform::ALL_ROWS )
+			->from( 'customdomain_requests' )
 			->where( [
 				'request_target' => $targetDatabaseName,
 				'request_status' => 'pending',
