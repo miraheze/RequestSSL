@@ -48,10 +48,7 @@ class RequestManager {
 	) {
 	}
 
-	/**
-	 * @param int $requestID
-	 */
-	public function fromID( int $requestID ) {
+	public function loadFromID( int $requestID ): void {
 		$this->dbw = $this->connectionProvider->getPrimaryDatabase( 'virtual-requestcustomdomain' );
 		$this->ID = $requestID;
 

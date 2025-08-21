@@ -5,7 +5,6 @@ namespace Miraheze\RequestCustomDomain\Tests;
 use MediaWiki\MainConfigNames;
 use MediaWikiIntegrationTestCase;
 use Miraheze\RequestCustomDomain\RequestManager;
-use Wikimedia\TestingAccessWrapper;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
@@ -41,31 +40,37 @@ class RequestManagerTest extends MediaWikiIntegrationTestCase {
 			->execute();
 	}
 
-	private function getRequestManager(): RequestManager {
-		$services = $this->getServiceContainer();
-		$manager = $services->getService( 'RequestCustomDomainManager' );
-
-		$manager->fromID( 1 );
+	private function getRequestManager( int $id ): RequestManager {
+		$manager = $this->getServiceContainer()->getService( 'RequestCustomDomainManager' );
+		'@phan-var RequestManager $manager';
+		$manager->loadFromID( $id );
 		return $manager;
 	}
 
 	/**
 	 * @covers ::__construct
-	 * @covers ::fromID
 	 */
-	public function testFromID(): void {
-		$manager = TestingAccessWrapper::newFromObject(
-			$this->getRequestManager()
-		);
+	public function testConstructor(): void {
+		$manager = $this->getServiceContainer()->getService( 'RequestCustomDomainManager' );
+		$this->assertInstanceOf( RequestManager::class, $manager );
+	}
 
-		$this->assertSame( 1, $manager->ID );
+	/**
+	 * @covers ::loadFromID
+	 */
+	public function testLoadFromID(): void {
+		$manager = $this->getRequestManager( id: 1 );
+		$this->assertInstanceOf( RequestManager::class, $manager );
 	}
 
 	/**
 	 * @covers ::exists
 	 */
 	public function testExists(): void {
-		$manager = $this->getRequestManager();
+		$manager = $this->getRequestManager( id: 1 );
 		$this->assertTrue( $manager->exists() );
+
+		$manager = $this->getRequestManager( id: 2 );
+		$this->assertFalse( $manager->exists() );
 	}
 }
