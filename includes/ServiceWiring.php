@@ -8,6 +8,10 @@ use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use Psr\Log\LoggerInterface;
 
+// PHPUnit does not understand coverage for this file.
+// It is covered though, see ServiceWiringTest.
+// @codeCoverageIgnoreStart
+
 return [
 	'RequestCustomDomainConfig' => static function ( MediaWikiServices $services ): Config {
 		return $services->getConfigFactory()->makeConfig( 'RequestCustomDomain' );
@@ -30,3 +34,5 @@ return [
 		);
 	},
 ];
+
+// @codeCoverageIgnoreEnd
