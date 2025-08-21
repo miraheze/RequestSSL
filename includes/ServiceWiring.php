@@ -21,11 +21,12 @@ return [
 			$services->getConnectionProvider(),
 			$services->getJobQueueGroupFactory(),
 			$services->getLinkRenderer(),
-			$services->get( 'RemoteWikiFactory' ),
 			$services->getRepoGroup(),
 			RequestContext::getMain(),
 			$services->getUserFactory(),
-			$services->getUserGroupManagerFactory()
+			$services->getUserGroupManagerFactory(),
+			$services->has( 'ManageWikiModuleFactory' ) ?
+				$services->get( 'ManageWikiModuleFactory' ) : null
 		);
 	},
 ];

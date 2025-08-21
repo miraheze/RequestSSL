@@ -83,13 +83,13 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			],
 		];
 
-		if ( $this->getConfig()->get( 'CreateWikiSubdomain' ) ) {
+		if ( $this->getConfig()->get( 'RequestCustomDomainSubdomain' ) ) {
 			$formDescriptor['target'] = [
 				'type' => 'textwithbutton',
 				'buttontype' => 'button',
 				'buttonflags' => [],
 				'buttonid' => 'inline-target',
-				'buttondefault' => '.' . $this->getConfig()->get( 'CreateWikiSubdomain' ),
+				'buttondefault' => '.' . $this->getConfig()->get( 'RequestCustomDomainSubdomain' ),
 				'label-message' => 'requestcustomdomain-label-target-subdomain',
 				'help-message' => 'requestcustomdomain-help-target-subdomain',
 				'required' => true,
@@ -129,7 +129,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 		}
 
 		$dbw = $this->connectionProvider->getPrimaryDatabase( 'virtual-requestcustomdomain' );
-		$targetDatabaseName = $data['target'] . ( $this->getConfig()->get( 'CreateWikiDatabaseSuffix' ) ?? '' );
+		$targetDatabaseName = $data['target'] . $this->getConfig()->get( 'RequestCustomDomainDatabaseSuffix' );
 
 		$duplicate = $dbw->newSelectQueryBuilder()
 			->table( 'customdomain_requests' )
@@ -308,7 +308,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 	 * @return string|bool|Message
 	 */
 	public function isValidDatabase( ?string $target ) {
-		$targetDatabase = $target . $this->getConfig()->get( 'CreateWikiDatabaseSuffix' );
+		$targetDatabase = $target . $this->getConfig()->get( 'RequestCustomDomainDatabaseSuffix' );
 		if ( !in_array( $targetDatabase, $this->getConfig()->get( MainConfigNames::LocalDatabases ), true ) ) {
 			return $this->msg( 'requestcustomdomain-invalid-target' );
 		}

@@ -15,7 +15,7 @@ use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserGroupManagerFactory;
 use MessageLocalizer;
-use Miraheze\CreateWiki\Services\RemoteWikiFactory;
+use Miraheze\ManageWiki\Helpers\Factories\ModuleFactory;
 use Miraheze\RequestCustomDomain\Jobs\RequestCustomDomainCFAddJob;
 use RepoGroup;
 use stdClass;
@@ -40,11 +40,11 @@ class RequestManager {
 		private readonly IConnectionProvider $connectionProvider,
 		private readonly JobQueueGroupFactory $jobQueueGroupFactory,
 		private readonly LinkRenderer $linkRenderer,
-		private readonly RemoteWikiFactory $remoteWikiFactory,
 		private readonly RepoGroup $repoGroup,
 		private readonly MessageLocalizer $messageLocalizer,
 		private readonly UserFactory $userFactory,
-		private readonly UserGroupManagerFactory $userGroupManagerFactory
+		private readonly UserGroupManagerFactory $userGroupManagerFactory,
+		private readonly ?ModuleFactory $moduleFactory
 	) {
 	}
 
@@ -340,14 +340,18 @@ class RequestManager {
 	 * @return bool
 	 */
 	public function updateServerName(): bool {
+		if ( $this->moduleFactory === null ) {
+			return false;
+		}
+
 		$newServerName = parse_url( $this->getCustomDomain(), PHP_URL_HOST );
 		if ( !$newServerName ) {
 			return false;
 		}
 
-		$remoteWiki = $this->remoteWikiFactory->newInstance( $this->getTarget() );
-		$remoteWiki->setServerName( 'https://' . $newServerName );
-		$remoteWiki->commit();
+		$mwCore = $this->moduleFactory->core( $this->getTarget() );
+		$mwCore->setServerName( "https://$newServerName" );
+		$mwCore->commit();
 		return true;
 	}
 
