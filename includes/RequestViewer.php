@@ -303,17 +303,11 @@ class RequestViewer {
 	}
 
 	/**
-	 * @param ?string $url
-	 * @param array $alldata
-	 * @return string|bool
-	 */
-
-	/**
 	 * @param int $requestID
 	 * @return ?OOUIHTMLFormTabs
 	 */
 	public function getForm( int $requestID ): ?OOUIHTMLFormTabs {
-		$this->requestManager->fromID( $requestID );
+		$this->requestManager->loadFromID( $requestID );
 		$out = $this->context->getOutput();
 
 		if ( $requestID === 0 || !$this->requestManager->exists() ) {

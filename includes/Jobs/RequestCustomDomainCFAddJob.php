@@ -58,7 +58,7 @@ class RequestCustomDomainCFAddJob extends Job {
 			return true;
 		}
 
-		$this->requestManager->fromID( $this->id );
+		$this->requestManager->loadFromID( $this->id );
 		$this->logger->debug(
 			'Request {id} loaded, ready for RequestCustomDomain processing...',
 			[ 'id' => $this->id ]

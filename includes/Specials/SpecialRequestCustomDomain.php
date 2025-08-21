@@ -201,7 +201,7 @@ class SpecialRequestCustomDomain extends FormSpecialPage {
 			$this->getConfig()->get( 'RequestCustomDomainCloudflareConfig' )['apikey'] &&
 			$this->getConfig()->get( 'RequestCustomDomainCloudflareConfig' )['zoneid']
 		) {
-			$this->requestManager->fromID( (int)$requestID );
+			$this->requestManager->loadFromID( (int)$requestID );
 			$this->requestManager->queryCloudflare();
 		}
 
