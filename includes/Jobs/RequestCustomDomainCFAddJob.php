@@ -39,7 +39,7 @@ class RequestCustomDomainCFAddJob extends Job {
 		$this->zoneId = $this->config->get( 'RequestCustomDomainCloudflareConfig' )['zoneid'] ?? '';
 
 		$this->messageLocalizer = RequestContext::getMain();
-		$this->systemUser = User::newSystemUser( 'RequestCustomDomain Extension', [ 'steal' => true ] );
+		$this->systemUser = User::newSystemUser( 'RequestCustomDomain Status Update', [ 'steal' => true ] );
 
 		$this->baseApiUrl = 'https://api.cloudflare.com/client/v4';
 		$this->id = $params['id'];
@@ -167,7 +167,9 @@ class RequestCustomDomainCFAddJob extends Job {
 				$this->requestManager->updateServerName();
 
 				// Log the request to the ManageWiki log
-				$this->requestManager->logToManageWiki( $this->systemUser );
+				$this->requestManager->logToManageWiki(
+					User::newSystemUser( 'RequestCustomDomain Extension', [ 'steal' => true ] )
+				);
 
 				$this->requestManager->setStatus( 'complete' );
 				$this->requestManager->addComment( $activeCommentText, $this->systemUser );
